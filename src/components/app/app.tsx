@@ -1,5 +1,9 @@
+import Cart from '../cart/cart';
+
 function App(): JSX.Element {
-  return <p>Hello, world!</p>;
+  return (
+    <Cart />
+  );
 }
 
 export default App;
