@@ -3,4 +3,8 @@ enum AppRoute {
   PageNotFound = '*',
 }
 
-export {AppRoute};
+enum APIRoute {
+  Catalog = '/guitars',
+}
+
+export {AppRoute, APIRoute};
