@@ -4,6 +4,7 @@ import { loadGuitars } from './action';
 
 type CatalogType = {
   catalog: GuitarType[];
+  isDataLoaded: boolean,
 }
 
 const initialState: CatalogType = {
@@ -20,6 +21,7 @@ const initialState: CatalogType = {
       price: 0,
     },
   ],
+  isDataLoaded: true,
 };
 
 const guitarData = createReducer(initialState, (builder) => {

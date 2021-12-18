@@ -1,5 +1,5 @@
 import { GuitarType } from '../../types/guitar';
-import { setRatingStars } from '../utils';
+import { setRatingStars } from '../../utils';
 
 type ProductCardProps = {
   productCard: GuitarType,
