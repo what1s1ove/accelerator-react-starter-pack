@@ -1,7 +1,5 @@
 import { GuitarType } from '../../types/guitar';
-
-const ICON_FULL_STAR = '#icon-full-star';
-const ICON_STAR = '#icon-star';
+import { setRatingStars } from '../utils';
 
 type ProductCardProps = {
   productCard: GuitarType,
@@ -25,27 +23,27 @@ function ProductCard(props: ProductCardProps): JSX.Element {
           <span className="visually-hidden">Рейтинг:</span>
           <svg width="12" height="11" aria-hidden="true">
             <use
-              xlinkHref={roundedRating >= 1 ? ICON_FULL_STAR : ICON_STAR}
+              xlinkHref={setRatingStars(roundedRating, 1)}
             />
           </svg>
           <svg width="12" height="11" aria-hidden="true">
             <use
-              xlinkHref={roundedRating >= 2 ? ICON_FULL_STAR : ICON_STAR}
+              xlinkHref={setRatingStars(roundedRating, 2)}
             />
           </svg>
           <svg width="12" height="11" aria-hidden="true">
             <use
-              xlinkHref={roundedRating >= 3 ? ICON_FULL_STAR : ICON_STAR}
+              xlinkHref={setRatingStars(roundedRating, 3)}
             />
           </svg>
           <svg width="12" height="11" aria-hidden="true">
             <use
-              xlinkHref={roundedRating >= 4 ? ICON_FULL_STAR : ICON_STAR}
+              xlinkHref={setRatingStars(roundedRating, 4)}
             />
           </svg>
           <svg width="12" height="11" aria-hidden="true">
             <use
-              xlinkHref={roundedRating >= 5 ? ICON_FULL_STAR : ICON_STAR}
+              xlinkHref={setRatingStars(roundedRating, 5)}
             />
           </svg>
           <span className="rate__count">9</span>
