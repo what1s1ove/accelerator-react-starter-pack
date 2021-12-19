@@ -1,4 +1,18 @@
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import { getGuitars } from '../../store/selectors';
+
 function HeaderFormSearch(): JSX.Element {
+  const guitars = useSelector(getGuitars);
+  const [isSearchResultShown, setSearchResultShown] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSearchChange = ({target}: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchResultShown(true);
+    setSearchValue(target.value);
+  };
 
   return (
     <div className="form-search">
@@ -8,17 +22,19 @@ function HeaderFormSearch(): JSX.Element {
             <use xlinkHref="#icon-search"></use>
           </svg><span className="visually-hidden">Начать поиск</span>
         </button>
-        <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?"/>
+        <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onChange={handleSearchChange}/>
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
-      <ul className="form-search__select-list hidden">
-        <li className="form-search__select-item" tabIndex={0}>Четстер Plus</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX2</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX3</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX4</li>
-        <li className="form-search__select-item" tabIndex={0}>Четстер UX5</li>
-      </ul>
+      {isSearchResultShown ?
+        <ul className="form-search__select-list">
+          {guitars
+            .filter((guitar) => guitar.name.toLowerCase().includes(searchValue.toLowerCase()))
+            .map((guitar) => (
+              <li className="form-search__select-item" tabIndex={0} key={guitar.id}>
+                <Link to={`${AppRoute.Catalog}product/${guitar.id}`} className="link">{guitar.name}</Link>
+              </li>))}л
+        </ul>
+        : <ul className="form-search__select-list hidden"></ul> }
     </div>
   );
 }
