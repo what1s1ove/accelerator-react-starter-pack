@@ -12,6 +12,9 @@ function HeaderFormSearch(): JSX.Element {
   const handleSearchChange = ({target}: React.ChangeEvent<HTMLInputElement>) => {
     setSearchResultShown(true);
     setSearchValue(target.value);
+    if (!target.value.length) {
+      setSearchResultShown(false);
+    }
   };
 
   return (
@@ -32,7 +35,7 @@ function HeaderFormSearch(): JSX.Element {
             .map((guitar) => (
               <li className="form-search__select-item" tabIndex={0} key={guitar.id}>
                 <Link to={`${AppRoute.Catalog}product/${guitar.id}`} className="link">{guitar.name}</Link>
-              </li>))}л
+              </li>))}
         </ul>
         : <ul className="form-search__select-list hidden"></ul> }
     </div>
