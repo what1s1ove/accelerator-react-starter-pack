@@ -1,5 +1,6 @@
 enum AppRoute {
   Catalog = '/',
+  Guitar = '/guitars/:id',
   PageNotFound = '*',
 }
 
