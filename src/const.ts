@@ -4,8 +4,9 @@ enum AppRoute {
   PageNotFound = '*',
 }
 
-enum APIRoute {
-  Catalog = '/guitars',
-}
+const APIRoute  = {
+  Catalog: '/guitars',
+  Comments: (id: number): string => `/guitars/${id}/comments`,
+};
 
 export {AppRoute, APIRoute};

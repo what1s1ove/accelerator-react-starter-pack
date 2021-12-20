@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react';
 import { generatePath, Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { APIRoute, AppRoute } from '../../const';
+import { createAPI } from '../../services/api';
+import { CommentType } from '../../types/comment';
 import { GuitarType } from '../../types/guitar';
 import { setRatingStars } from '../../utils';
 
@@ -11,6 +14,12 @@ function ProductCard(props: ProductCardProps): JSX.Element {
   const {name, previewImg, price, rating, id} = props.productCard;
   const roundedRating = Math.round(rating);
   const imageSrc = `${previewImg.replace('guitar', 'content/guitar')}`;
+  const [commentsCount, setCommentsCount] = useState<number>(0);
+
+  useEffect(() => {
+    createAPI.get<CommentType[]>(APIRoute.Comments(id))
+      .then((response) => setCommentsCount(response.data.length));
+  }, [id, setCommentsCount]);
 
   return (
     <div className="product-card">
@@ -48,7 +57,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
               xlinkHref={setRatingStars(roundedRating, 5)}
             />
           </svg>
-          <span className="rate__count">9</span>
+          <span className="rate__count">{commentsCount}</span>
           <span className="rate__message" />
         </div>
         <p className="product-card__title">{name}</p>
