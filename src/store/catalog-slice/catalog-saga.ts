@@ -9,14 +9,13 @@ function* workoutLoadGuitars(): Generator<
   IGuitar[]
   > {
   try {
-    const guitars: IGuitar[] = yield call(fetchGuitars);
+    const guitars: IGuitar[] = yield call(fetchGuitars, true);
 
     yield put(loadGuitarsSuccess({ guitars }));
   } catch (error) {
     yield put(loadGuitarsFail());
     // eslint-disable-next-line no-console
     console.log(error);
-
   }
 }
 

@@ -15,10 +15,8 @@ function ProductCard({ guitar }: Props): JSX.Element {
     rating,
     price,
     previewImg,
+    comments,
   } = guitar;
-
-  //TODO: create logic for retrieving review count from back
-  const reviewCount = 9;
 
   return (
     <div className="product-card">
@@ -48,7 +46,7 @@ function ProductCard({ guitar }: Props): JSX.Element {
                 </svg>
               );
             })}
-          <span className="rate__count">{reviewCount}</span>
+          <span className="rate__count">{comments.length}</span>
           <span className="rate__message"></span>
         </div>
         <p className="product-card__title">{name}</p>

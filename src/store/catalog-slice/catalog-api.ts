@@ -1,12 +1,19 @@
 import BackendRoutes from 'constants/backend';
-import IGuitar from 'models/guitar';
+import IGuitar, { GuitarId } from 'models/guitar';
+import IGuitarReview from 'models/guitar-review';
 import api from 'services/api';
-import { mapGuitars } from 'services/guitar-mapper';
+import { mapGuitarReviews, mapGuitars } from 'services/guitar-mapper';
 
-const fetchGuitars = async (): Promise<IGuitar[]> => {
-  const { data } = await api.get<IGuitar[]>(BackendRoutes.Guitars);
+const fetchGuitars = async (hasReviews: boolean): Promise<IGuitar[]> => {
+  const { data } = await api.get<IGuitar[]>(BackendRoutes.getGuitarsLink(hasReviews));
 
   return mapGuitars(data);
 };
 
-export { fetchGuitars };
+const fetchGuitarReviews = async (guitarId: GuitarId): Promise<IGuitarReview[]> => {
+  const { data } = await api.get<IGuitarReview[]>(BackendRoutes.getGuitarReviewsLink(guitarId));
+
+  return mapGuitarReviews(data);
+};
+
+export { fetchGuitars, fetchGuitarReviews };
