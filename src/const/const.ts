@@ -3,3 +3,6 @@ export enum APIRoute {
   Comments = '/comments',
 }
 
+export enum AppRoute {
+  Root = '/'
+}
