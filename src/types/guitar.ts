@@ -1,10 +1,10 @@
-type Id = number;
+type Id = number & {'database identity':void};
 type Name = string;
 type VendorCode = string;
 type Type = string;
 type Description = string;
 type PreviewImg = string;
-type StringCount = number;
+type StringCount = number & {'guitar intrinsic property': void};
 type Rating = number;
 type Price = number;
 
