@@ -1,5 +1,6 @@
 import {GuitarsList} from '../../types/guitar';
 import GuitarCard from '../guitar-card/guitar-card';
+import {INITIAL_GUITARS_COUNT} from '../../const/const';
 
 type GuitarCardsListProps = {
   guitarsList: GuitarsList
@@ -10,7 +11,7 @@ function GuitarCardsList(props:GuitarCardsListProps):JSX.Element {
   return (
     <>
       <div className="cards catalog__cards">
-        {guitarsList.slice(0, 9).map((guitar) => (
+        {guitarsList.slice(0, INITIAL_GUITARS_COUNT).map((guitar) => (
           <GuitarCard key={guitar.id} guitar={guitar} />))};
       </div>
       <div className="pagination page-content__pagination">
