@@ -11,6 +11,9 @@ function App(): JSX.Element {
         <Route exact path={AppRoute.Catalog}>
           <CatalogWrapper />
         </Route>
+        <Route path={AppRoute.Filter}>
+          <CatalogWrapper />
+        </Route>
         <Route exact path={AppRoute.PageNotFound}>
           <PageNotFound/>
         </Route>
