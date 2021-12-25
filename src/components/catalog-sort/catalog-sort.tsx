@@ -1,15 +1,16 @@
 import { SyntheticEvent, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { SortOrder, SortType } from '../../const';
 import { fetchSortedGuitarsAction } from '../../store/api-action';
 import { ThunkAppDispatch } from '../../types/action';
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSortChange(sortType: string, sortOrder?: string) {
+  onSortChange(filterParams: string, sortType: string, sortOrder?: string) {
     if (!sortOrder) {
       sortOrder = '';
     }
-    dispatch(fetchSortedGuitarsAction(sortType, sortOrder));
+    dispatch(fetchSortedGuitarsAction(filterParams, sortType, sortOrder));
   },
 });
 
@@ -21,6 +22,7 @@ function CatalogSort(props: PropsFromRedux): JSX.Element {
   const {onSortChange} = props;
   const [sortType, setSortType] = useState<string>(SortType.Price);
   const [sortOrder, setSortOrder] = useState<string>();
+  const filterParams = String(useLocation<string>().search);
 
   const handleSortTypeChange = (event: SyntheticEvent): void => {
     const target = event.target as HTMLInputElement;
@@ -55,7 +57,7 @@ function CatalogSort(props: PropsFromRedux): JSX.Element {
           onClick={(event) => {
             setSortType(SortType.Price);
             handleSortTypeChange(event);
-            onSortChange(SortType.Price, sortOrder);
+            onSortChange(filterParams, SortType.Price, sortOrder);
           }}
         >
           по цене
@@ -65,7 +67,7 @@ function CatalogSort(props: PropsFromRedux): JSX.Element {
           onClick={(event) => {
             setSortType(SortType.Rating);
             handleSortTypeChange(event);
-            onSortChange(SortType.Rating, sortOrder);
+            onSortChange(filterParams, SortType.Rating, sortOrder);
           }}
         >по популярности
         </button>
@@ -78,7 +80,7 @@ function CatalogSort(props: PropsFromRedux): JSX.Element {
           onClick={(event) => {
             setSortOrder(SortOrder.Asc);
             handleSortOrderChange(event);
-            onSortChange(sortType, SortOrder.Asc);
+            onSortChange(filterParams, sortType, SortOrder.Asc);
           }}
         />
         <button
@@ -87,7 +89,7 @@ function CatalogSort(props: PropsFromRedux): JSX.Element {
           onClick={(event) => {
             setSortOrder(SortOrder.Desc);
             handleSortOrderChange(event);
-            onSortChange(sortType, SortOrder.Desc);
+            onSortChange(filterParams, sortType, SortOrder.Desc);
           }}
         />
       </div>
