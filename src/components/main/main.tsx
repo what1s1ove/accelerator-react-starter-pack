@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import Footer from '../footer/footer';
 import Header from '../header/header';
@@ -13,7 +12,7 @@ function Main(): JSX.Element {
           <ul className="breadcrumbs page-content__breadcrumbs">
             <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
             </li>
-            <li className="breadcrumbs__item"><a className="link">Каталог</a>
+            <li className="breadcrumbs__item"><a className="link" href='/'>Каталог</a>
             </li>
           </ul>
           <div className="catalog">
@@ -102,7 +101,7 @@ function Main(): JSX.Element {
                   <p className="product-card__price"><span className="visually-hidden">Цена:</span>129 500 ₽
                   </p>
                 </div>
-                <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
                 </div>
               </div>
               <div className="product-card"><img src="img/content/guitar-1.jpg" width="75" height="190" alt="Честер Bass" />
@@ -128,7 +127,7 @@ function Main(): JSX.Element {
                   <p className="product-card__price"><span className="visually-hidden">Цена:</span>51 100 ₽
                   </p>
                 </div>
-                <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red-border button--mini button--in-cart" href="#">В Корзине</a>
+                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red-border button--mini button--in-cart" href='/'>В Корзине</a>
                 </div>
               </div>
               <div className="product-card"><img src="img/content/guitar-2.jpg" width="75" height="190" alt="СURT Z30 Plus" />
@@ -154,7 +153,7 @@ function Main(): JSX.Element {
                   <p className="product-card__price"><span className="visually-hidden">Цена:</span>9 700 ₽
                   </p>
                 </div>
-                <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
                 </div>
               </div>
               <div className="product-card"><img src="img/content/guitar-3.jpg" width="75" height="190" alt="СURT Z30 Plus Acoustics" />
@@ -180,7 +179,7 @@ function Main(): JSX.Element {
                   <p className="product-card__price"><span className="visually-hidden">Цена:</span>129 500 ₽
                   </p>
                 </div>
-                <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
                 </div>
               </div>
               <div className="product-card"><img src="img/content/guitar-4.jpg" width="75" height="190" alt="СURT Z30 Plus" />
@@ -206,7 +205,7 @@ function Main(): JSX.Element {
                   <p className="product-card__price"><span className="visually-hidden">Цена:</span>9 700 ₽
                   </p>
                 </div>
-                <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
                 </div>
               </div>
               <div className="product-card"><img src="img/content/guitar-5.jpg" width="75" height="190" alt="Честер Bass" />
@@ -232,7 +231,7 @@ function Main(): JSX.Element {
                   <p className="product-card__price"><span className="visually-hidden">Цена:</span>51 100 ₽
                   </p>
                 </div>
-                <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red-border button--mini button--in-cart" href="#">В Корзине</a>
+                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red-border button--mini button--in-cart" href='/'>В Корзине</a>
                 </div>
               </div>
               <div className="product-card"><img src="img/content/guitar-6.jpg" width="75" height="190" alt="СURT Z30 Plus Acoustics" />
@@ -258,7 +257,7 @@ function Main(): JSX.Element {
                   <p className="product-card__price"><span className="visually-hidden">Цена:</span>129 500 ₽
                   </p>
                 </div>
-                <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
                 </div>
               </div>
               <div className="product-card"><img src="img/content/guitar-7.jpg" width="75" height="190" alt="СURT Z30 Plus Acoustics" />
@@ -284,7 +283,7 @@ function Main(): JSX.Element {
                   <p className="product-card__price"><span className="visually-hidden">Цена:</span>129 500 ₽
                   </p>
                 </div>
-                <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
                 </div>
               </div>
               <div className="product-card"><img src="img/content/guitar-8.jpg" width="75" height="190" alt="СURT Z30 Plus" />
@@ -310,7 +309,7 @@ function Main(): JSX.Element {
                   <p className="product-card__price"><span className="visually-hidden">Цена:</span>9 700 ₽
                   </p>
                 </div>
-                <div className="product-card__buttons"><a className="button button--mini" href="#">Подробнее</a><a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
                 </div>
               </div>
             </div>
