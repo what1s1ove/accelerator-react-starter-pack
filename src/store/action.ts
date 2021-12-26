@@ -8,17 +8,3 @@ export const fillGuitarsListAction = createAction(
     payload: guitarsList,
   }),
 );
-
-export const changeSortByTypeAction = createAction(
-  ActionType.ChangeSortByType,
-  (sortType:string) => ({
-    payload: sortType,
-  }),
-);
-
-export const changeSortByIncrease = createAction(
-  ActionType.ChangeSortByIncrease,
-  (sortType:string) => ({
-    payload: sortType,
-  }),
-);

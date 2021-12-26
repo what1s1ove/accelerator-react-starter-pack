@@ -4,8 +4,6 @@ import {AxiosInstance} from 'axios';
 
 export enum ActionType {
   FillGuitarsList = 'main/fillGuitarsList',
-  ChangeSortByType = 'main/changeSortByType',
-  ChangeSortByIncrease = 'main/changeSortByIncrease',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
