@@ -8,3 +8,14 @@ export const fetchGuitarsList = ():ThunkActionResult =>
     const {data} = await api.get<GuitarsList>(APIRoute.Guitars);
     dispatch(fillGuitarsListAction(data));
   };
+
+export const sortGuitarsListAction = (sort = 'price', order = 'asc'): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    const {data} = await api.get(APIRoute.Guitars, {
+      params: {
+        _sort: sort,
+        _order: order,
+      },
+    });
+    dispatch(fillGuitarsListAction(data));
+  };
