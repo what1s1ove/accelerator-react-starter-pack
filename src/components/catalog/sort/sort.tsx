@@ -1,32 +1,26 @@
-import React, {MouseEvent} from 'react';
-import {useDispatch} from 'react-redux';
-import {changeSortByIncrease, changeSortByTypeAction} from '../../../store/action';
-import {SortType} from '../../../const/const';
+import React, {MouseEvent, useState} from 'react';
+import {OrderOfSort, SortType, TypeOfSort} from '../../../const/const';
+
+type SortProps = {
+  onSortChange: (sort: string | undefined) => void;
+  onOrderChange: (order: string | undefined) => void;
+}
 
 const ACTIVE = -1;
 const NOT_ACTIVE = 0;
 
-type SortProps = {
-  currentSortByType: string;
-  currentSortByIncrease: string;
-};
+function Sort({onSortChange, onOrderChange}:SortProps):JSX.Element {
+  const [sortType, setSortType] = useState('');
+  const [sortOrder, setSortOrder] = useState('');
 
-function Sort(props: SortProps):JSX.Element {
-  const {currentSortByType, currentSortByIncrease} = props;
-  const dispatch = useDispatch();
+  const handleSortClick = (sort: string) => {
+    onSortChange(TypeOfSort.get(sort));
+    setSortType(sort);
+  };
 
-  const handleBtnClick = (sortType:string) => {
-    if (sortType === SortType.Price || sortType === SortType.Popularity) {
-      dispatch(changeSortByTypeAction(sortType));
-      if (currentSortByIncrease.length === 0) {
-        dispatch(changeSortByIncrease(SortType.DownUp));
-      }
-    } else {
-      dispatch(changeSortByIncrease(sortType));
-      if (currentSortByType.length === 0) {
-        dispatch(changeSortByTypeAction(SortType.Price));
-      }
-    }
+  const handleOrderClick = (order:string) => {
+    onOrderChange(OrderOfSort.get(order));
+    setSortOrder(order);
   };
 
   return (
@@ -34,33 +28,41 @@ function Sort(props: SortProps):JSX.Element {
       <h2 className="catalog-sort__title">Сортировать:</h2>
       <div className="catalog-sort__type">
         <button
-          className={`catalog-sort__type-button ${currentSortByType === SortType.Price ? 'catalog-sort__type-button--active': ''}`}
+          className={`catalog-sort__type-button ${sortType === SortType.Price ? 'catalog-sort__type-button--active': ''}`}
           aria-label="по цене"
-          tabIndex={currentSortByType === SortType.Price ? ACTIVE : NOT_ACTIVE}
-          onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => handleBtnClick(currentTarget.ariaLabel)}
+          tabIndex={sortType === SortType.Price ? ACTIVE : NOT_ACTIVE}
+          onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
+            handleSortClick(currentTarget.ariaLabel);
+          }}
         >по цене
         </button>
         <button
-          className={`catalog-sort__type-button ${currentSortByType === SortType.Popularity ? 'catalog-sort__type-button--active': ''}`}
+          className={`catalog-sort__type-button ${sortType === SortType.Popularity ? 'catalog-sort__type-button--active': ''}`}
           aria-label="по популярности"
-          tabIndex={currentSortByType === SortType.Price ? ACTIVE : NOT_ACTIVE}
-          onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => handleBtnClick(currentTarget.ariaLabel)}
+          tabIndex={sortType === SortType.Popularity ? ACTIVE : NOT_ACTIVE}
+          onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
+            handleSortClick(currentTarget.ariaLabel);
+          }}
         >по популярности
         </button>
       </div>
       <div className="catalog-sort__order">
         <button
-          className={`catalog-sort__order-button catalog-sort__order-button--up ${currentSortByIncrease === SortType.DownUp ? 'catalog-sort__order-button--active' : ''}`}
+          className={`catalog-sort__order-button catalog-sort__order-button--up ${sortOrder === SortType.Ascend ? 'catalog-sort__order-button--active' : ''}`}
           aria-label="По возрастанию"
-          tabIndex={currentSortByIncrease === SortType.UpDown ? ACTIVE : NOT_ACTIVE}
-          onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => handleBtnClick(currentTarget.ariaLabel)}
+          tabIndex={sortOrder === SortType.Ascend ? ACTIVE : NOT_ACTIVE}
+          onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
+            handleOrderClick(currentTarget.ariaLabel);
+          }}
         >
         </button>
         <button
-          className={`catalog-sort__order-button catalog-sort__order-button--down ${currentSortByIncrease === SortType.UpDown ? 'catalog-sort__order-button--active' : ''}`}
+          className={`catalog-sort__order-button catalog-sort__order-button--down ${sortOrder === SortType.Descend ? 'catalog-sort__order-button--active' : ''}`}
           aria-label="По убыванию"
-          tabIndex={currentSortByIncrease === SortType.DownUp ? ACTIVE : NOT_ACTIVE}
-          onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => handleBtnClick(currentTarget.ariaLabel)}
+          tabIndex={sortOrder === SortType.Descend ? ACTIVE : NOT_ACTIVE}
+          onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
+            handleOrderClick(currentTarget.ariaLabel);
+          }}
         >
         </button>
       </div>
@@ -68,4 +70,4 @@ function Sort(props: SortProps):JSX.Element {
   );
 }
 
-export default React.memo(Sort, (prevProps, nextProps) => prevProps === nextProps);
+export default Sort;

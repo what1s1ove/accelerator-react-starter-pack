@@ -1,18 +1,35 @@
-import axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/dist/query/react';
+import {GuitarsList} from '../types/guitar';
 
 const BACKEND_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me/';
-const REQUEST_TIMEOUT = 5000;
 
-export const createAPI = ():AxiosInstance => {
-  const api = axios.create({
-    baseURL: BACKEND_URL,
-    timeout: REQUEST_TIMEOUT,
-  });
+export const mainAPI = createApi({
+  reducerPath: 'mainAPI',
+  baseQuery: fetchBaseQuery({baseUrl: BACKEND_URL}),
+  endpoints: (build) => ({
+    fetchGuitarsList: build.query<GuitarsList, { limit: number; sort?: string; order?:string }> ( {
+      query: ({
+        limit = 9,
+        sort = 'price',
+        order = 'asc',
+      }) => ({
+        url: '/guitars',
+        params: {
+          _limit: limit,
+          _sort: sort,
+          _order: order,
+        },
+      }),
+    }),
+    fetchAlikeGuitars: build.query<GuitarsList, string> ( {
+      query: (name:string) => ({
+        url: '/guitars',
+        params: {
+          'name_like': name,
+        },
+      }),
+    }),
+  }),
+});
 
-  api.interceptors.response.use(
-    (response: AxiosResponse) => response,
-    (error: AxiosError) => Promise.reject(error),
-  );
-
-  return api;
-};
+export const {useFetchGuitarsListQuery, useFetchAlikeGuitarsQuery} = mainAPI;

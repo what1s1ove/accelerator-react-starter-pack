@@ -1,26 +1,29 @@
 import Filter from './filter/filter';
 import Sort from './sort/sort';
-import {useSelector} from 'react-redux';
-import {getGuitarsList, getSortByIncrease, getSortByType} from '../../store/main-data/selectors';
 import GuitarCardsList from '../guitar-cards-list/guitar-cards-list';
-import {getSortedGuitarsList} from '../../const/const';
+import {useFetchGuitarsListQuery} from '../../service/api';
+import {useState} from 'react';
 
 
 function Catalog ():JSX.Element {
-  const guitarsList = useSelector(getGuitarsList);
-  const currentSortByType = useSelector(getSortByType);
-  const currentSortByIncrease = useSelector(getSortByIncrease);
-  const sortedGuitarsList = getSortedGuitarsList(guitarsList, currentSortByType, currentSortByIncrease);
+  const limit = 9;
+  const [sort, setSort] = useState<string | undefined>('');
+  const [order, setOrder] = useState<string | undefined>('');
+  const {data: guitarsList, isLoading} = useFetchGuitarsListQuery({
+    limit,
+    sort,
+    order,
+  });
 
   return (
-    <div className="catalog">
-      <Filter />
-      <Sort
-        currentSortByType={currentSortByType}
-        currentSortByIncrease={currentSortByIncrease}
-      />
-      <GuitarCardsList guitarsList={sortedGuitarsList}/>
-    </div>
+    <>
+      {isLoading && <h1>Loading...</h1>}
+      <div className="catalog">
+        <Filter />
+        <Sort onSortChange={setSort} onOrderChange={setOrder}/>
+        <GuitarCardsList guitarsList={guitarsList} />
+      </div>
+    </>
   );
 }
 export default Catalog;
