@@ -1,4 +1,4 @@
-import { filtersByStringAndType } from './const';
+import { filtersByStringAndType, PAGES_PER_LINE, PRODUCTS_PER_PAGE } from './const';
 import { GuitarType } from './types/guitar';
 
 const ICON_FULL_STAR = '#icon-full-star';
@@ -32,4 +32,9 @@ const matchStringsWithType = (guitarTypes: string[]) => {
 
 const getStringsByElementId = (elementId: string) => (filtersByStringAndType.find((element) => element.elementId === elementId))?.value;
 
-export {setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType, getStringsByElementId};
+const getFirstPage = (initialPage: number) => (Math.ceil(initialPage / PAGES_PER_LINE) - 1) * PAGES_PER_LINE + 1;
+const getPageCount = (guitarsCount: number) => Math.ceil(guitarsCount / PRODUCTS_PER_PAGE);
+
+const getRestOfGuitars = (guitarsCount: number, pageNumber: number) => guitarsCount - (getFirstPage(pageNumber) + PAGES_PER_LINE - 1) * PRODUCTS_PER_PAGE;
+
+export {setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType, getStringsByElementId, getFirstPage, getPageCount, getRestOfGuitars};

@@ -1,10 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { GuitarType } from '../types/guitar';
-import { loadGuitars } from './action';
+import { loadGuitars, loadGuitarsCount } from './action';
 
 type CatalogType = {
   catalog: GuitarType[];
   isDataLoaded: boolean,
+  guitarsCount: number,
 }
 
 const initialState: CatalogType = {
@@ -21,13 +22,20 @@ const initialState: CatalogType = {
       price: 0,
     },
   ],
-  isDataLoaded: true,
+  isDataLoaded: false,
+  guitarsCount: 0,
 };
 
 const guitarData = createReducer(initialState, (builder) => {
   builder
     .addCase(loadGuitars, (state, action) => {
       state.catalog = action.payload.guitars;
+      state.isDataLoaded = true;
+    })
+    .addCase(loadGuitarsCount, (state, action) => {
+      const {guitars} = action.payload;
+      const guitarsCount = guitars.length;
+      state.guitarsCount = guitarsCount;
     });
 });
 

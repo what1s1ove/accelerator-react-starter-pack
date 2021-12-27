@@ -1,28 +1,42 @@
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useEffect } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { SortOrder, SortType } from '../../const';
-import { fetchSortedGuitarsAction } from '../../store/api-action';
+import { FIRST_PAGE, SortOrder, SortType } from '../../const';
+import { setSortOrder, setSortType } from '../../store/action';
+import { fetchFilteredGuitarsAction } from '../../store/api-action';
+import { RootState } from '../../store/root-reducer';
+import { getSortOrder, getSortType } from '../../store/selectors';
 import { ThunkAppDispatch } from '../../types/action';
 
+const mapStateToProps = (state: RootState) => ({
+  sortType: getSortType(state),
+  sortOrder: getSortOrder(state),
+});
+
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onSortChange(filterParams: string, sortType: string, sortOrder?: string) {
-    if (!sortOrder) {
-      sortOrder = '';
-    }
-    dispatch(fetchSortedGuitarsAction(filterParams, sortType, sortOrder));
+  onSortTypeChange(sortType: SortType) {
+    dispatch(setSortType(sortType));
+  },
+  onSortOrderChange(sortOrder: SortOrder) {
+    dispatch(setSortOrder(sortOrder));
+  },
+  onSortChange(filterParams: string, sortType: string, sortOrder: string, pageNumber: number) {
+    dispatch(fetchFilteredGuitarsAction(filterParams, sortType, sortOrder, pageNumber));
   },
 });
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type PropsFromRedux = ConnectedProps<typeof connector>;
 
 function CatalogSort(props: PropsFromRedux): JSX.Element {
-  const {onSortChange} = props;
-  const [sortType, setSortType] = useState<string>(SortType.Price);
-  const [sortOrder, setSortOrder] = useState<string>();
+  const {onSortTypeChange, onSortOrderChange: onOrderChange, onSortChange, sortType: sort, sortOrder: order} = props;
+
   const filterParams = String(useLocation<string>().search);
+
+  useEffect(() => {
+    onSortChange(filterParams, sort, order, FIRST_PAGE);
+  }, [sort, order, onSortChange, filterParams]);
 
   const handleSortTypeChange = (event: SyntheticEvent): void => {
     const target = event.target as HTMLInputElement;
@@ -44,6 +58,9 @@ function CatalogSort(props: PropsFromRedux): JSX.Element {
     }
 
     target.classList.toggle('catalog-sort__order-button--active');
+    if (sort === SortType.Unknown) {
+      onSortTypeChange(SortType.Price);
+    }
   };
 
   return (
@@ -55,9 +72,8 @@ function CatalogSort(props: PropsFromRedux): JSX.Element {
           aria-label="по цене"
           tabIndex={-1}
           onClick={(event) => {
-            setSortType(SortType.Price);
+            onSortTypeChange(SortType.Price);
             handleSortTypeChange(event);
-            onSortChange(filterParams, SortType.Price, sortOrder);
           }}
         >
           по цене
@@ -65,9 +81,8 @@ function CatalogSort(props: PropsFromRedux): JSX.Element {
         <button className="catalog-sort__type-button"
           aria-label="по популярности"
           onClick={(event) => {
-            setSortType(SortType.Rating);
+            onSortTypeChange(SortType.Rating);
             handleSortTypeChange(event);
-            onSortChange(filterParams, SortType.Rating, sortOrder);
           }}
         >по популярности
         </button>
@@ -78,18 +93,16 @@ function CatalogSort(props: PropsFromRedux): JSX.Element {
           aria-label="По возрастанию"
           tabIndex={-1}
           onClick={(event) => {
-            setSortOrder(SortOrder.Asc);
+            onOrderChange(SortOrder.Asc);
             handleSortOrderChange(event);
-            onSortChange(filterParams, sortType, SortOrder.Asc);
           }}
         />
         <button
           className="catalog-sort__order-button catalog-sort__order-button--down"
           aria-label="По убыванию"
           onClick={(event) => {
-            setSortOrder(SortOrder.Desc);
+            onOrderChange(SortOrder.Desc);
             handleSortOrderChange(event);
-            onSortChange(filterParams, sortType, SortOrder.Desc);
           }}
         />
       </div>
