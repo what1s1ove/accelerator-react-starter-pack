@@ -1,5 +1,24 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { Guitar } from '../../types/shop-types';
+import { State } from '../../types/state';
+import uniqid from 'uniqid';
+
 function Header(): JSX.Element {
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
+
+  const memorizedSearchSuggestions = useMemo(() => guitars.filter((guitar) => {
+    if (searchTerm !== '') { if (guitar.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return guitar;
+    }
+    } return null;
+  }).map((guitar) => (
+    <li className="form-search__select-item" tabIndex={0} key={uniqid()}>{guitar.name}</li>
+  )), [guitars, searchTerm]);
+
   return (
     <header className="header" id="header">
       <div className="container header__wrapper"><a className="header__logo logo" href='/'><img className="logo__img" width="70" height="70" src="./img/svg/logo.svg" alt="Логотип" /></a>
@@ -20,17 +39,14 @@ function Header(): JSX.Element {
                 <use xlinkHref="#icon-search"></use>
               </svg><span className="visually-hidden">Начать поиск</span>
             </button>
-            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" />
+            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onInput={(evt) => setSearchTerm(evt.currentTarget.value)} />
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
-          <ul className="form-search__select-list hidden">
-            <li className="form-search__select-item" tabIndex={0}>Четстер Plus</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX2</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX3</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX4</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX5</li>
-          </ul>
+          { memorizedSearchSuggestions.length !== 0 ?
+            <ul className="form-search__select-list" style={{zIndex: 10}}>
+              {memorizedSearchSuggestions}
+            </ul>
+            : ''}
         </div>
         <a className="header__cart-link" href='/' aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
