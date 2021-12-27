@@ -1,22 +1,26 @@
 import React, {MouseEvent, useState} from 'react';
-import {SortType, TypeOfSort, OrderOfSort} from '../../../const/const';
-import {useDispatch} from 'react-redux';
-import {sortGuitarsListAction} from '../../../store/api-actions';
+import {OrderOfSort, SortType, TypeOfSort} from '../../../const/const';
+
+type SortProps = {
+  onSortChange: (sort: string | undefined) => void;
+  onOrderChange: (order: string | undefined) => void;
+}
 
 const ACTIVE = -1;
 const NOT_ACTIVE = 0;
 
-function Sort():JSX.Element {
+function Sort({onSortChange, onOrderChange}:SortProps):JSX.Element {
   const [sortType, setSortType] = useState('');
   const [sortOrder, setSortOrder] = useState('');
-  const dispatch = useDispatch();
 
-  const handleBtnClick = (sort: string):void => {
-    if (sort === SortType.Price || sort === SortType.Popularity) {
-      setSortType(sort);
-    } else {
-      setSortOrder(sort);
-    }
+  const handleSortClick = (sort: string) => {
+    onSortChange(TypeOfSort.get(sort));
+    setSortType(sort);
+  };
+
+  const handleOrderClick = (order:string) => {
+    onOrderChange(OrderOfSort.get(order));
+    setSortOrder(order);
   };
 
   return (
@@ -28,8 +32,7 @@ function Sort():JSX.Element {
           aria-label="по цене"
           tabIndex={sortType === SortType.Price ? ACTIVE : NOT_ACTIVE}
           onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
-            handleBtnClick(currentTarget.ariaLabel);
-            dispatch(sortGuitarsListAction(TypeOfSort.get(currentTarget.ariaLabel), OrderOfSort.get(sortOrder)));
+            handleSortClick(currentTarget.ariaLabel);
           }}
         >по цене
         </button>
@@ -38,8 +41,7 @@ function Sort():JSX.Element {
           aria-label="по популярности"
           tabIndex={sortType === SortType.Popularity ? ACTIVE : NOT_ACTIVE}
           onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
-            handleBtnClick(currentTarget.ariaLabel);
-            dispatch(sortGuitarsListAction(TypeOfSort.get(currentTarget.ariaLabel), OrderOfSort.get(sortOrder)));
+            handleSortClick(currentTarget.ariaLabel);
           }}
         >по популярности
         </button>
@@ -50,8 +52,7 @@ function Sort():JSX.Element {
           aria-label="По возрастанию"
           tabIndex={sortOrder === SortType.Ascend ? ACTIVE : NOT_ACTIVE}
           onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
-            handleBtnClick(currentTarget.ariaLabel);
-            dispatch(sortGuitarsListAction(TypeOfSort.get(sortType), OrderOfSort.get(currentTarget.ariaLabel)));
+            handleOrderClick(currentTarget.ariaLabel);
           }}
         >
         </button>
@@ -60,8 +61,7 @@ function Sort():JSX.Element {
           aria-label="По убыванию"
           tabIndex={sortOrder === SortType.Descend ? ACTIVE : NOT_ACTIVE}
           onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
-            handleBtnClick(currentTarget.ariaLabel);
-            dispatch(sortGuitarsListAction(TypeOfSort.get(sortType), OrderOfSort.get(currentTarget.ariaLabel)));
+            handleOrderClick(currentTarget.ariaLabel);
           }}
         >
         </button>
