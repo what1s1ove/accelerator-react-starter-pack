@@ -19,8 +19,8 @@ const loadGuitarsCount = createAction(
 
 const setSortType = createAction(
   ActionType.SetSortType,
-  (sort: SortType) => ({
-    payload: sort,
+  (sortType: SortType) => ({
+    payload: sortType,
   }),
 );
 

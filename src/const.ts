@@ -1,5 +1,5 @@
 const PRODUCTS_PER_PAGE = 9;
-const PAGES_STEP = 3;
+const PAGES_PER_LINE = 3;
 const FIRST_PAGE = 1;
 
 enum AppRoute {
@@ -12,8 +12,8 @@ enum AppRoute {
 const APIRoute  = {
   Catalog: '/guitars',
   Comments: (id: number): string => `/guitars/${id}/comments`,
-  Sort: ((filterQuery: string, sortType: string, sortOrder?: string): string => `/guitars${filterQuery ? `${filterQuery}&` : '?'}${sortType}${sortOrder ? sortOrder : ''}`),
-  Filter: ((filterParams: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
+  FilterQuery: ((filterParams: string, sort: string, order: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}${sort}${order}&_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
+  GuitarsCount:  ((filterParams: string): string => `/guitars${filterParams ? `${filterParams}` : '?'}`),
 };
 
 const pageNavigationRoute = {
@@ -23,11 +23,13 @@ const pageNavigationRoute = {
 enum SortType {
   Price = '_sort=price',
   Rating = '_sort=rating',
+  Unknown = '',
 }
 
 enum SortOrder {
   Asc = '&_order=asc',
   Desc = '&_order=desc',
+  Unknown = '',
 }
 
 enum FilterParams {
@@ -68,4 +70,4 @@ const filtersByStringAndType = [
   },
 ];
 
-export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_STEP, FIRST_PAGE};
+export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_PER_LINE, FIRST_PAGE};

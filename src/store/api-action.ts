@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { APIRoute } from '../const';
 import { ThunkActionResult } from '../types/action';
 import { GuitarType } from '../types/guitar';
-import { loadGuitars } from './action';
+import { loadGuitars, loadGuitarsCount } from './action';
 
 const fetchGuitarsAction = ():ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -14,16 +14,16 @@ const fetchGuitarsAction = ():ThunkActionResult =>
     }
   };
 
-const fetchSortedGuitarsAction = (filterParams: string, sortType: string, sortOrder: string): ThunkActionResult =>
+const fetchFilteredGuitarsAction = (filterParams: string, sortType: string, sortOrder: string, pageNumber: number): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get<GuitarType[]>(APIRoute.Sort(filterParams, sortType, sortOrder));
+    const {data} = await api.get<GuitarType[]>(APIRoute.FilterQuery(filterParams, sortType, sortOrder, pageNumber));
     dispatch(loadGuitars(data));
   };
 
-const fetchFilteredGuitarsAction = (filterParams: string, pageNumber: number): ThunkActionResult =>
+const fetchGuitarsCountAction = (filterParams: string): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    const {data} = await api.get<GuitarType[]>(APIRoute.Filter(filterParams, pageNumber));
-    dispatch(loadGuitars(data));
+    const {data} = await api.get<GuitarType[]>(APIRoute.GuitarsCount(filterParams));
+    dispatch(loadGuitarsCount(data));
   };
 
-export {fetchGuitarsAction, fetchSortedGuitarsAction, fetchFilteredGuitarsAction};
+export {fetchGuitarsAction, fetchFilteredGuitarsAction, fetchGuitarsCountAction};
