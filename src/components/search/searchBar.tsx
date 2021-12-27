@@ -1,20 +1,14 @@
-import {useSelector} from 'react-redux';
-import {getGuitarsList} from '../../store/main-data/selectors';
-import {ChangeEvent, useEffect, useState} from 'react';
+import {ChangeEvent, useState} from 'react';
+import useDebounce from '../../hooks/useDebounce';
+import SearchResult from '../catalog/sort/searchResult';
 
 function SearchBar():JSX.Element {
-  const guitarsList = useSelector(getGuitarsList);
-  const guitarsNamesList = guitarsList.map((guitar) => guitar.name);
-
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResult, setSearchResult] = useState(['']);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const handleInputChange = ({target}: ChangeEvent<HTMLInputElement>) => setSearchTerm(target.value);
-  useEffect(() => {
-    const results = guitarsNamesList.filter((guitarName) =>
-      guitarName.toLowerCase().includes(searchTerm.toLowerCase()));
-    setSearchResult(results);
-  }, [searchTerm]);
+  const handleInputChange = ({target}: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(target.value);
+  };
 
   return (
     <div className="form-search">
@@ -37,11 +31,7 @@ function SearchBar():JSX.Element {
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
-      <ul style={{zIndex: 1}} className={`form-search__select-list ${!searchTerm ? 'hidden' : ''}`}>
-        {searchResult.map((resultItem) => (
-          <li className="form-search__select-item" tabIndex={0} key={resultItem}>{resultItem}</li>
-        ))}
-      </ul>
+      <SearchResult searchTerm={debouncedSearchTerm} />
     </div>
   );
 }
