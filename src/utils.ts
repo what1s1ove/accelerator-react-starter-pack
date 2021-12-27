@@ -1,4 +1,4 @@
-import { filtersByStringAndType } from './const';
+import { filtersByStringAndType, PAGES_STEP } from './const';
 import { GuitarType } from './types/guitar';
 
 const ICON_FULL_STAR = '#icon-full-star';
@@ -32,4 +32,6 @@ const matchStringsWithType = (guitarTypes: string[]) => {
 
 const getStringsByElementId = (elementId: string) => (filtersByStringAndType.find((element) => element.elementId === elementId))?.value;
 
-export {setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType, getStringsByElementId};
+const getFirstPage = (initialPage: number) => (Math.ceil(initialPage / PAGES_STEP) - 1) * PAGES_STEP + 1;
+
+export {setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType, getStringsByElementId, getFirstPage};

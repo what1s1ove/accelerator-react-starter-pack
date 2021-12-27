@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { connect, ConnectedProps } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { AppRoute, FilterParams, stringValues } from '../../const';
+import { FilterParams, FIRST_PAGE, pageNavigationRoute, stringValues } from '../../const';
 import { fetchFilteredGuitarsAction } from '../../store/api-action';
 import { RootState } from '../../store/root-reducer';
 import { getGuitars } from '../../store/selectors';
@@ -13,8 +13,8 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onChangeFilters(searchParams: string) {
-    dispatch(fetchFilteredGuitarsAction(searchParams));
+  onChangeFilters(filterParams: string, pageNumber: number) {
+    dispatch(fetchFilteredGuitarsAction(filterParams, pageNumber));
   },
 });
 
@@ -36,7 +36,7 @@ function CatalogFilter(props: PropsFromRedux): JSX.Element {
   const maxPrice = getMaxPrice(guitars);
 
   useEffect(() => {
-    onChangeFilters(filterParams);
+    onChangeFilters(filterParams, FIRST_PAGE);
 
     stringValues.forEach((value) => {
       document.getElementById(`${getElementIdByStrings(value)}`)?.setAttribute('disabled', 'true');
@@ -65,9 +65,9 @@ function CatalogFilter(props: PropsFromRedux): JSX.Element {
 
     currentStringCount.map((stringCount) => filtersInput += `${FilterParams.FilterStringCount}${getStringsByElementId(stringCount)}&`);
 
-    history.push(String(AppRoute.Filter) + filtersInput);
+    history.push(String(pageNavigationRoute.PageNaviation(FIRST_PAGE, filtersInput)));
 
-    onChangeFilters(filtersInput);
+    onChangeFilters(filtersInput, FIRST_PAGE);
   };
 
   const handleTypeInput = (event: SyntheticEvent) => {

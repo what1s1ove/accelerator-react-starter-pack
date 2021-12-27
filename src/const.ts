@@ -1,15 +1,23 @@
+const PRODUCTS_PER_PAGE = 9;
+const PAGES_STEP = 3;
+const FIRST_PAGE = 1;
+
 enum AppRoute {
   Catalog = '/',
   Guitar = '/guitars/:id',
   PageNotFound = '*',
-  Filter = '/guitars',
+  Pagination = '/catalog/page_:pageNumber',
 }
 
 const APIRoute  = {
   Catalog: '/guitars',
   Comments: (id: number): string => `/guitars/${id}/comments`,
   Sort: ((filterQuery: string, sortType: string, sortOrder?: string): string => `/guitars${filterQuery ? `${filterQuery}&` : '?'}${sortType}${sortOrder ? sortOrder : ''}`),
-  Filter: ((query: string): string => `/guitars${query}`),
+  Filter: ((filterParams: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
+};
+
+const pageNavigationRoute = {
+  PageNaviation: ((pageNumber: number, filterParams: string): string => `/catalog/page_${pageNumber}${filterParams ? `${filterParams}` : ''}`),
 };
 
 enum SortType {
@@ -60,4 +68,4 @@ const filtersByStringAndType = [
   },
 ];
 
-export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType};
+export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_STEP, FIRST_PAGE};
