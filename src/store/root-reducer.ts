@@ -1,5 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import { guitarData } from './guitar-data';
+import { guitarData } from './guitar-data/guitar-data';
 import { searchParameters } from './search-data';
 
 enum NameSpace {

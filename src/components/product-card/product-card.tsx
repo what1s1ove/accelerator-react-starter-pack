@@ -4,7 +4,7 @@ import { APIRoute, AppRoute } from '../../const';
 import { createAPI } from '../../services/api';
 import { CommentType } from '../../types/comment';
 import { GuitarType } from '../../types/guitar';
-import { setRatingStars } from '../../utils';
+import { setRatingStars } from '../../utils/utils';
 
 type ProductCardProps = {
   productCard: GuitarType,

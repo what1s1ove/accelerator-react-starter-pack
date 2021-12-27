@@ -6,7 +6,7 @@ import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store
 import { RootState } from '../../store/root-reducer';
 import { getGuitarsCount, getSortOrder, getSortType } from '../../store/selectors';
 import { ThunkAppDispatch } from '../../types/action';
-import { getFirstPage, getPageCount, getRestOfGuitars } from '../../utils';
+import { getFirstPage, getPageCount, getRestOfGuitars } from '../../utils/utils';
 
 const mapStateToProps = (state: RootState) => ({
   guitarsCount: getGuitarsCount(state),

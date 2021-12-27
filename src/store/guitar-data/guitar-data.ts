@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { GuitarType } from '../types/guitar';
-import { loadGuitars, loadGuitarsCount } from './action';
+import { GuitarType } from '../../types/guitar';
+import { loadGuitars, loadGuitarsCount } from '../action';
 
 type CatalogType = {
   catalog: GuitarType[];

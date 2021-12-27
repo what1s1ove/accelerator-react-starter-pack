@@ -6,7 +6,7 @@ import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store
 import { RootState } from '../../store/root-reducer';
 import { getGuitars, getSortType, getSortOrder } from '../../store/selectors';
 import { ThunkAppDispatch } from '../../types/action';
-import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType } from '../../utils';
+import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType } from '../../utils/utils';
 
 const mapStateToProps = (state: RootState) => ({
   guitars: getGuitars(state),

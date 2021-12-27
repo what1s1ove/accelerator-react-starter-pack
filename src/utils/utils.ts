@@ -1,5 +1,5 @@
-import { filtersByStringAndType, PAGES_PER_LINE, PRODUCTS_PER_PAGE } from './const';
-import { GuitarType } from './types/guitar';
+import { filtersByStringAndType, PAGES_PER_LINE, PRODUCTS_PER_PAGE } from '../const';
+import { GuitarType } from '../types/guitar';
 
 const ICON_FULL_STAR = '#icon-full-star';
 const ICON_STAR = '#icon-star';
