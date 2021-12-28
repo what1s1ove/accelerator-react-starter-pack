@@ -42,4 +42,11 @@ describe('Application Routing', () => {
     expect(screen.getByText(/Каталог гитар/i)).toBeInTheDocument();
     expect(screen.getByText(/Главная/i)).toBeInTheDocument();
   });
+
+  it('should render "PageNotFound" when user navigates to non-existent route', () => {
+    history.push('/non-existent-route');
+    render(fakeApp);
+
+    expect(screen.getByText('Page not found')).toBeInTheDocument();
+  });
 });
