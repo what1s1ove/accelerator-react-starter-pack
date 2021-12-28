@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { guitarData } from './guitar-data/guitar-data';
-import { searchParameters } from './search-data';
+import { filtersData } from './filters-data/filters-data';
 
 enum NameSpace {
   Data = 'DATA',
@@ -9,7 +9,7 @@ enum NameSpace {
 
 const rootReducer = combineReducers({
   [NameSpace.Data]: guitarData,
-  [NameSpace.SearchParameters]: searchParameters,
+  [NameSpace.SearchParameters]: filtersData,
 });
 
 export {NameSpace, rootReducer};
