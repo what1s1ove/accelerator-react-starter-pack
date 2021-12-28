@@ -105,6 +105,7 @@ function CatalogFilter(): JSX.Element {
               min="0"
               ref={priceMinRef}
               onInput={handleFiltersInput}
+              data-testid="minPrice"
             >
             </input>
           </div>
@@ -118,6 +119,7 @@ function CatalogFilter(): JSX.Element {
               min="0"
               ref={priceMaxRef}
               onInput={handleFiltersInput}
+              data-testid="maxPrice"
             >
             </input>
           </div>

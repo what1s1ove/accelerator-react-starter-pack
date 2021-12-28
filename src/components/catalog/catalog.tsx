@@ -9,7 +9,7 @@ function Catalog(): JSX.Element {
   const catalogCards = useSelector(getGuitars);
 
   return (
-    <div className="catalog">
+    <div className="catalog" data-testid='catalog'>
       <CatalogFilter />
       <CatalogSort />
       <ProductCards productCards={catalogCards} />
