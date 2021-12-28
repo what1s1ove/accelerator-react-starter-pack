@@ -3,12 +3,15 @@ import { useSelector } from 'react-redux';
 import { Guitar } from '../../types/shop-types';
 import { State } from '../../types/state';
 import uniqid from 'uniqid';
+import { useHistory } from 'react-router-dom';
+
 
 function Header(): JSX.Element {
 
   const [searchTerm, setSearchTerm] = useState('');
 
   const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
+  const history = useHistory();
 
   const memorizedSearchSuggestions = useMemo(() => guitars.filter((guitar) => {
     if (searchTerm !== '') { if (guitar.name.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -16,12 +19,12 @@ function Header(): JSX.Element {
     }
     } return null;
   }).map((guitar) => (
-    <li className="form-search__select-item" tabIndex={0} key={uniqid()}>{guitar.name}</li>
-  )), [guitars, searchTerm]);
+    <li className="form-search__select-item" tabIndex={0} onClick={() => history.push(`/guitars/${guitar.id}`)} key={uniqid()}>{guitar.name}</li>
+  )), [guitars, history, searchTerm]);
 
   return (
     <header className="header" id="header">
-      <div className="container header__wrapper"><a className="header__logo logo" href='/'><img className="logo__img" width="70" height="70" src="./img/svg/logo.svg" alt="Логотип" /></a>
+      <div className="container header__wrapper"><a className="header__logo logo" href='/'><img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип" /></a>
         <nav className="main-nav">
           <ul className="main-nav__list">
             <li><a className="link main-nav__link link--current" href='/'>Каталог</a>
