@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { SortOrder, SortType } from '../const';
+import { AppRoute, SortOrder, SortType } from '../const';
 import { ActionType } from '../types/action';
 import { GuitarType } from '../types/guitar';
 
@@ -31,4 +31,11 @@ const setSortOrder = createAction(
   }),
 );
 
-export {loadGuitars, loadGuitarsCount, setSortType, setSortOrder};
+const redirectToRoute = createAction(
+  ActionType.RedirectToRoute,
+  (url: AppRoute) => ({
+    payload: url,
+  }),
+);
+
+export {loadGuitars, loadGuitarsCount, setSortType, setSortOrder, redirectToRoute};
