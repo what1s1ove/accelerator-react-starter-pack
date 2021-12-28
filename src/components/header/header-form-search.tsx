@@ -25,7 +25,7 @@ function HeaderFormSearch(): JSX.Element {
             <use xlinkHref="#icon-search"></use>
           </svg><span className="visually-hidden">Начать поиск</span>
         </button>
-        <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onChange={handleSearchChange}/>
+        <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" data-testid="search" onChange={handleSearchChange}/>
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>
       {isSearchResultShown ?
