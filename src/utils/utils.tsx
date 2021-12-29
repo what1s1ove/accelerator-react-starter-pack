@@ -1,4 +1,5 @@
 import { GuitarName } from '../components/consts/consts';
+import { Guitar } from '../types/shop-types';
 
 const translateNameOfGuitar = (type: string | undefined) => {
   switch (type) {
@@ -17,6 +18,30 @@ const translateNameOfGuitar = (type: string | undefined) => {
   }
 };
 
+const sortByPrice = (guitars: Guitar[], isSortedFromHighToLow: boolean, isSortedFromLowToHigh: boolean) => {
+  if (isSortedFromHighToLow) {
+    return guitars.sort((a: Guitar, b: Guitar) => b.price - a.price);
+  }
+  if (isSortedFromLowToHigh) {
+    return guitars.sort((a: Guitar, b: Guitar) => a.price - b.price);
+  }
+  return guitars;
+};
+
+
+const sortByRating = (guitars: Guitar[], isSortedFromHighToLow: boolean, isSortedFromLowToHigh: boolean) => {
+  if (isSortedFromHighToLow) {
+    return guitars.sort((a: Guitar, b: Guitar) => b.rating - a.rating);
+  }
+
+  if (isSortedFromLowToHigh) {
+    return guitars.sort((a: Guitar, b: Guitar) => a.rating - b.rating);
+  }
+  return guitars;
+};
+
 export {
-  translateNameOfGuitar
+  translateNameOfGuitar,
+  sortByPrice,
+  sortByRating
 };

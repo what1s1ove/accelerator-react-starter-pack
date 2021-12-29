@@ -1,7 +1,43 @@
+
+import { useSelector } from 'react-redux';
+import { Guitar } from '../../types/shop-types';
+import { State } from '../../types/state';
 import Footer from '../footer/footer';
 import Header from '../header/header';
+import ProductCard from '../product/product-card';
+import uniqid from 'uniqid';
+import { useEffect, useState } from 'react';
+import { sortByPrice, sortByRating } from '../../utils/utils';
 
 function Main(): JSX.Element {
+
+  const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
+
+  const [isAnyOfFiltrationOn, setAnyOfFiltration] = useState(false);
+  const [isSortedByPrice, setSortedByPrice] = useState(false);
+  const [isSortedByRaiting, setSortedByRaiting] = useState(false);
+  const [isSortedFromHighToLow, setSortedFromHighToLow] = useState(false);
+  const [isSortedFromLowToHigh, setSortedFromLowToHigh] = useState(false);
+  const [sortedGuitars, setGuitars] = useState(guitars);
+
+
+  useEffect(() => {
+    if (isAnyOfFiltrationOn) {
+      if (isSortedByPrice) {
+        return setGuitars(sortByPrice([...guitars], isSortedFromHighToLow, isSortedFromLowToHigh));
+      }
+      if (isSortedByRaiting) {
+        return setGuitars(sortByRating([...guitars], isSortedFromHighToLow, isSortedFromLowToHigh));
+      }
+      if (isSortedFromHighToLow) {
+        return setGuitars(sortByPrice([...guitars], isSortedFromHighToLow, isSortedFromLowToHigh));
+      }
+      if (isSortedFromLowToHigh) {
+        return setGuitars(sortByPrice([...guitars], isSortedFromHighToLow, isSortedFromLowToHigh));
+      }
+    }
+  }, [guitars, isAnyOfFiltrationOn, isSortedByPrice, isSortedByRaiting, isSortedFromHighToLow, isSortedFromLowToHigh]);
+
   return (
     <>
       <Header />
@@ -68,249 +104,46 @@ function Main(): JSX.Element {
             <div className="catalog-sort">
               <h2 className="catalog-sort__title">Сортировать:</h2>
               <div className="catalog-sort__type">
-                <button className="catalog-sort__type-button catalog-sort__type-button--active" aria-label="по цене" tabIndex={-1}>по цене</button>
-                <button className="catalog-sort__type-button" aria-label="по популярности">по популярности</button>
+                <button
+                  className={`catalog-sort__type-button  ${isSortedByPrice ? 'catalog-sort__type-button--active' : ''} `}
+                  onClick={() => {
+                    setSortedByRaiting(false); setSortedByPrice(true); setAnyOfFiltration(true);
+                  }}
+                  aria-label="по цене"
+                  tabIndex={-1}
+                >по цене
+                </button>
+                <button
+                  className={`catalog-sort__type-button  ${isSortedByRaiting ? 'catalog-sort__type-button--active' : ''} `}
+                  aria-label="по популярности"
+                  onClick={() => {
+                    setSortedByPrice(false); setSortedByRaiting(true); setAnyOfFiltration(true);
+                  }}
+                >по популярности
+                </button>
               </div>
               <div className="catalog-sort__order">
-                <button className="catalog-sort__order-button catalog-sort__order-button--up catalog-sort__order-button--active" aria-label="По возрастанию" tabIndex={-1}></button>
-                <button className="catalog-sort__order-button catalog-sort__order-button--down" aria-label="По убыванию"></button>
+                <button
+                  className={`catalog-sort__order-button catalog-sort__order-button--up ${isSortedFromHighToLow ? 'catalog-sort__order-button--active' : ''}`}
+                  onClick={() => {
+                    setSortedFromLowToHigh(false); setSortedFromHighToLow(true); setAnyOfFiltration(true);
+                  }}
+                  aria-label="По возрастанию" tabIndex={-1}
+                >
+                </button>
+                <button
+                  className={`catalog-sort__order-button catalog-sort__order-button--down ${isSortedFromLowToHigh ? 'catalog-sort__order-button--active' : ''}`}
+                  aria-label="По убыванию"
+                  tabIndex={-1}
+                  onClick={() => {
+                    setSortedFromHighToLow(false); setSortedFromLowToHigh(true); setAnyOfFiltration(true);
+                  }}
+                >
+                </button>
               </div>
             </div>
             <div className="cards catalog__cards">
-              <div className="product-card"><img src="img/guitar-2.jpg" width="75" height="190" alt="СURT Z30 Plus Acoustics" />
-                <div className="product-card__info">
-                  <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
-                    </svg><span className="rate__count">9</span><span className="rate__message"></span>
-                  </div>
-                  <p className="product-card__title">СURT Z30 Plus Acoustics</p>
-                  <p className="product-card__price"><span className="visually-hidden">Цена:</span>129 500 ₽
-                  </p>
-                </div>
-                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
-                </div>
-              </div>
-              <div className="product-card"><img src="img/guitar-1.jpg" width="75" height="190" alt="Честер Bass" />
-                <div className="product-card__info">
-                  <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
-                    </svg><span className="rate__count">9</span><span className="rate__message"></span>
-                  </div>
-                  <p className="product-card__title">Честер Bass</p>
-                  <p className="product-card__price"><span className="visually-hidden">Цена:</span>51 100 ₽
-                  </p>
-                </div>
-                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red-border button--mini button--in-cart" href='/'>В Корзине</a>
-                </div>
-              </div>
-              <div className="product-card"><img src="img/guitar-2.jpg" width="75" height="190" alt="СURT Z30 Plus" />
-                <div className="product-card__info">
-                  <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
-                    </svg><span className="rate__count">76</span><span className="rate__message"></span>
-                  </div>
-                  <p className="product-card__title">СURT Z30 Plus</p>
-                  <p className="product-card__price"><span className="visually-hidden">Цена:</span>9 700 ₽
-                  </p>
-                </div>
-                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
-                </div>
-              </div>
-              <div className="product-card"><img src="img/guitar-3.jpg" width="75" height="190" alt="СURT Z30 Plus Acoustics" />
-                <div className="product-card__info">
-                  <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
-                    </svg><span className="rate__count">9</span><span className="rate__message"></span>
-                  </div>
-                  <p className="product-card__title">СURT Z30 Plus Acoustics</p>
-                  <p className="product-card__price"><span className="visually-hidden">Цена:</span>129 500 ₽
-                  </p>
-                </div>
-                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
-                </div>
-              </div>
-              <div className="product-card"><img src="img/guitar-4.jpg" width="75" height="190" alt="СURT Z30 Plus" />
-                <div className="product-card__info">
-                  <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
-                    </svg><span className="rate__count">76</span><span className="rate__message"></span>
-                  </div>
-                  <p className="product-card__title">СURT Z30 Plus</p>
-                  <p className="product-card__price"><span className="visually-hidden">Цена:</span>9 700 ₽
-                  </p>
-                </div>
-                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
-                </div>
-              </div>
-              <div className="product-card"><img src="img/guitar-5.jpg" width="75" height="190" alt="Честер Bass" />
-                <div className="product-card__info">
-                  <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
-                    </svg><span className="rate__count">9</span><span className="rate__message"></span>
-                  </div>
-                  <p className="product-card__title">Честер Bass</p>
-                  <p className="product-card__price"><span className="visually-hidden">Цена:</span>51 100 ₽
-                  </p>
-                </div>
-                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red-border button--mini button--in-cart" href='/'>В Корзине</a>
-                </div>
-              </div>
-              <div className="product-card"><img src="img/guitar-6.jpg" width="75" height="190" alt="СURT Z30 Plus Acoustics" />
-                <div className="product-card__info">
-                  <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
-                    </svg><span className="rate__count">9</span><span className="rate__message"></span>
-                  </div>
-                  <p className="product-card__title">СURT Z30 Plus Acoustics</p>
-                  <p className="product-card__price"><span className="visually-hidden">Цена:</span>129 500 ₽
-                  </p>
-                </div>
-                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
-                </div>
-              </div>
-              <div className="product-card"><img src="img/guitar-7.jpg" width="75" height="190" alt="СURT Z30 Plus Acoustics" />
-                <div className="product-card__info">
-                  <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
-                    </svg><span className="rate__count">9</span><span className="rate__message"></span>
-                  </div>
-                  <p className="product-card__title">СURT Z30 Plus Acoustics</p>
-                  <p className="product-card__price"><span className="visually-hidden">Цена:</span>129 500 ₽
-                  </p>
-                </div>
-                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
-                </div>
-              </div>
-              <div className="product-card"><img src="img/guitar-8.jpg" width="75" height="190" alt="СURT Z30 Plus" />
-                <div className="product-card__info">
-                  <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-full-star"></use>
-                    </svg>
-                    <svg width="12" height="11" aria-hidden="true">
-                      <use xlinkHref="#icon-star"></use>
-                    </svg><span className="rate__count">76</span><span className="rate__message"></span>
-                  </div>
-                  <p className="product-card__title">СURT Z30 Plus</p>
-                  <p className="product-card__price"><span className="visually-hidden">Цена:</span>9 700 ₽
-                  </p>
-                </div>
-                <div className="product-card__buttons"><a className="button button--mini" href='/'>Подробнее</a><a className="button button--red button--mini button--add-to-cart" href='/'>Купить</a>
-                </div>
-              </div>
+              {sortedGuitars.length !== 0 ? sortedGuitars.map((guitar) => <ProductCard key={uniqid()} guitar={guitar} />) : guitars.map((guitar) => <ProductCard key={uniqid()} guitar={guitar} />)}
             </div>
             <div className="pagination page-content__pagination">
               <ul className="pagination__list">

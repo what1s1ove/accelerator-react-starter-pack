@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -11,7 +10,7 @@ import Header from '../header/header';
 
 function Product(): JSX.Element {
 
-  const {id} = useParams<{id: string}>();
+  const { id } = useParams<{ id: string }>();
   const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
   const product = guitars.find((guitar) => guitar.id === parseFloat(id));
   const [isDescription, setIsDescription] = useState(true);
@@ -53,7 +52,7 @@ function Product(): JSX.Element {
               </div>
               <div className="tabs"><a className={`button button--medium tabs__button ${isDescription ? '' : 'button--black-border'}`} onClick={() => setIsDescription(true)} href="#characteristics">Характеристики</a><a className={`button button--medium tabs__button ${isDescription ? 'button--black-border' : ''}`} onClick={() => setIsDescription(false)} href="#description">Описание</a>
                 <div className="tabs__content" id="characteristics">
-                  { isDescription ?
+                  {isDescription ?
                     <table className="tabs__table">
                       <tbody>
                         <tr className="tabs__table-row">
@@ -77,7 +76,7 @@ function Product(): JSX.Element {
             </div>
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">{product?.price} ₽</p><a className="button button--red button--big product-container__button" href='/'>Добавить в корзину</a>
+              <p className="product-container__price-info product-container__price-info--value">{product?.price.toLocaleString()} ₽</p><a className="button button--red button--big product-container__button" href='/'>Добавить в корзину</a>
             </div>
           </div>
           <section className="reviews">
