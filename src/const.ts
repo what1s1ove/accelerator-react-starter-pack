@@ -1,5 +1,5 @@
 const PRODUCTS_PER_PAGE = 9;
-const PAGES_PER_LINE = 3;
+const PAGES_COUNT = 3;
 const FIRST_PAGE = 1;
 
 enum AppRoute {
@@ -70,4 +70,4 @@ const filtersByStringAndType = [
   },
 ];
 
-export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_PER_LINE, FIRST_PAGE};
+export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE};

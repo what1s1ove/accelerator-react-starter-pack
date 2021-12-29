@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
-import { FIRST_PAGE, PAGES_PER_LINE, pageNavigationRoute } from '../../const';
+import { FIRST_PAGE, PAGES_COUNT, pageNavigationRoute } from '../../const';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-action';
 import { getGuitarsCount, getSortOrder, getSortType } from '../../store/selectors';
 import { getFirstPage, getPageCount, getRestOfGuitars } from '../../utils/utils';
@@ -23,7 +23,7 @@ function CatalogPagination(): JSX.Element {
 
     const firstPageInList = getFirstPage(initialPage);
 
-    for (let i = firstPageInList; i < firstPageInList + PAGES_PER_LINE && i <= getPageCount(guitarsCount); i++) {
+    for (let i = firstPageInList; i < firstPageInList + PAGES_COUNT && i <= getPageCount(guitarsCount); i++) {
       pages.push(i);
     }
 
@@ -38,9 +38,9 @@ function CatalogPagination(): JSX.Element {
   return (
     <div className="pagination page-content__pagination">
       <ul className="pagination__list">
-        {currentPage > PAGES_PER_LINE ?
+        {currentPage > PAGES_COUNT ?
           <li className="pagination__page pagination__page--prev" id="prev">
-            <Link to={pageNavigationRoute.PageNaviation((getFirstPage(currentPage) - PAGES_PER_LINE), filterParams)} className="link pagination__page-link">Назад</Link>
+            <Link to={pageNavigationRoute.PageNaviation((getFirstPage(currentPage) - PAGES_COUNT), filterParams)} className="link pagination__page-link">Назад</Link>
           </li>
           : ''}
         {getPages(currentPage).map((page) => (
@@ -50,7 +50,7 @@ function CatalogPagination(): JSX.Element {
         ))}
         {getRestOfGuitars(guitarsCount, currentPage) > 0 ?
           <li className="pagination__page pagination__page--next" id="next">
-            <Link to={pageNavigationRoute.PageNaviation((getFirstPage(currentPage) + PAGES_PER_LINE), filterParams)} className="link pagination__page-link">Далее</Link>
+            <Link to={pageNavigationRoute.PageNaviation((getFirstPage(currentPage) + PAGES_COUNT), filterParams)} className="link pagination__page-link">Далее</Link>
           </li>
           : ''}
       </ul>

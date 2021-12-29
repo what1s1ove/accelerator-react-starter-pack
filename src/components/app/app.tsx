@@ -12,7 +12,7 @@ function App(): JSX.Element {
       <Route path={AppRoute.Pagination}>
         <CatalogWrapper />
       </Route>
-      <Route exact path={AppRoute.PageNotFound}>
+      <Route path={AppRoute.PageNotFound}>
         <PageNotFound/>
       </Route>
     </Switch>
