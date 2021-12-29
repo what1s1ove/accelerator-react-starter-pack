@@ -1,32 +1,16 @@
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
-import { connect, ConnectedProps } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FilterParams, FIRST_PAGE, pageNavigationRoute, stringValues } from '../../const';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-action';
-import { RootState } from '../../store/root-reducer';
 import { getGuitars, getSortType, getSortOrder } from '../../store/selectors';
-import { ThunkAppDispatch } from '../../types/action';
-import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType } from '../../utils';
+import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType } from '../../utils/utils';
 
-const mapStateToProps = (state: RootState) => ({
-  guitars: getGuitars(state),
-  sort: getSortType(state),
-  order: getSortOrder(state),
-});
-
-const mapDispatchToProps = (dispatch: ThunkAppDispatch) => ({
-  onChangeFilters(filterParams: string, sort: string, order: string, pageNumber: number) {
-    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, pageNumber));
-    dispatch(fetchGuitarsCountAction(filterParams));
-  },
-});
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type PropsFromRedux = ConnectedProps<typeof connector>;
-
-function CatalogFilter(props: PropsFromRedux): JSX.Element {
-  const {onChangeFilters, guitars, sort, order} = props;
+function CatalogFilter(): JSX.Element {
+  const dispatch = useDispatch();
+  const guitars = useSelector(getGuitars);
+  const sort = useSelector(getSortType);
+  const order = useSelector(getSortOrder);
 
   const [currentTypes, setCurrentTypes] = useState<string[]>([]);
   const [currentStringCount, setcurrentStringCount] = useState<string[]>([]);
@@ -39,7 +23,8 @@ function CatalogFilter(props: PropsFromRedux): JSX.Element {
   const maxPrice = getMaxPrice(guitars);
 
   useEffect(() => {
-    onChangeFilters(filterParams, sort, order, FIRST_PAGE);
+    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
+    dispatch(fetchGuitarsCountAction(filterParams));
 
     stringValues.forEach((value) => {
       document.getElementById(`${getElementIdByStrings(value)}`)?.setAttribute('disabled', 'true');
@@ -48,7 +33,7 @@ function CatalogFilter(props: PropsFromRedux): JSX.Element {
     availableStringCount.forEach((value) => {
       document.getElementById(`${getElementIdByStrings(value)}`)?.removeAttribute('disabled');
     });
-  }, [availableStringCount, filterParams, onChangeFilters, order, sort]);
+  }, [availableStringCount, dispatch, filterParams, order, sort]);
 
   const priceMinRef = useRef<HTMLInputElement | null>(null);
   const priceMaxRef = useRef<HTMLInputElement | null>(null);
@@ -70,7 +55,8 @@ function CatalogFilter(props: PropsFromRedux): JSX.Element {
 
     history.push(String(pageNavigationRoute.PageNaviation(FIRST_PAGE, filtersInput)));
 
-    onChangeFilters(filtersInput, sort, order, FIRST_PAGE);
+    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
+    dispatch(fetchGuitarsCountAction(filterParams));
   };
 
   const handleTypeInput = (event: SyntheticEvent) => {
@@ -119,6 +105,7 @@ function CatalogFilter(props: PropsFromRedux): JSX.Element {
               min="0"
               ref={priceMinRef}
               onInput={handleFiltersInput}
+              data-testid="minPrice"
             >
             </input>
           </div>
@@ -132,6 +119,7 @@ function CatalogFilter(props: PropsFromRedux): JSX.Element {
               min="0"
               ref={priceMaxRef}
               onInput={handleFiltersInput}
+              data-testid="maxPrice"
             >
             </input>
           </div>
@@ -246,5 +234,4 @@ function CatalogFilter(props: PropsFromRedux): JSX.Element {
   );
 }
 
-export {CatalogFilter};
-export default connector(CatalogFilter);
+export default CatalogFilter;

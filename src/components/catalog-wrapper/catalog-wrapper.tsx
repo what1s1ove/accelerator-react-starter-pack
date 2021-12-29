@@ -7,7 +7,7 @@ function CatalogWrapper(): JSX.Element {
   return (
     <>
       <VisuallyHiddenComponent />
-      <div className="wrapper">
+      <div className="wrapper" data-testid="wrapper">
         <Header />
         <CatalogPageContainer />
         <Footer />
