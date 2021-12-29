@@ -6,7 +6,7 @@ import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store
 import { getGuitars, getSortType, getSortOrder } from '../../store/selectors';
 import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType } from '../../utils/utils';
 
-function CatalogFilter(): JSX.Element {
+function CatalogFilters(): JSX.Element {
   const dispatch = useDispatch();
   const guitars = useSelector(getGuitars);
   const sort = useSelector(getSortType);
@@ -234,4 +234,4 @@ function CatalogFilter(): JSX.Element {
   );
 }
 
-export default CatalogFilter;
+export default CatalogFilters;
