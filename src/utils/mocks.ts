@@ -1,7 +1,7 @@
 import { datatype, image, lorem, name, vehicle } from 'faker';
 import { GuitarType } from '../types/guitar';
 
-const GUITARS_COUNT = 17;
+const GUITARS_COUNT = 37;
 
 export const makeFakeGuitar = (): GuitarType => ({
   id: datatype.number(),

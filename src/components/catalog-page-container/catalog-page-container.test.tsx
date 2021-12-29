@@ -1,11 +1,11 @@
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
-import { Router } from 'react-router-dom';
-import { makeFakeGuitars } from '../../utils/mocks';
-import Header from './header';
-import { SortOrder, SortType } from '../../const';
 import { Provider } from 'react-redux';
+import { Router } from 'react-router-dom';
+import { SortOrder, SortType } from '../../const';
+import { makeFakeGuitars } from '../../utils/mocks';
+import CatalogPageContainer from './catalog-page-container';
 
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
@@ -18,19 +18,16 @@ const store = mockStore({
 
 store.dispatch = jest.fn();
 
-describe('Component: Header', () => {
+describe('Component: CatalogPageContainer', () => {
   it('should render correctly', () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <Header />
+          <CatalogPageContainer />
         </Router>
       </Provider>);
 
-    expect(screen.getByAltText(/Логотип/i)).toBeInTheDocument();
-    expect(screen.getByText(/Каталог/i)).toBeInTheDocument();
-    expect(screen.getByText(/Где купить?/i)).toBeInTheDocument();
-    expect(screen.getByText(/О компании/i)).toBeInTheDocument();
-    expect(screen.getByText(/Перейти в корзину/i)).toBeInTheDocument();
+    expect(screen.getByText(/Каталог гитар/i)).toBeInTheDocument();
+    expect(screen.getByText(/Главная/i)).toBeInTheDocument();
   });
 });
