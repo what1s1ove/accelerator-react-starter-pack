@@ -2,7 +2,7 @@ import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FilterParams, FIRST_PAGE, pageNavigationRoute, stringValues } from '../../const';
-import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-action';
+import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getGuitars, getSortType, getSortOrder } from '../../store/selectors';
 import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType } from '../../utils/utils';
 

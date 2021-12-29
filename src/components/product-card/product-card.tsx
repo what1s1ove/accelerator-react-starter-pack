@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { generatePath, Link } from 'react-router-dom';
-import { APIRoute, AppRoute } from '../../const';
-import { createAPI } from '../../services/api';
-import { CommentType } from '../../types/comment';
+import { AppRoute } from '../../const';
+import { RootState } from '../../store/root-reducer';
+import { getCommentsCount } from '../../store/selectors';
 import { GuitarType } from '../../types/guitar';
 import { setRatingStars } from '../../utils/utils';
 
@@ -14,12 +14,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
   const {name, previewImg, price, rating, id} = props.productCard;
   const roundedRating = Math.round(rating);
   const imageSrc = `${previewImg.replace('guitar', 'content/guitar')}`;
-  const [commentsCount, setCommentsCount] = useState<number>(0);
-
-  useEffect(() => {
-    createAPI.get<CommentType[]>(APIRoute.Comments(id))
-      .then((response) => setCommentsCount(response.data.length));
-  }, [id, setCommentsCount]);
+  const commentsCount = useSelector((state: RootState) => getCommentsCount(state, id));
 
   return (
     <div className="product-card">

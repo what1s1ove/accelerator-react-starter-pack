@@ -11,7 +11,7 @@ const mockStore = configureMockStore();
 const guitars = makeFakeGuitars();
 
 const store = mockStore({
-  DATA: {catalog: guitars, guitarsCount: 0, isDataLoaded: true},
+  DATA: {catalog: guitars, guitarsCount: 0, isDataLoaded: true,  comments: []},
   SEARCH: {sortType: SortType.Unknown, sortOrder: SortOrder.Unknown},
 });
 
