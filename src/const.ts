@@ -71,4 +71,11 @@ const filtersByStringAndType = [
   },
 ];
 
-export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE};
+enum stringLabels {
+  fourStrings = 4,
+  sixStrings = 6,
+  sevenStrings = 7,
+  twelveStrings = 12,
+}
+
+export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels};

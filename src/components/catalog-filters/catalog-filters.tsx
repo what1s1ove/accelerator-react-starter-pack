@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FilterParams, FIRST_PAGE, pageNavigationRoute, stringValues } from '../../const';
+import { FilterParams, FIRST_PAGE, pageNavigationRoute, stringLabels, stringValues } from '../../const';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getGuitars, getSortType, getSortOrder } from '../../store/selectors';
 import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType } from '../../utils/utils';
@@ -184,7 +184,7 @@ function CatalogFilters(): JSX.Element {
             }}
           >
           </input>
-          <label htmlFor="4-strings">4</label>
+          <label htmlFor="4-strings">{stringLabels.fourStrings}</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
           <input
@@ -198,7 +198,7 @@ function CatalogFilters(): JSX.Element {
             }}
           >
           </input>
-          <label htmlFor="6-strings">6</label>
+          <label htmlFor="6-strings">{stringLabels.sixStrings}</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
           <input
@@ -212,7 +212,7 @@ function CatalogFilters(): JSX.Element {
             }}
           >
           </input>
-          <label htmlFor="7-strings">7</label>
+          <label htmlFor="7-strings">{stringLabels.sevenStrings}</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
           <input
@@ -226,7 +226,7 @@ function CatalogFilters(): JSX.Element {
             }}
           >
           </input>
-          <label htmlFor="12-strings">12</label>
+          <label htmlFor="12-strings">{stringLabels.twelveStrings}</label>
         </div>
       </fieldset>
 
