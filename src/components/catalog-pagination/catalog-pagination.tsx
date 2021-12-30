@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { FIRST_PAGE, PAGES_COUNT, pageNavigationRoute } from '../../const';
-import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-action';
+import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getGuitarsCount, getSortOrder, getSortType } from '../../store/selectors';
 import { getFirstPage, getPageCount, getRestOfGuitars } from '../../utils/utils';
 

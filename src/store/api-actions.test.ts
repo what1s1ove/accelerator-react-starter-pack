@@ -4,9 +4,9 @@ import MockAdapter from 'axios-mock-adapter';
 import thunk, {ThunkDispatch} from 'redux-thunk';
 import { APIRoute, FIRST_PAGE } from '../const';
 import { createAPI } from '../services/api';
-import { makeFakeGuitars } from '../utils/mocks';
-import { loadGuitars, loadGuitarsCount } from './action';
-import { fetchFilteredGuitarsAction, fetchGuitarsAction, fetchGuitarsCountAction } from './api-action';
+import { makeFakeComments, makeFakeGuitars } from '../utils/mocks';
+import { loadComments, loadGuitars, loadGuitarsCount } from './action';
+import { fetchFilteredGuitarsAction, fetchGuitarsAction, fetchGuitarsCountAction } from './api-actions';
 import { RootState } from './root-reducer';
 
 describe('Async actions', () => {
@@ -21,6 +21,7 @@ describe('Async actions', () => {
 
   it('should dispatch LoadGuitars when GET /guitars', async () => {
     const mockGuitars = makeFakeGuitars();
+    const mockComments = makeFakeComments();
     mockAPI
       .onGet(APIRoute.Catalog)
       .reply(200, mockGuitars);
@@ -30,9 +31,9 @@ describe('Async actions', () => {
 
     expect(store.getActions()).toEqual([
       loadGuitars(mockGuitars),
+      loadComments(mockComments),
     ]);
   });
-
 
   it('should dispatch LoadGuitars when GET /guitars with filters', async () => {
     const mockGuitars = makeFakeGuitars();

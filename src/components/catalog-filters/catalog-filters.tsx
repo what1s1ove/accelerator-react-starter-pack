@@ -2,11 +2,11 @@ import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { FilterParams, FIRST_PAGE, pageNavigationRoute, stringValues } from '../../const';
-import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-action';
+import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getGuitars, getSortType, getSortOrder } from '../../store/selectors';
 import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType } from '../../utils/utils';
 
-function CatalogFilter(): JSX.Element {
+function CatalogFilters(): JSX.Element {
   const dispatch = useDispatch();
   const guitars = useSelector(getGuitars);
   const sort = useSelector(getSortType);
@@ -234,4 +234,4 @@ function CatalogFilter(): JSX.Element {
   );
 }
 
-export default CatalogFilter;
+export default CatalogFilters;

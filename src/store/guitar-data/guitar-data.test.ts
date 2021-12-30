@@ -7,18 +7,18 @@ const guitars = makeFakeGuitars();
 describe('Reducer: guitarData', () => {
   it('without additional parameters should return initial state', () => {
     expect (guitarData(void 0, {type: 'UNKNOWN_ACTION'}))
-      .toEqual({catalog: [{description: '', id: 0, name: '', previewImg: '', price: 0, rating: 0, stringCount: 0, type: '', vendorCode: ''}], guitarsCount: 0, isDataLoaded: false});
+      .toEqual({catalog: [{description: '', id: 0, name: '', previewImg: '', price: 0, rating: 0, stringCount: 0, type: '', vendorCode: ''}], guitarsCount: 0, isDataLoaded: false, comments: []});
   });
 
   it('should update guitars by loading guitars', () =>{
-    const state = {catalog: [{description: '', id: 0, name: '', previewImg: '', price: 0, rating: 0, stringCount: 0, type: '', vendorCode: ''}], guitarsCount: 0, isDataLoaded: false};
+    const state = {catalog: [{description: '', id: 0, name: '', previewImg: '', price: 0, rating: 0, stringCount: 0, type: '', vendorCode: ''}], guitarsCount: 0, isDataLoaded: false, comments: []};
     expect (guitarData(state, loadGuitars(guitars)))
-      .toEqual({catalog: guitars, guitarsCount: 0, isDataLoaded: true});
+      .toEqual({catalog: guitars, guitarsCount: 0, isDataLoaded: true, comments: []});
   });
 
   it('should update guitars count by load guitars', () => {
-    const state = {catalog: [{description: '', id: 0, name: '', previewImg: '', price: 0, rating: 0, stringCount: 0, type: '', vendorCode: ''}], guitarsCount: 0, isDataLoaded: false};
+    const state = {catalog: [{description: '', id: 0, name: '', previewImg: '', price: 0, rating: 0, stringCount: 0, type: '', vendorCode: ''}], guitarsCount: 0, isDataLoaded: false, comments: []};
     expect(guitarData(state, loadGuitarsCount(guitars)))
-      .toEqual({catalog: [{description: '', id: 0, name: '', previewImg: '', price: 0, rating: 0, stringCount: 0, type: '', vendorCode: ''}], guitarsCount: guitars.length, isDataLoaded: false});
+      .toEqual({catalog: [{description: '', id: 0, name: '', previewImg: '', price: 0, rating: 0, stringCount: 0, type: '', vendorCode: ''}], guitarsCount: guitars.length, isDataLoaded: false, comments: []});
   });
 });

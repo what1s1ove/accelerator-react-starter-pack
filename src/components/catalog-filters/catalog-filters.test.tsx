@@ -5,7 +5,7 @@ import { SortOrder, SortType } from '../../const';
 import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import CatalogFilter from './catalog-filters';
+import CatalogFilters from './catalog-filters';
 import userEvent from '@testing-library/user-event';
 
 const history = createMemoryHistory();
@@ -23,7 +23,7 @@ describe('Component: CatalogFilter', () => {
     render(
       <Provider store={store}>
         <Router history={history}>
-          <CatalogFilter />
+          <CatalogFilters />
         </Router>
       </Provider>,
     );

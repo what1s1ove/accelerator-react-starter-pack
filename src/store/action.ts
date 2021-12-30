@@ -1,6 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { AppRoute, SortOrder, SortType } from '../const';
 import { ActionType } from '../types/action';
+import { CommentType } from '../types/comment';
 import { GuitarType } from '../types/guitar';
 
 const loadGuitars = createAction(
@@ -38,4 +39,11 @@ const redirectToRoute = createAction(
   }),
 );
 
-export {loadGuitars, loadGuitarsCount, setSortType, setSortOrder, redirectToRoute};
+const loadComments = createAction(
+  ActionType.LoadComments,
+  (comments: CommentType[]) => ({
+    payload: {comments},
+  }),
+);
+
+export {loadGuitars, loadGuitarsCount, setSortType, setSortOrder, redirectToRoute, loadComments};

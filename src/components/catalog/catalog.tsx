@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { getGuitars } from '../../store/selectors';
-import CatalogFilter from '../catalog-filters/catalog-filters';
+import CatalogFilters from '../catalog-filters/catalog-filters';
 import CatalogPagination from '../catalog-pagination/catalog-pagination';
 import CatalogSort from '../catalog-sort/catalog-sort';
 import ProductCards from '../product-cards/product-cards';
@@ -10,7 +10,7 @@ function Catalog(): JSX.Element {
 
   return (
     <div className="catalog" data-testid='catalog'>
-      <CatalogFilter />
+      <CatalogFilters />
       <CatalogSort />
       <ProductCards productCards={catalogCards} />
       <CatalogPagination />

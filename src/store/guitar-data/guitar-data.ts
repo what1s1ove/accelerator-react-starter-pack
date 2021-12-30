@@ -1,11 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { CommentType } from '../../types/comment';
 import { GuitarType } from '../../types/guitar';
-import { loadGuitars, loadGuitarsCount } from '../action';
+import { loadComments, loadGuitars, loadGuitarsCount } from '../action';
 
 type CatalogType = {
-  catalog: GuitarType[];
+  catalog: GuitarType[],
   isDataLoaded: boolean,
   guitarsCount: number,
+  comments: CommentType[],
 }
 
 const initialState: CatalogType = {
@@ -24,6 +26,7 @@ const initialState: CatalogType = {
   ],
   isDataLoaded: false,
   guitarsCount: 0,
+  comments: [],
 };
 
 const guitarData = createReducer(initialState, (builder) => {
@@ -36,6 +39,10 @@ const guitarData = createReducer(initialState, (builder) => {
       const {guitars} = action.payload;
       const guitarsCount = guitars.length;
       state.guitarsCount = guitarsCount;
+    })
+    .addCase(loadComments, (state, action) => {
+      const {comments} = action.payload;
+      state.comments = state.comments.concat(comments);
     });
 });
 

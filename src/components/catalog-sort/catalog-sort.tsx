@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { FIRST_PAGE, SortOrder, SortType } from '../../const';
 import { setSortOrder, setSortType } from '../../store/action';
-import { fetchFilteredGuitarsAction } from '../../store/api-action';
+import { fetchFilteredGuitarsAction } from '../../store/api-actions';
 import { getSortOrder, getSortType } from '../../store/selectors';
 
 function CatalogSort(): JSX.Element {
