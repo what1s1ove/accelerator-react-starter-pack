@@ -16,12 +16,25 @@ export enum SortType {
   Descend = 'По убыванию'
 }
 
-export const TypeOfSort = new Map([
+export const SortByType = new Map([
   ['по цене', 'price'],
   ['по популярности', 'rating'],
 ]);
 
-export const OrderOfSort = new Map([
+export const SortByOrder = new Map([
   ['По возрастанию', 'asc'],
   ['По убыванию', 'desc'],
 ]);
+
+export enum TypeFilter {
+  Acoustic = 'acoustic',
+  Electric = 'electric',
+  Ukulele = 'ukulele',
+}
+
+export enum StringFilter {
+  FourStrings = '4-strings',
+  SixStrings = '6-strings',
+  SevenStrings = '7-strings',
+  TwelveStrings = '12-strings',
+}
