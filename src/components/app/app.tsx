@@ -8,6 +8,9 @@ function App(): JSX.Element {
       <Route exact path={AppRoute.Root}>
         <MainScreen />
       </Route>
+      <Route exact path={'/guitars'}>
+        <MainScreen />
+      </Route>
     </Switch>
   );
 }
