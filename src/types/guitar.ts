@@ -1,4 +1,3 @@
-
 export type Guitar = {
   id: number,
   name: string,
