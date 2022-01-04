@@ -7,10 +7,11 @@ type SearchTermProps = {
 
 function SearchResult ({searchTerm}:SearchTermProps) {
   const [name, setName] = useState(searchTerm);
+
   const {data} = useFetchAlikeGuitarsQuery(name);
 
   useEffect(() => {
-    if (searchTerm.length === 0 || searchTerm.length > 2) {
+    if ( searchTerm && (searchTerm.length === 0 || searchTerm.length > 2)) {
       setName(searchTerm);
     }
   }, [searchTerm]);

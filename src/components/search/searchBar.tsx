@@ -3,7 +3,7 @@ import useDebounce from '../../hooks/useDebounce';
 import SearchResult from '../catalog/sort/searchResult';
 
 function SearchBar():JSX.Element {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState<string | undefined>();
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const handleInputChange = ({target}: ChangeEvent<HTMLInputElement>) => {
