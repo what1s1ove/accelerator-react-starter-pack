@@ -25,7 +25,7 @@ const sortByPrice = (guitars: Guitar[], isSortedFromHighToLow: boolean, isSorted
   if (isSortedFromLowToHigh) {
     return guitars.sort((a: Guitar, b: Guitar) => a.price - b.price);
   }
-  return guitars;
+  return guitars.sort((a: Guitar, b: Guitar) => b.price - a.price);
 };
 
 
@@ -37,7 +37,7 @@ const sortByRating = (guitars: Guitar[], isSortedFromHighToLow: boolean, isSorte
   if (isSortedFromLowToHigh) {
     return guitars.sort((a: Guitar, b: Guitar) => a.rating - b.rating);
   }
-  return guitars;
+  return guitars.sort((a: Guitar, b: Guitar) => b.rating - a.rating);
 };
 
 export {
