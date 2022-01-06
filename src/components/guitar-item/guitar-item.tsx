@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
+import { GuitarItemProps } from './types';
 
-function GuitarItem(): JSX.Element {
+function GuitarItem({guitar}: GuitarItemProps): JSX.Element {
   return (
     <div className="product-card">
       <img src="img/guitar-2.jpg" width="75" height="190" alt="СURT Z30 Plus Acoustics"/>

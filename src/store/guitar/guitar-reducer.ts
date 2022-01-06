@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 import { GuitarItem } from '../../types/state';
-import { getComments, getGuitar } from '../action';
+import { setComments, setGuitar } from '../action';
 
 export const initialState: GuitarItem = {
   guitar: undefined,
@@ -10,10 +10,10 @@ export const initialState: GuitarItem = {
 
 const guitarReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(getGuitar, (state, action) => {
+    .addCase(setGuitar, (state, action) => {
       state.guitar = action.payload;
     })
-    .addCase(getComments, (state, action) => {
+    .addCase(setComments, (state, action) => {
       state.comments = action.payload;
     });
 });

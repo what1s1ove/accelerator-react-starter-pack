@@ -4,22 +4,22 @@ import { ActionType } from '../types/action';
 import { Comment } from '../types/comment';
 import { Guitar } from '../types/guitar';
 
-export const getGuitars = createAction(
-  ActionType.GetGuitars,
+export const setGuitars = createAction(
+  ActionType.SetGuitars,
   (guitars: Guitar[]) => ({
     payload: guitars,
   }),
 );
 
-export const getGuitar = createAction(
-  ActionType.GetGuitar,
+export const setGuitar = createAction(
+  ActionType.SetGuitar,
   (guitar: Guitar) => ({
     payload: guitar,
   }),
 );
 
-export const getComments = createAction(
-  ActionType.GetComments,
+export const setComments = createAction(
+  ActionType.SetComments,
   (comments: Comment[]) => ({
     payload: comments,
   }),

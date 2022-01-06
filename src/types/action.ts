@@ -4,14 +4,15 @@ import { Action } from 'redux';
 import { State } from './state';
 
 export enum ActionType {
-  GetGuitars = 'getGuitars',
-  GetGuitar = 'getGuitar',
-  GetComments = 'getComments',
   ChangeSortType = 'changeSortType',
   ChangeSortOrder = 'changeSortOrder',
+  SetGuitars = 'setGuitars',
+  SetGuitar = 'setGuitar',
+  SetComments = 'setComments',
   PostComments = 'postComments',
   PostCoupons = 'postCoupons',
   PostOrders = 'postOrders',
+  RedirectToRoute = 'redirectToRoute',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;

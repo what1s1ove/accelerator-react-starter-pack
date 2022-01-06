@@ -5,7 +5,7 @@ import {
   SortOrderOptions
 } from '../../const';
 import { Guitars } from '../../types/state';
-import { changeSortOrder, changeSortType, getGuitars } from '../action';
+import { changeSortOrder, changeSortType, setGuitars } from '../action';
 
 export const initialState: Guitars = {
   guitars: [],
@@ -15,7 +15,7 @@ export const initialState: Guitars = {
 
 const guitarsReducer = createReducer(initialState, (builder) => {
   builder
-    .addCase(getGuitars, (state, action) => {
+    .addCase(setGuitars, (state, action) => {
       state.guitars = action.payload;
     })
     .addCase(changeSortType, (state, action) => {
