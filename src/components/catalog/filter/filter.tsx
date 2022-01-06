@@ -1,63 +1,113 @@
 import {useFetchMaxPriceQuery, useFetchMinPriceQuery} from '../../../service/api';
-import {ChangeEvent} from 'react';
-import {StringFilter, TypeFilter} from '../../../const/const';
-import {StringCount, Type} from '../catalog';
+import {ChangeEvent, useCallback, useState} from 'react';
+import {
+  QUERY_MAX_PRICE,
+  QUERY_MIN_PRICE,
+  StringFilter,
+  TypeFilter
+} from '../../../const/const';
+import {StringCount, Type, ViewState} from '../catalog';
 import _ from 'lodash';
 
 type FilterProps = {
-  stateType: Type;
-  stateStringCount: StringCount;
-  statePriceMin: string | number |undefined;
-  statePriceMax: string | number |undefined;
-  onStateTypeChange: (type: Type) => void;
-  onStateStringCountChange: (stringCount: StringCount) => void;
-  onStateMinPriceChange: (minPrice: string | number | undefined) => void;
-  onStateMaxPriceChange: (maxPrice: string | number | undefined) => void;
-  viewState: {[p: string]: string};
-  changeURL: (updatedViewState: {[p: string]: string}) => void;
+  viewState: ViewState;
+  changeURL: (updatedViewState: ViewState) => void;
 }
 
-let localType:string[] = [];
-let localStringCount:string[] = [];
+let checkedTypeFilters:string[] = [];
+let checkedStringCountFilters:string[] = [];
 
-function Filter ({stateType, stateStringCount, statePriceMin, statePriceMax, onStateTypeChange, onStateStringCountChange, onStateMinPriceChange, onStateMaxPriceChange, viewState, changeURL}:FilterProps):JSX.Element {
-  const {data: minPriceGuitar} = useFetchMinPriceQuery('');
-  const {data: maxPriceGuitar} = useFetchMaxPriceQuery('');
+const deleteUncheckedTypeFilter = (filterItem: string) => {
+  const index = checkedTypeFilters.findIndex((item) => item === filterItem);
+  checkedTypeFilters = [
+    ...checkedTypeFilters.slice(0, index),
+    ...checkedTypeFilters.slice(index + 1),
+  ];
+};
 
-  const deleteType = (filterItem: string) => {
-    const index = localType.findIndex((item) => item === filterItem);
-    localType = [
-      ...localType.slice(0, index),
-      ...localType.slice(index + 1),
-    ];
-  };
+const stringifyCheckedTypeFilters = (items: string[]) => {
+  if (items.length > 1) {
+    return items.join('&type=');
+  }
+  return items.join('');
+};
 
-  const deleteStringCount = (stringCountItem:string) => {
-    const index = localStringCount.findIndex((item) => item === stringCountItem);
-    localStringCount = [
-      ...localStringCount.slice(0, index),
-      ...localStringCount.slice(index + 1),
-    ];
-  };
+const stringifyCheckedStringCountFilters = (items: string[]) => {
+  if (items.length > 1) {
+    return items.join('&stringCount=');
+  }
+  return  items.join('');
+};
 
-  const stringifyLocalType = (items: string[]) => {
-    if (items.length > 1) {
-      return items.join('&type=');
-    }
-    return items.join('');
-  };
+const deleteUncheckedStringCountFilter = (stringCountItem:string) => {
+  const index = checkedStringCountFilters.findIndex((item) => item === stringCountItem);
+  checkedStringCountFilters = [
+    ...checkedStringCountFilters.slice(0, index),
+    ...checkedStringCountFilters.slice(index + 1),
+  ];
+};
 
-  const stringifyLocalStringCount = (items: string[]) => {
-    if (items.length > 1) {
-      return items.join('&stringCount=');
-    }
-    return  items.join('');
-  };
+function Filter ({viewState, changeURL}:FilterProps):JSX.Element {
+  const [stateType, setStateType] = useState<Type>({acoustic: '', electric: '', ukulele: ''});
+  const [stateStringCount, setStateStringCount] = useState<StringCount>({fourStrings: '', sixStrings: '', sevenStrings: '', twelveStrings: ''});
+  const [stateMinimumPrice, setStateMinimumPrice] = useState<string | undefined>('');
+  const [stateMaximumPrice, setStateMaximumPrice] = useState<string | undefined>('');
+
+  const isAcousticChecked = viewState.type?.includes(TypeFilter.Acoustic);
+  const isElectricChecked = viewState.type?.includes(TypeFilter.Electric);
+  const isUkuleleChecked = viewState.type?.includes(TypeFilter.Ukulele);
+
+  const isFourStringsChecked = viewState.stringCount?.includes(StringFilter.FourStrings.charAt(0));
+  const isSixStringsChecked = viewState.stringCount?.includes(StringFilter.SixStrings.charAt(0));
+  const isSevenStringsChecked = viewState.stringCount?.includes(StringFilter.SevenStrings.charAt(0));
+  const isTwelveStringsChecked = viewState.stringCount?.includes(StringFilter.TwelveStrings.charAt(0));
 
   const isFourStringsDisabled = ():boolean => stateType.acoustic === TypeFilter.Acoustic && stateType.electric === '' && stateType.ukulele === '';
   const isSixStringsDisabled = ():boolean => stateType.ukulele === TypeFilter.Ukulele && stateType.acoustic === '' && stateType.electric === '';
   const isSevenStringsDisabled = ():boolean => stateType.ukulele === TypeFilter.Ukulele && stateType.acoustic === '' && stateType.electric === '';
   const isTwelveStringsDisabled = ():boolean => (stateType.ukulele === TypeFilter.Ukulele || stateType.electric === TypeFilter.Electric) && stateType.acoustic === '';
+
+  const {data: minPrice} = useFetchMinPriceQuery({type: viewState.type, stringCount: viewState.stringCount});
+  const {data: maxPrice} = useFetchMaxPriceQuery({type: viewState.type, stringCount: viewState.stringCount});
+
+  const minCatalogPrice = minPrice && minPrice[0].price.toString();
+  const maxCatalogPrice = maxPrice && maxPrice[0].price.toString();
+
+  const deletePriceFromURL = (field:string, value:string) => {
+    if (value.length === 0 && field === QUERY_MIN_PRICE) {
+      const newViewState = _.omit(viewState, QUERY_MIN_PRICE);
+      return changeURL(newViewState);
+    }
+    else if (value.length === 0 && field === QUERY_MAX_PRICE) {
+      const newViewState = _.omit(viewState, QUERY_MAX_PRICE);
+      return changeURL(newViewState);
+    }
+  };
+
+  const replaceMinPrice = () => {
+    setStateMinimumPrice(minCatalogPrice);
+    return changeURL({...viewState, 'price_gte': minCatalogPrice});
+  };
+
+  const replaceMaxPrice = () => {
+    setStateMaximumPrice(maxCatalogPrice);
+    return changeURL({...viewState, 'price_lte': maxCatalogPrice});
+  };
+
+  const debouncedChangeURL = useCallback(
+    _.debounce((field: string, value:string) => {
+      if (value.length === 0) {
+        return deletePriceFromURL(field, value);
+      }
+      if (Number(value) < Number(minCatalogPrice)) {
+        return replaceMinPrice();
+      }
+      if (Number(value) > Number(maxCatalogPrice)) {
+        return replaceMaxPrice();
+      }
+      changeURL({...viewState, [field]: value});
+    }, 1000)
+    , [viewState]);
 
   return (
     <form className="catalog-filter">
@@ -67,19 +117,21 @@ function Filter ({stateType, stateStringCount, statePriceMin, statePriceMax, onS
         <div className="catalog-filter__price-range">
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
-            <input type="number" placeholder={minPriceGuitar && `${minPriceGuitar[0].price}`} id="priceMin" name="от"
-              value={statePriceMin}
+            <input type="number" placeholder={minCatalogPrice && minCatalogPrice} id="priceMin" name="от"
+              value={stateMinimumPrice}
               onChange={({target}:ChangeEvent<HTMLInputElement>) => {
-                target.value === '0' && minPriceGuitar ? onStateMinPriceChange(minPriceGuitar[0].price) : onStateMinPriceChange(target.value);
+                setStateMinimumPrice(target.value);
+                debouncedChangeURL(QUERY_MIN_PRICE, target.value);
               }}
             />
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input type="number" placeholder={maxPriceGuitar && `${maxPriceGuitar[0].price}`} id="priceMax" name="до"
-              value={statePriceMax}
+            <input type="number" placeholder={maxCatalogPrice && maxCatalogPrice} id="priceMax" name="до"
+              value={stateMaximumPrice}
               onChange={({target}:ChangeEvent<HTMLInputElement>) => {
-                target.value === '0' && maxPriceGuitar ? onStateMaxPriceChange(maxPriceGuitar[0].price) : onStateMaxPriceChange(target.value);
+                setStateMaximumPrice(target.value);
+                debouncedChangeURL(QUERY_MAX_PRICE, target.value);
               }}
             />
           </div>
@@ -89,20 +141,20 @@ function Filter ({stateType, stateStringCount, statePriceMin, statePriceMax, onS
         <legend className="catalog-filter__block-title">Тип гитар</legend>
         <div className="form-checkbox catalog-filter__block-item">
           <input className="visually-hidden" type="checkbox" id="acoustic" name="acoustic"
-            checked={stateType.acoustic === TypeFilter.Acoustic}
+            checked={isAcousticChecked}
             onChange={({target}:ChangeEvent<HTMLInputElement>) => {
               if (stateType.acoustic?.length === 0) {
-                onStateTypeChange({...stateType, acoustic: target.name});
-                localType = [...localType, target.name];
-                changeURL({...viewState, 'type': stringifyLocalType(localType)});
+                setStateType({...stateType, acoustic: TypeFilter.Acoustic});
+                checkedTypeFilters = [...checkedTypeFilters, target.name];
+                changeURL({...viewState, 'type': stringifyCheckedTypeFilters(checkedTypeFilters)});
               } else {
-                onStateTypeChange({...stateType, acoustic: ''});
-                deleteType(TypeFilter.Acoustic);
-                if (localType.length === 0) {
+                setStateType({...stateType, acoustic: ''});
+                deleteUncheckedTypeFilter(TypeFilter.Acoustic);
+                if (checkedTypeFilters.length === 0) {
                   const newViewState = _.omit(viewState, 'type');
                   changeURL(newViewState);
                 } else {
-                  changeURL({...viewState, 'type': stringifyLocalType(localType)});
+                  changeURL({...viewState, 'type': stringifyCheckedTypeFilters(checkedTypeFilters)});
                 }
               }
             }}
@@ -110,20 +162,21 @@ function Filter ({stateType, stateStringCount, statePriceMin, statePriceMax, onS
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="electric" name="electric" checked={stateType.electric === TypeFilter.Electric}
+          <input className="visually-hidden" type="checkbox" id="electric" name="electric"
+            checked={isElectricChecked}
             onChange={({target}:ChangeEvent<HTMLInputElement>) => {
               if (stateType.electric?.length === 0) {
-                onStateTypeChange({...stateType, electric: target.name});
-                localType = [...localType, target.name];
-                changeURL({...viewState, 'type': stringifyLocalType(localType)});
+                setStateType({...stateType, electric: TypeFilter.Electric});
+                checkedTypeFilters = [...checkedTypeFilters, target.name];
+                changeURL({...viewState, 'type': stringifyCheckedTypeFilters(checkedTypeFilters)});
               } else {
-                onStateTypeChange({...stateType, electric: ''});
-                deleteType(TypeFilter.Electric);
-                if (localType.length === 0) {
+                setStateType({...stateType, electric: ''});
+                deleteUncheckedTypeFilter(TypeFilter.Electric);
+                if (checkedTypeFilters.length === 0) {
                   const newViewState = _.omit(viewState, 'type');
                   changeURL(newViewState);
                 } else {
-                  changeURL({...viewState, 'type': stringifyLocalType(localType)});
+                  changeURL({...viewState, 'type': stringifyCheckedTypeFilters(checkedTypeFilters)});
                 }
               }
             }}
@@ -131,20 +184,21 @@ function Filter ({stateType, stateStringCount, statePriceMin, statePriceMax, onS
           <label htmlFor="electric">Электрогитары</label>
         </div>
         <div className="form-checkbox catalog-filter__block-item">
-          <input className="visually-hidden" type="checkbox" id="ukulele" name="ukulele" checked={stateType.ukulele === TypeFilter.Ukulele}
+          <input className="visually-hidden" type="checkbox" id="ukulele" name="ukulele"
+            checked={isUkuleleChecked}
             onChange={({target}:ChangeEvent<HTMLInputElement>) => {
               if (stateType.ukulele?.length === 0) {
-                onStateTypeChange({...stateType, ukulele: target.name});
-                localType = [...localType, target.name];
-                changeURL({...viewState, 'type': stringifyLocalType(localType)});
+                setStateType({...stateType, ukulele: TypeFilter.Ukulele});
+                checkedTypeFilters = [...checkedTypeFilters, target.name];
+                changeURL({...viewState, 'type': stringifyCheckedTypeFilters(checkedTypeFilters)});
               } else {
-                onStateTypeChange({...stateType, ukulele: ''});
-                deleteType(TypeFilter.Ukulele);
-                if (localType.length === 0) {
+                setStateType({...stateType, ukulele: ''});
+                deleteUncheckedTypeFilter(TypeFilter.Ukulele);
+                if (checkedTypeFilters.length === 0) {
                   const newViewState = _.omit(viewState, 'type');
                   changeURL(newViewState);
                 } else {
-                  changeURL({...viewState, 'type': stringifyLocalType(localType)});
+                  changeURL({...viewState, 'type': stringifyCheckedTypeFilters(checkedTypeFilters)});
                 }
               }
             }}
@@ -156,21 +210,21 @@ function Filter ({stateType, stateStringCount, statePriceMin, statePriceMax, onS
         <legend className="catalog-filter__block-title">Количество струн</legend>
         <div className="form-checkbox catalog-filter__block-item">
           <input className="visually-hidden" type="checkbox" id="4-strings" name="4-strings"
-            checked={stateStringCount.fourStrings === StringFilter.FourStrings}
+            checked={isFourStringsChecked}
             disabled={isFourStringsDisabled()}
             onChange={({target}:ChangeEvent<HTMLInputElement>) => {
               if (stateStringCount.fourStrings?.length === 0) {
-                onStateStringCountChange({...stateStringCount, fourStrings: target.name});
-                localStringCount = [...localStringCount, target.name.charAt(0)];
-                changeURL({...viewState, 'stringCount': stringifyLocalStringCount(localStringCount)});
+                setStateStringCount({...stateStringCount, fourStrings: StringFilter.FourStrings});
+                checkedStringCountFilters = [...checkedStringCountFilters, target.name.charAt(0)];
+                changeURL({...viewState, 'stringCount': stringifyCheckedStringCountFilters(checkedStringCountFilters)});
               } else {
-                onStateStringCountChange({...stateStringCount, fourStrings: ''});
-                deleteStringCount(StringFilter.FourStrings.charAt(0));
-                if (localStringCount.length === 0) {
+                setStateStringCount({...stateStringCount, fourStrings: ''});
+                deleteUncheckedStringCountFilter(StringFilter.FourStrings.charAt(0));
+                if (checkedStringCountFilters.length === 0) {
                   const newViewState = _.omit(viewState, 'stringCount');
                   changeURL(newViewState);
                 } else {
-                  changeURL({...viewState, 'stringCount': stringifyLocalType(localStringCount)});
+                  changeURL({...viewState, 'stringCount': stringifyCheckedTypeFilters(checkedStringCountFilters)});
                 }
               }
             }}
@@ -179,21 +233,21 @@ function Filter ({stateType, stateStringCount, statePriceMin, statePriceMax, onS
         </div>
         <div className="form-checkbox catalog-filter__block-item">
           <input className="visually-hidden" type="checkbox" id="6-strings" name="6-strings"
-            checked={stateStringCount.sixStrings === StringFilter.SixStrings}
+            checked={isSixStringsChecked}
             disabled={isSixStringsDisabled()}
             onChange={({target}:ChangeEvent<HTMLInputElement>) => {
               if (stateStringCount.sixStrings?.length === 0) {
-                onStateStringCountChange({...stateStringCount, sixStrings: target.name});
-                localStringCount = [...localStringCount, target.name.charAt(0)];
-                changeURL({...viewState, 'stringCount': stringifyLocalStringCount(localStringCount)});
+                setStateStringCount({...stateStringCount, sixStrings: StringFilter.SixStrings});
+                checkedStringCountFilters = [...checkedStringCountFilters, target.name.charAt(0)];
+                changeURL({...viewState, 'stringCount': stringifyCheckedStringCountFilters(checkedStringCountFilters)});
               } else {
-                onStateStringCountChange({...stateStringCount, sixStrings: ''});
-                deleteStringCount(StringFilter.SixStrings.charAt(0));
-                if (localStringCount.length === 0) {
+                setStateStringCount({...stateStringCount, sixStrings: ''});
+                deleteUncheckedStringCountFilter(StringFilter.SixStrings.charAt(0));
+                if (checkedStringCountFilters.length === 0) {
                   const newViewState = _.omit(viewState, 'stringCount');
                   changeURL(newViewState);
                 } else {
-                  changeURL({...viewState, 'stringCount': stringifyLocalType(localStringCount)});
+                  changeURL({...viewState, 'stringCount': stringifyCheckedStringCountFilters(checkedStringCountFilters)});
                 }
               }
             }}
@@ -202,21 +256,21 @@ function Filter ({stateType, stateStringCount, statePriceMin, statePriceMax, onS
         </div>
         <div className="form-checkbox catalog-filter__block-item">
           <input className="visually-hidden" type="checkbox" id="7-strings" name="7-strings"
-            checked={stateStringCount.sevenStrings === StringFilter.SevenStrings}
+            checked={isSevenStringsChecked}
             disabled={isSevenStringsDisabled()}
             onChange={({target}:ChangeEvent<HTMLInputElement>) => {
               if (stateStringCount.sevenStrings?.length === 0) {
-                onStateStringCountChange({...stateStringCount, sevenStrings: target.name});
-                localStringCount = [...localStringCount, target.name.charAt(0)];
-                changeURL({...viewState, 'stringCount': stringifyLocalStringCount(localStringCount)});
+                setStateStringCount({...stateStringCount, sevenStrings: StringFilter.SevenStrings});
+                checkedStringCountFilters = [...checkedStringCountFilters, target.name.charAt(0)];
+                changeURL({...viewState, 'stringCount': stringifyCheckedStringCountFilters(checkedStringCountFilters)});
               } else {
-                onStateStringCountChange({...stateStringCount, sevenStrings: ''});
-                deleteStringCount(StringFilter.SevenStrings.charAt(0));
-                if (localStringCount.length === 0) {
+                setStateStringCount({...stateStringCount, sevenStrings: ''});
+                deleteUncheckedStringCountFilter(StringFilter.SevenStrings.charAt(0));
+                if (checkedStringCountFilters.length === 0) {
                   const newViewState = _.omit(viewState, 'stringCount');
                   changeURL(newViewState);
                 } else {
-                  changeURL({...viewState, 'stringCount': stringifyLocalType(localStringCount)});
+                  changeURL({...viewState, 'stringCount': stringifyCheckedStringCountFilters(checkedStringCountFilters)});
                 }
               }
             }}
@@ -225,21 +279,21 @@ function Filter ({stateType, stateStringCount, statePriceMin, statePriceMax, onS
         </div>
         <div className="form-checkbox catalog-filter__block-item">
           <input className="visually-hidden" type="checkbox" id="12-strings" name="12-strings"
-            checked={stateStringCount.twelveStrings === StringFilter.TwelveStrings}
+            checked={isTwelveStringsChecked}
             disabled={isTwelveStringsDisabled()}
             onChange={({target}:ChangeEvent<HTMLInputElement>) =>  {
               if (stateStringCount.twelveStrings?.length === 0) {
-                onStateStringCountChange({...stateStringCount, twelveStrings: target.name});
-                localStringCount = [...localStringCount, target.name.charAt(0)];
-                changeURL({...viewState, 'stringCount': stringifyLocalStringCount(localStringCount)});
+                setStateStringCount({...stateStringCount, twelveStrings: StringFilter.TwelveStrings});
+                checkedStringCountFilters = [...checkedStringCountFilters, target.name.slice(0, 2)];
+                changeURL({...viewState, 'stringCount': stringifyCheckedStringCountFilters(checkedStringCountFilters)});
               } else {
-                onStateStringCountChange({...stateStringCount, twelveStrings: ''});
-                deleteStringCount(StringFilter.TwelveStrings.charAt(0));
-                if (localStringCount.length === 0) {
+                setStateStringCount({...stateStringCount, twelveStrings: ''});
+                deleteUncheckedStringCountFilter(StringFilter.TwelveStrings.slice(0, 2));
+                if (checkedStringCountFilters.length === 0) {
                   const newViewState = _.omit(viewState, 'stringCount');
                   changeURL(newViewState);
                 } else {
-                  changeURL({...viewState, 'stringCount': stringifyLocalType(localStringCount)});
+                  changeURL({...viewState, 'stringCount': stringifyCheckedStringCountFilters(checkedStringCountFilters)});
                 }
               }
             }}

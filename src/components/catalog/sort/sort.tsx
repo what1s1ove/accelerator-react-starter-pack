@@ -1,21 +1,15 @@
 import React, {MouseEvent, useState} from 'react';
-import {SortByOrder, SortType, SortByType} from '../../../const/const';
-import _ from 'lodash';
-
-type SortProps = {
-  onStateSortChange: (sort: string | undefined) => void;
-  onStateOrderChange: (order: string | undefined) => void;
-  viewState: {[p: string]: string};
-  changeURL: (updatedViewState: {[p: string]: string}) => void;
-}
+import {SortType, getSort, getOrder} from '../../../const/const';
 
 const ACTIVE = -1;
 const NOT_ACTIVE = 0;
 
-const getSort = (sort:string):string => SortByType.get(sort) as string;
-const getOrder = (order:string): string => SortByOrder.get(order) as string;
+type SortProps = {
+  viewState: {[p: string]: string};
+  changeURL: (updatedViewState: {[p: string]: string}) => void;
+}
 
-function Sort({onStateSortChange, onStateOrderChange, viewState, changeURL}:SortProps):JSX.Element {
+function Sort({viewState, changeURL}:SortProps):JSX.Element {
   const [currentSortType, setCurrentSortType] = useState('');
   const [currentSortOrder, setCurrentSortOrder] = useState('');
 
@@ -23,17 +17,9 @@ function Sort({onStateSortChange, onStateOrderChange, viewState, changeURL}:Sort
     currentSortOrder.length === 0
       ? changeURL({...viewState, 'sort': getSort(sort), 'order': getOrder(SortType.Ascend)})
       : changeURL({...viewState, 'sort': getSort(sort)});
-    onStateSortChange(getSort(sort));
     setCurrentSortType(sort);
     if (currentSortOrder.length === 0) {
-      onStateOrderChange(getOrder(SortType.Ascend));
       setCurrentSortOrder(SortType.Ascend);
-    }
-    if (sort === currentSortType) {
-      onStateSortChange('');
-      setCurrentSortType('');
-      const newViewState = _.omit(viewState, 'sort');
-      changeURL(newViewState);
     }
   };
 
@@ -41,17 +27,9 @@ function Sort({onStateSortChange, onStateOrderChange, viewState, changeURL}:Sort
     currentSortType.length === 0
       ? changeURL({...viewState, 'order': getOrder(order),  'sort': getSort(SortType.Price)})
       : changeURL({...viewState, 'order': getOrder(order)});
-    onStateOrderChange(SortByOrder.get(order));
     setCurrentSortOrder(order);
     if (currentSortType.length === 0) {
-      onStateSortChange(getSort(SortType.Price));
       setCurrentSortType(SortType.Price);
-    }
-    if (order === currentSortOrder) {
-      onStateOrderChange('');
-      setCurrentSortOrder('');
-      const newViewState = _.omit(viewState, 'order');
-      changeURL(newViewState);
     }
   };
 
