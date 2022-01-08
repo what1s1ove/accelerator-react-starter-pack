@@ -1,3 +1,5 @@
+import {Type, ViewState} from '../components/catalog/catalog';
+
 export const INITIAL_GUITARS_COUNT = 9;
 export const QUERY_MIN_PRICE  = 'price_gte';
 export const QUERY_MAX_PRICE = 'price_lte';
@@ -35,10 +37,10 @@ export enum TypeFilter {
 }
 
 export enum StringFilter {
-  FourStrings = '4-strings',
-  SixStrings = '6-strings',
-  SevenStrings = '7-strings',
-  TwelveStrings = '12-strings',
+  FourStrings = '4',
+  SixStrings = '6',
+  SevenStrings = '7',
+  TwelveStrings = '12',
 }
 
 export const getSort = (sort:string):string => SortByType.get(sort) as string;
@@ -67,4 +69,48 @@ export const getURL = (type:string | undefined, stringCount:string | undefined):
   }
 };
 
+export const stringifyCheckedTypeFilters = (items: string[]) => {
+  if (items.length > 1) {
+    return items.join('&type=');
+  }
+  return items.join('');
+};
 
+export const stringifyCheckedStringCountFilters = (items: string[]) => {
+  if (items.length > 1) {
+    return items.join('&stringCount=');
+  }
+  return  items.join('');
+};
+
+export const deleteUncheckedTypeFilter = (checkedTypeFilters: string[], filterItem: string) => {
+  const index = checkedTypeFilters.findIndex((item) => item === filterItem);
+  checkedTypeFilters = [
+    ...checkedTypeFilters.slice(0, index),
+    ...checkedTypeFilters.slice(index + 1),
+  ];
+  return checkedTypeFilters;
+};
+
+export const deleteUncheckedStringCountFilter = (checkedStringCountFilters:string[],stringCountItem:string) => {
+  const index = checkedStringCountFilters.findIndex((item) => item === stringCountItem);
+  checkedStringCountFilters = [
+    ...checkedStringCountFilters.slice(0, index),
+    ...checkedStringCountFilters.slice(index + 1),
+  ];
+  return checkedStringCountFilters;
+};
+
+export const isFourStringsChecked = (viewState: ViewState) => viewState.stringCount?.includes(StringFilter.FourStrings);
+export const isSixStringsChecked = (viewState: ViewState) => viewState.stringCount?.includes(StringFilter.SixStrings);
+export const isSevenStringsChecked = (viewState: ViewState) => viewState.stringCount?.includes(StringFilter.SevenStrings);
+export const isTwelveStringsChecked = (viewState: ViewState) => viewState.stringCount?.includes(StringFilter.TwelveStrings);
+
+export const isAcousticChecked = (viewState: ViewState) => viewState.type?.includes(TypeFilter.Acoustic);
+export const isElectricChecked = (viewState: ViewState) => viewState.type?.includes(TypeFilter.Electric);
+export const isUkuleleChecked = (viewState: ViewState) => viewState.type?.includes(TypeFilter.Ukulele);
+
+export const isFourStringsDisabled = (stateType: Type):boolean => stateType.acoustic === TypeFilter.Acoustic && stateType.electric === '' && stateType.ukulele === '';
+export const isSixStringsDisabled = (stateType: Type):boolean => stateType.ukulele === TypeFilter.Ukulele && stateType.acoustic === '' && stateType.electric === '';
+export const isSevenStringsDisabled = (stateType: Type):boolean => stateType.ukulele === TypeFilter.Ukulele && stateType.acoustic === '' && stateType.electric === '';
+export const isTwelveStringsDisabled = (stateType: Type):boolean => (stateType.ukulele === TypeFilter.Ukulele || stateType.electric === TypeFilter.Electric) && stateType.acoustic === '';

@@ -1,9 +1,7 @@
 import Filter from './filter/filter';
 import Sort from './sort/sort';
 import GuitarCardsList from '../guitar-cards-list/guitar-cards-list';
-import {
-  useFetchGuitarsListQuery
-} from '../../service/api';
+import {useFetchGuitarsListQuery} from '../../service/api';
 import {useHistory, useLocation} from 'react-router-dom';
 import {INITIAL_GUITARS_COUNT, parseViewState, stringifyViewState} from '../../const/const';
 
