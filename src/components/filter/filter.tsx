@@ -1,4 +1,3 @@
-import {useFetchMaxPriceQuery, useFetchMinPriceQuery} from '../../../service/api';
 import {ChangeEvent, useCallback, useState} from 'react';
 import {
   QUERY_MAX_PRICE,
@@ -17,10 +16,12 @@ import {
   isSixStringsChecked,
   isSixStringsDisabled,
   isFourStringsChecked,
-  isElectricChecked, isUkuleleChecked
-} from '../../../const/const';
-import {StringCount, Type, ViewState} from '../catalog';
+  isElectricChecked,
+  isUkuleleChecked
+} from '../../const/const';
+import {StringCount, Type, ViewState} from '../catalog/catalog';
 import _ from 'lodash';
+import {useFetchMaxPriceQuery, useFetchMinPriceQuery} from '../../service/api';
 
 type FilterProps = {
   viewState: ViewState;
@@ -75,8 +76,8 @@ function Filter ({viewState, changeURL}:FilterProps):JSX.Element {
         return replaceMaxPrice();
       }
       changeURL({...viewState, [field]: value});
-    }, 1000)
-    , [viewState]);
+    }, 800)
+    , [viewState, minCatalogPrice, maxCatalogPrice]);
 
   const addTypeFilter = (name: string) => {
     setStateType({...stateType, [name]: name});
