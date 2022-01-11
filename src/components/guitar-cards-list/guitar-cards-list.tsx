@@ -1,12 +1,51 @@
 import {GuitarsList} from '../../types/guitar';
 import GuitarCard from '../guitar-card/guitar-card';
+import {useFetchGuitarsTotalCountQuery} from '../../service/api';
+import {
+  getInitialPageNumber,
+  getNextPageNumber,
+  getPaginationPages,
+  getPrevPageNumber,
+  INITIAL_GUITARS_COUNT
+} from '../../const/const';
+import {useState} from 'react';
+import {ViewState} from '../catalog/catalog';
 
 type GuitarCardsListProps = {
-  guitarsList?: GuitarsList
+  guitarsList?: GuitarsList;
+  viewState: ViewState;
+  changeURL: (updatedViewState: ViewState) => void;
 }
+const DEFAULT_PAGES_LIMIT = 3;
+const LIMIT = 1;
+const FIRST_PAGE = '1';
 
-function GuitarCardsList(props:GuitarCardsListProps):JSX.Element {
-  const {guitarsList} = props;
+function GuitarCardsList({guitarsList, viewState, changeURL}:GuitarCardsListProps):JSX.Element {
+  const {data: guitarsCount} = useFetchGuitarsTotalCountQuery(LIMIT);
+  const [currentPage, setCurrentPage] = useState<string>(getInitialPageNumber(viewState));
+  const [startPage, setStartPage] = useState<string>(FIRST_PAGE);
+
+  const pagesTotalCount = guitarsCount && Math.ceil(guitarsCount && guitarsCount.totalCount / INITIAL_GUITARS_COUNT);
+
+  const paginationPages = getPaginationPages(startPage, DEFAULT_PAGES_LIMIT);
+
+  const changePageHandler = (pageNumber: number) => {
+    setCurrentPage(pageNumber.toString());
+    changeURL({...viewState, page: pageNumber.toString()});
+  };
+
+  const nextPageClickHandler = (nextPage: number) => {
+    setCurrentPage(nextPage.toString());
+    setStartPage(nextPage.toString());
+    changeURL({...viewState, page: nextPage.toString()});
+  };
+
+  const prevPageClickHandler = (prevPage: number) => {
+    setCurrentPage(prevPage.toString());
+    setStartPage((prevPage - DEFAULT_PAGES_LIMIT + 1).toString());
+    changeURL({...viewState, page: prevPage.toString()});
+  };
+
   return (
     <>
       <div className="cards catalog__cards">
@@ -15,13 +54,17 @@ function GuitarCardsList(props:GuitarCardsListProps):JSX.Element {
       </div>
       <div className="pagination page-content__pagination">
         <ul className="pagination__list">
-          <li className="pagination__page pagination__page--active"><a className="link pagination__page-link" href="1">1</a>
+          <li className={`pagination__page pagination__page--prev ${Number(currentPage) <= DEFAULT_PAGES_LIMIT ? 'visually-hidden' : ''}`} id="prev">
+            <a className="link pagination__page-link" onClick={() => prevPageClickHandler(getPrevPageNumber(paginationPages))}>Назад</a>
           </li>
-          <li className="pagination__page"><a className="link pagination__page-link" href="2">2</a>
-          </li>
-          <li className="pagination__page"><a className="link pagination__page-link" href="3">3</a>
-          </li>
-          <li className="pagination__page pagination__page--next" id="next"><a className="link pagination__page-link" href="2">Далее</a>
+          {paginationPages.map((pageNumber:number) =>  (
+            <li key={pageNumber} className={`pagination__page ${pageNumber.toString() === currentPage ? 'pagination__page--active' : ''}`}>
+              <a className="link pagination__page-link" onClick={() => changePageHandler(pageNumber)}>{pageNumber}</a>
+            </li>
+          ),
+          )};
+          <li className={`pagination__page pagination__page--next ${pagesTotalCount && pagesTotalCount <= DEFAULT_PAGES_LIMIT ? 'visually-hidden' : ''}`} id="next">
+            <a className="link pagination__page-link" onClick={() => nextPageClickHandler(getNextPageNumber(paginationPages))}>Далее</a>
           </li>
         </ul>
       </div>
