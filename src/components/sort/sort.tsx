@@ -1,12 +1,13 @@
 import React, {MouseEvent, useState} from 'react';
-import {SortType, getSort, getOrder} from '../../../const/const';
+import {SortType, getSort, getOrder} from '../../const/const';
+import {ViewState} from '../catalog/catalog';
 
 const ACTIVE = -1;
 const NOT_ACTIVE = 0;
 
 type SortProps = {
-  viewState: {[p: string]: string};
-  changeURL: (updatedViewState: {[p: string]: string}) => void;
+  viewState: ViewState;
+  changeURL: (updatedViewState: ViewState) => void;
 }
 
 function Sort({viewState, changeURL}:SortProps):JSX.Element {

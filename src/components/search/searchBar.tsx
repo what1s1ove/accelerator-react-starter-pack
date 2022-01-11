@@ -1,6 +1,6 @@
 import {ChangeEvent, useState} from 'react';
 import useDebounce from '../../hooks/useDebounce';
-import SearchResult from '../catalog/sort/searchResult';
+import SearchResult from './searchResult';
 
 function SearchBar():JSX.Element {
   const [searchTerm, setSearchTerm] = useState<string | undefined>();

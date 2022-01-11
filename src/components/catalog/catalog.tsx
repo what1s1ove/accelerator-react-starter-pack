@@ -1,11 +1,10 @@
-import Filter from './filter/filter';
-import Sort from './sort/sort';
+import Filter from '../filter/filter';
+import Sort from '../sort/sort';
 import GuitarCardsList from '../guitar-cards-list/guitar-cards-list';
-import {
-  useFetchGuitarsListQuery
-} from '../../service/api';
+import {useFetchGuitarsListQuery} from '../../service/api';
 import {useHistory, useLocation} from 'react-router-dom';
-import {INITIAL_GUITARS_COUNT, parseViewState, stringifyViewState} from '../../const/const';
+import {INITIAL_GUITARS_COUNT, parseURLtoViewState, stringifyViewState} from '../../const/const';
+import Loader from '../../loader/loader';
 
 export type Type = {
   acoustic?: string;
@@ -25,14 +24,14 @@ export type ViewState = {
   stringCount?: string;
   price_gte?: string;
   price_lte?: string;
-
+  page?: string;
 }
 
 function Catalog ():JSX.Element {
   const history = useHistory();
   const location = useLocation<string>();
   const urlQueryParams = location.search;
-  const viewState:ViewState = parseViewState(urlQueryParams);
+  const viewState:ViewState = parseURLtoViewState(urlQueryParams);
 
   const limit = INITIAL_GUITARS_COUNT;
 
@@ -50,23 +49,29 @@ function Catalog ():JSX.Element {
       stringCount: viewState.stringCount,
       minPrice: viewState.price_gte,
       maxPrice: viewState.price_lte,
+      page: viewState.page,
     });
 
+  if (isLoading) {
+    return <Loader />;
+  }
+
   return (
-    <>
-      {isLoading && <h1>Loading...</h1>}
-      <div className="catalog">
-        <Filter
-          viewState={viewState}
-          changeURL={changeURL}
-        />
-        <Sort
-          viewState={viewState}
-          changeURL={changeURL}
-        />
-        <GuitarCardsList guitarsList={guitarsList} />
-      </div>
-    </>
+    <div className="catalog">
+      <Filter
+        viewState={viewState}
+        changeURL={changeURL}
+      />
+      <Sort
+        viewState={viewState}
+        changeURL={changeURL}
+      />
+      <GuitarCardsList
+        guitarsList={guitarsList}
+        viewState={viewState}
+        changeURL={changeURL}
+      />
+    </div>
   );
 }
 export default Catalog;
