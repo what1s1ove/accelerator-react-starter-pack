@@ -40,7 +40,7 @@ function CatalogPagination(): JSX.Element {
       <ul className="pagination__list">
         {currentPage > PAGES_COUNT ?
           <li className="pagination__page pagination__page--prev" id="prev">
-            <Link to={pageNavigationRoute.PageNaviation((getFirstPage(currentPage) - PAGES_COUNT), filterParams)} className="link pagination__page-link">Назад</Link>
+            <Link to={pageNavigationRoute.PageNaviation((getFirstPage(currentPage) - 1), filterParams)} className="link pagination__page-link">Назад</Link>
           </li>
           : ''}
         {getPages(currentPage).map((page) => (
