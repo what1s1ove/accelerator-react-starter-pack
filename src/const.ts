@@ -1,6 +1,7 @@
 const PRODUCTS_PER_PAGE = 9;
 const PAGES_COUNT = 3;
 const FIRST_PAGE = 1;
+const ENTER_KEY = 'Enter';
 
 enum AppRoute {
   Catalog = '/',
@@ -78,4 +79,4 @@ enum stringLabels {
   twelveStrings = 12,
 }
 
-export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels};
+export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, ENTER_KEY};

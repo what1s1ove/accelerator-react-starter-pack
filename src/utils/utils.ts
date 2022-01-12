@@ -37,4 +37,6 @@ const getPageCount = (guitarsCount: number) => Math.ceil(guitarsCount / PRODUCTS
 
 const getRestOfGuitars = (guitarsCount: number, pageNumber: number) => guitarsCount - (getFirstPage(pageNumber) + PAGES_COUNT - 1) * PRODUCTS_PER_PAGE;
 
-export {setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType, getStringsByElementId, getFirstPage, getPageCount, getRestOfGuitars};
+const getAvailableStringCountId = (availableStringCount: number[]) => availableStringCount.map((element) => getElementIdByStrings(element));
+
+export {setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType, getStringsByElementId, getFirstPage, getPageCount, getRestOfGuitars, getAvailableStringCountId};
