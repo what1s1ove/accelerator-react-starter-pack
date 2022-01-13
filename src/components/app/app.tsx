@@ -1,6 +1,7 @@
 import {Route, Switch} from 'react-router-dom';
 import {AppRoute} from '../../const/const';
 import MainScreen from '../main-screen/main-screen';
+import NotFoundPage from '../not-found-page/not-found-page';
 
 function App(): JSX.Element {
   return (
@@ -10,6 +11,9 @@ function App(): JSX.Element {
       </Route>
       <Route exact path={'/guitars'}>
         <MainScreen />
+      </Route>
+      <Route>
+        <NotFoundPage />
       </Route>
     </Switch>
   );
