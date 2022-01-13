@@ -5,23 +5,23 @@ function Footer(): JSX.Element {
     <footer className="footer">
       <div className="footer__container container">
         <Link className="footer__logo logo" to="">
-          <img className="logo__img" width="70" height="70" src="img/logo.svg" alt="Логотип"/>
+          <img className="logo__img" width="70" height="70" src="/img/logo.svg" alt="Логотип"/>
         </Link>
         <div className="socials footer__socials">
           <ul className="socials__list">
             <li className="socials-item">
               <Link className="socials__link" to="https://www.facebook.com/" aria-label="facebook">
-                <img src="img/facebook.svg" alt="facebook"  width="24" height="24"/>
+                <img src="/img/facebook.svg" alt="facebook"  width="24" height="24"/>
               </Link>
             </li>
             <li className="socials-item">
               <Link className="socials__link" to="https://www.instagram.com/" aria-label="instagram">
-                <img src="img/instagram.svg" alt="instagram"  width="24" height="24"/>
+                <img src="/img/instagram.svg" alt="instagram"  width="24" height="24"/>
               </Link>
             </li>
             <li className="socials-item">
               <Link className="socials__link" to="https://www.twitter.com/" aria-label="twitter">
-                <img src="img/twitter.svg" alt="twitter"  width="24" height="24"/>
+                <img src="/img/twitter.svg" alt="twitter"  width="24" height="24"/>
               </Link>
             </li>
           </ul>
@@ -49,12 +49,12 @@ function Footer(): JSX.Element {
           <h2 className="footer__nav-title">Контакты</h2>
           <p className="footer__nav-content">г. Санкт-Петербург,<br/> м. Невский проспект, <br/>ул. Казанская 6.</p>
           <div className="footer__nav-content">
-            <img src="img/phone.svg" alt="phone" width="8" height="8"/>
+            <img src="/img/phone.svg" alt="phone" width="8" height="8"/>
             <Link className="link" to="tel:88125005050"> 8-812-500-50-50</Link>
           </div>
           <p className="footer__nav-content">Режим работы:<br/>
             <span className="footer__span">
-              <img src="img/clock.svg" alt="clock" width="13" height="13"/>
+              <img src="/img/clock.svg" alt="clock" width="13" height="13"/>
               <span> с 11:00 до 20:00</span><span>без выходных</span>
             </span>
           </p>

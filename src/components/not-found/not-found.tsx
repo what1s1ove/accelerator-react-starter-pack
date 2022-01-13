@@ -10,7 +10,7 @@ function NotFound(): JSX.Element {
         <div className="container" style={{display: 'flex', flexDirection: 'column'}}>
           <h1 className="page-content__title title title--bigger">404.Page not found</h1>
           <Link to="/">Go to main page</Link>
-          <img src="img/not-faund.jpg" alt="Not-faund" />
+          <img src="/img/not-faund.jpg" alt="Not-faund" />
         </div>
       </main>
       <Footer />

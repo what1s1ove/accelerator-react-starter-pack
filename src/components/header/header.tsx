@@ -5,7 +5,7 @@ function Header(): JSX.Element {
     <header className="header" id="header">
       <div className="container header__wrapper">
         <Link className="header__logo logo" to="#">
-          <img className="logo__img" width="70" height="70" src="img/logo.svg" alt="Логотип"/>
+          <img className="logo__img" width="70" height="70" src="/img/logo.svg" alt="Логотип"/>
         </Link>
         <nav className="main-nav">
           <ul className="main-nav__list">
@@ -21,7 +21,7 @@ function Header(): JSX.Element {
           <form className="form-search__form">
             <button className="form-search__submit" type="submit">
               <img className="form-search__icon"
-                src="img/magnifier.svg"
+                src="/img/magnifier.svg"
                 alt="Искать"
                 width="14"
                 height="15"
@@ -42,7 +42,7 @@ function Header(): JSX.Element {
         </div>
         <Link className="header__cart-link" to="#" aria-label="Корзина">
           <img className="header__cart-icon"
-            src="img/basket.svg"
+            src="/img/basket.svg"
             alt="Корзина"
             width="14"
             height="14"

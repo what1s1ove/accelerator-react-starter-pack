@@ -6,7 +6,7 @@ import { GuitarItemProps } from './types';
 function GuitarItem({guitar}: GuitarItemProps): JSX.Element {
   return (
     <div className="product-card">
-      <img src={guitar.previewImg} width="75" height="190" alt={guitar.name}/>
+      <img src={`/${guitar.previewImg}`} width="75" height="190" alt={guitar.name}/>
       <div className="product-card__info">
         <Rating rating={guitar.rating} />
         <p className="product-card__title">{guitar.name} {capitalize(guitar.type)}</p>

@@ -1,5 +1,6 @@
 export enum AppRoute {
-  Catalog = '/',
+  Main = '/',
+  Catalog = '/catalog/page_:id',
 }
 
 export enum APIRoute {
@@ -18,4 +19,11 @@ export enum SortTypeOptions {
 export enum SortOrderOptions {
   Ascending = 'ascending',
   Descending = 'descending',
+}
+
+export enum GuitarsType {
+  All = 'Все типы',
+  Acoustic = 'Акустические гитары',
+  Electric = 'Электрогитары',
+  Ukulele = 'Укулеле',
 }
