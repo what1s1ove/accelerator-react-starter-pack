@@ -28,6 +28,7 @@ function SearchBar():JSX.Element {
           placeholder="что вы ищите?"
           value={searchTerm}
           onChange={handleInputChange}
+          data-testid='search'
         />
         <label className="visually-hidden" htmlFor="search">Поиск</label>
       </form>

@@ -116,7 +116,7 @@ export const isTwelveStringsDisabled = (stateType: Type):boolean => (stateType.u
 
 export const getInitialPageNumber = (viewState:ViewState) => viewState.page ? viewState.page : '1';
 
-export  const getPaginationPages = (currentPage: string, pagesLimit: number):number[] => {
+export const getPaginationPages = (currentPage: string, pagesLimit: number):number[] => {
   const start = Math.floor(((Number(currentPage) - 1) / pagesLimit) * pagesLimit);
   return new Array(pagesLimit).fill(null).map(((value, index) => start + index + 1));
 };

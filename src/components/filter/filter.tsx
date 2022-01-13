@@ -121,7 +121,7 @@ function Filter ({viewState, changeURL}:FilterProps):JSX.Element {
         <div className="catalog-filter__price-range">
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
-            <input type="number" placeholder={minCatalogPrice && minCatalogPrice} id="priceMin" name="от"
+            <input type="number" placeholder={minCatalogPrice && minCatalogPrice} id="priceMin" name="от" data-testid='priceMin'
               value={stateMinimumPrice}
               onChange={({target}:ChangeEvent<HTMLInputElement>) => {
                 setStateMinimumPrice(target.value);
@@ -131,7 +131,7 @@ function Filter ({viewState, changeURL}:FilterProps):JSX.Element {
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input type="number" placeholder={maxCatalogPrice && maxCatalogPrice} id="priceMax" name="до"
+            <input type="number" placeholder={maxCatalogPrice && maxCatalogPrice} id="priceMax" name="до" data-testid='priceMax'
               value={stateMaximumPrice}
               onChange={({target}:ChangeEvent<HTMLInputElement>) => {
                 setStateMaximumPrice(target.value);
