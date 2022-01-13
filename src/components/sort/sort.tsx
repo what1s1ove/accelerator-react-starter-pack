@@ -41,6 +41,7 @@ function Sort({viewState, changeURL}:SortProps):JSX.Element {
         <button
           className={`catalog-sort__type-button ${currentSortType === SortType.Price ? 'catalog-sort__type-button--active': ''}`}
           aria-label="по цене"
+          data-testid='по цене'
           tabIndex={currentSortType === SortType.Price ? ACTIVE : NOT_ACTIVE}
           onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
             handleSortClick(currentTarget.ariaLabel);
@@ -50,6 +51,7 @@ function Sort({viewState, changeURL}:SortProps):JSX.Element {
         <button
           className={`catalog-sort__type-button ${currentSortType === SortType.Popularity ? 'catalog-sort__type-button--active': ''}`}
           aria-label="по популярности"
+          data-testid='по популярности'
           tabIndex={currentSortType === SortType.Popularity ? ACTIVE : NOT_ACTIVE}
           onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
             handleSortClick(currentTarget.ariaLabel);
@@ -61,6 +63,7 @@ function Sort({viewState, changeURL}:SortProps):JSX.Element {
         <button
           className={`catalog-sort__order-button catalog-sort__order-button--up ${currentSortOrder === SortType.Ascend ? 'catalog-sort__order-button--active' : ''}`}
           aria-label="По возрастанию"
+          data-testid='По возрастанию'
           tabIndex={currentSortOrder === SortType.Ascend ? ACTIVE : NOT_ACTIVE}
           onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
             handleOrderClick(currentTarget.ariaLabel);
@@ -70,6 +73,7 @@ function Sort({viewState, changeURL}:SortProps):JSX.Element {
         <button
           className={`catalog-sort__order-button catalog-sort__order-button--down ${currentSortOrder === SortType.Descend ? 'catalog-sort__order-button--active' : ''}`}
           aria-label="По убыванию"
+          data-testid='По убыванию'
           tabIndex={currentSortOrder === SortType.Descend ? ACTIVE : NOT_ACTIVE}
           onClick={({currentTarget}:MouseEvent<HTMLButtonElement>) => {
             handleOrderClick(currentTarget.ariaLabel);
