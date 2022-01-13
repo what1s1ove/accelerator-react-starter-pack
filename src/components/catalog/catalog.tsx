@@ -4,7 +4,6 @@ import GuitarCardsList from '../guitar-cards-list/guitar-cards-list';
 import {useFetchGuitarsListQuery} from '../../service/api';
 import {useHistory, useLocation} from 'react-router-dom';
 import {INITIAL_GUITARS_COUNT, parseURLtoViewState, stringifyViewState} from '../../const/const';
-import Loader from '../../loader/loader';
 
 export type Type = {
   acoustic?: string;
@@ -40,7 +39,7 @@ function Catalog ():JSX.Element {
     history.push(newLocation);
   };
 
-  const {data: guitarsList, isLoading} = useFetchGuitarsListQuery(
+  const {data: guitarsList} = useFetchGuitarsListQuery(
     {
       limit,
       sort: viewState.sort,
@@ -51,10 +50,6 @@ function Catalog ():JSX.Element {
       maxPrice: viewState.price_lte,
       page: viewState.page,
     });
-
-  if (isLoading) {
-    return <Loader />;
-  }
 
   return (
     <div className="catalog">

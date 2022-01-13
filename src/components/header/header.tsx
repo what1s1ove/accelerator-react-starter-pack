@@ -1,4 +1,4 @@
-import SearchBar from '../search/searchBar';
+import SearchBar from '../searchBar/searchBar';
 
 function Header(): JSX.Element {
   return (
