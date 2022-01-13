@@ -4,7 +4,7 @@ import { Link, useLocation, useParams } from 'react-router-dom';
 import { FIRST_PAGE, PAGES_COUNT, pageNavigationRoute } from '../../const';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getGuitarsCount, getSortOrder, getSortType } from '../../store/selectors';
-import { getFirstPage, getPageCount, getRestOfGuitars } from '../../utils/utils';
+import { getFirstPage, getPageCount } from '../../utils/utils';
 
 function CatalogPagination(): JSX.Element {
   const guitarsCount = useSelector(getGuitarsCount);
@@ -38,9 +38,9 @@ function CatalogPagination(): JSX.Element {
   return (
     <div className="pagination page-content__pagination">
       <ul className="pagination__list">
-        {currentPage > PAGES_COUNT ?
+        {currentPage > FIRST_PAGE ?
           <li className="pagination__page pagination__page--prev" id="prev">
-            <Link to={pageNavigationRoute.PageNaviation((getFirstPage(currentPage) - 1), filterParams)} className="link pagination__page-link">Назад</Link>
+            <Link to={pageNavigationRoute.PageNaviation((currentPage - 1), filterParams)} className="link pagination__page-link">Назад</Link>
           </li>
           : ''}
         {getPages(currentPage).map((page) => (
@@ -48,9 +48,9 @@ function CatalogPagination(): JSX.Element {
             <Link to={pageNavigationRoute.PageNaviation(page, filterParams)} className="link pagination__page-link">{page}</Link>
           </li>
         ))}
-        {getRestOfGuitars(guitarsCount, currentPage) > 0 ?
+        {currentPage < getPageCount(guitarsCount) ?
           <li className="pagination__page pagination__page--next" id="next">
-            <Link to={pageNavigationRoute.PageNaviation((getFirstPage(currentPage) + PAGES_COUNT), filterParams)} className="link pagination__page-link">Далее</Link>
+            <Link to={pageNavigationRoute.PageNaviation((currentPage + 1), filterParams)} className="link pagination__page-link">Далее</Link>
           </li>
           : ''}
       </ul>
