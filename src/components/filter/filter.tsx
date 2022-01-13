@@ -66,7 +66,6 @@ function Filter(): JSX.Element {
               id="priceMin"
               name="от"
             />
-            <p>{priceFrom}</p>
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
@@ -79,7 +78,6 @@ function Filter(): JSX.Element {
               id="priceMax"
               name="до"
             />
-            <p>{priceTo}</p>
           </div>
         </div>
       </fieldset>
