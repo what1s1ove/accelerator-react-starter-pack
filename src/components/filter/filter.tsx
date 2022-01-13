@@ -4,11 +4,13 @@ import { GuitarsType } from '../../const';
 import { fetchGuitarsAction } from '../../store/api-actions';
 import { getMaxPrice, getMinPrice } from '../../store/guitars/selectors';
 import { toggleArrayElement } from '../../utils/utils';
-// import { useDispatch } from 'react-redux';
-// import { GuitarsType } from '../../const';
-// import { formatNumber, parseFormattedNumber } from '../../utils/utils';
 
 function Filter(): JSX.Element {
+  const [priceFrom, setPriceFrom] = useState<number>();
+  const [priceTo, setPriceTo] = useState<number>();
+  const [typeGuitars, setTypeGuitars] = useState<GuitarsType[]>([]);
+  const [numberStrings, setNumberStrings] = useState<number[]>([]);
+
   const minPrice = useSelector(getMinPrice);
   const maxPrice = useSelector(getMaxPrice);
 
@@ -17,11 +19,35 @@ function Filter(): JSX.Element {
     dispatch(fetchGuitarsAction());
   }, [dispatch]);
 
-  const [priceFrom, setPriceFrom] = useState<number>();
-  const [priceTo, setPriceTo] = useState<number>();
-  const [typeGuitars, setTypeGuitars] = useState<GuitarsType[]>([]);
-  const [numberStrings, setNumberStrings] = useState<number[]>([]);
-  // const dispatch = useDispatch();
+  const handlePriceChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const price = parseInt(evt.target.value, 10);
+    switch(evt.target.id) {
+      case 'priceMin':
+        setPriceFrom(price);
+        break;
+      case 'priceMax':
+        setPriceTo(price);
+        break;
+    }
+  };
+
+  const handlePriceFieldBlur = (evt: React.FocusEvent<HTMLInputElement>) => {
+    let price = parseInt(evt.target.value, 10);
+    if (price < minPrice) {
+      price = minPrice;
+    }
+    if (price > maxPrice) {
+      price = maxPrice;
+    }
+    switch(evt.target.id) {
+      case 'priceMin':
+        setPriceFrom(price);
+        break;
+      case 'priceMax':
+        setPriceTo(price);
+        break;
+    }
+  };
 
   return (
     <form className="catalog-filter">
@@ -32,11 +58,10 @@ function Filter(): JSX.Element {
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
             <input
-              onBlur={(evt) => {
-                setPriceFrom(parseInt(evt.target.value, 10));
-              }}
+              onChange={handlePriceChange}
+              onBlur={handlePriceFieldBlur}
               type="number"
-              value={priceFrom && (priceFrom < minPrice) ? minPrice : priceFrom}
+              value={priceFrom}
               placeholder="1 000"
               id="priceMin"
               name="от"
@@ -46,11 +71,10 @@ function Filter(): JSX.Element {
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
             <input
-              onBlur={(evt) => {
-                setPriceTo(parseInt(evt.target.value, 10));
-              }}
+              onChange={handlePriceChange}
+              onBlur={handlePriceFieldBlur}
               type="number"
-              value={priceTo && (priceTo > maxPrice) ? maxPrice : priceTo}
+              value={priceTo}
               placeholder="30 000"
               id="priceMax"
               name="до"
