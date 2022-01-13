@@ -75,18 +75,26 @@ describe('Application Routing', () => {
   });
 
   it('should render "GuitarPage" when user navigate to "/page-:pageNumber/:filters/:guitarId"', () => {
-    history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${currentGuitar.id}`);
-    render(fakeApp);
+    async () => {
+      history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${currentGuitar.id}`);
+      render(fakeApp);
 
-    expect(screen.getByRole('h1')).toBeInTheDocument();
-    expect(screen.getByText('Отзывы')).toBeInTheDocument();
+      const text1 = await screen.findByText('Товар');
+      expect(text1).toBeInTheDocument();
+      const text2 = await screen.findByText('Отзывы');
+      expect(text2).toBeInTheDocument();
+    }
   });
   
   it('should render "NotFoundScreen" when user navigate to non-existent route', () => {
-    history.push('/non-existent-route');
-    render(fakeApp);
+    async () => {
+      history.push('/non-existent-route');
+      render(fakeApp);
 
-    expect(screen.getByText('404. Page not found')).toBeInTheDocument();
-    expect(screen.getByText('Вернуться на главную')).toBeInTheDocument();
+      const text1 = await screen.findByText('404. Page not found');
+      expect(text1).toBeInTheDocument();
+      const text2 = await screen.findByText('Вернуться на главную');
+      expect(text2).toBeInTheDocument();
+    }
   });
 });

@@ -33,7 +33,7 @@ function Header(): JSX.Element {
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
-        <Link className="header__logo logo" to='/'>
+        <Link className="header__logo logo" to='/' data-testid="logo">
           <img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип"/>
         </Link>
         <nav className="main-nav">
@@ -57,11 +57,12 @@ function Header(): JSX.Element {
               className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?"
               onChange={searchingHandler}
               onFocus={openingSearchListHandler}
+              data-testid="search"
             />
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
-          <ul className="form-search__select-list hidden" ref={searchListRef}>
-            {searchedGuitars.map((guitar) => <li className="form-search__select-item" tabIndex={0} key={guitar.id} onClick={() => {history.push(`guitars/${guitar.id}`);}}>{guitar.name}</li>)}
+          <ul className="form-search__select-list hidden" ref={searchListRef} data-testid="search-list">
+            {searchedGuitars.map((guitar) => <li className="form-search__select-item" data-testid="select-item" tabIndex={0} key={guitar.id} onClick={() => {history.push(`guitars/${guitar.id}`);}}>{guitar.name}</li>)}
           </ul>
         </div>
         <a className="header__cart-link" href="#" aria-label="Корзина">

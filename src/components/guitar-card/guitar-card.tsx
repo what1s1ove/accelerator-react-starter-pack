@@ -20,6 +20,7 @@ function GuitarCard({guitar, commentCount, guitarRating}: GuitarCardProps): JSX.
   return (
     <div
       className="product-card"
+      data-testid="product-card"
       onClick={() => {
         history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${guitar.id}`);
       }}

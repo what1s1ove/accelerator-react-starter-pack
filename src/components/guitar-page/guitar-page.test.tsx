@@ -1,40 +1,39 @@
 import {configureMockStore} from '@jedmao/redux-mock-store';
-import {render} from '@testing-library/react';
-import {makeFakeCommentsCount, makeFakeGuitar, makeFakeGuitarRating} from '../../utils/mocks';
-import GuitarList from './guitar-list';
+import {render, screen} from '@testing-library/react';
+import {makeFakeCurrentGuitarComment, makeFakeGuitar, makeFakeGuitarRating} from '../../utils/mocks';
 import thunk from 'redux-thunk'
 import {Provider} from 'react-redux';
 import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history';
+import GuitarPage from './guitar-page';
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares);
 const history = createMemoryHistory();
 const guitars = [...new Array(20)].map((_, idx) => makeFakeGuitar(idx + 1));
-const commentsCount = [...new Array(20)].map(() => makeFakeCommentsCount());
 const guitarsRating = [...new Array(20)].map(() => makeFakeGuitarRating());
+const currentGuitar = makeFakeGuitar(1);
+const currentGuitarComments = [...new Array(20)].map(() => makeFakeCurrentGuitarComment(1));
 
-describe('Component: GuitarList', () => {
+describe('Component: GuitarPage', () => {
   it('should render correctly', () => {
     const store = mockStore({
       GUITARS: {
         guitars: guitars,
-        guitarsRating: [],
+        currentGuitar: currentGuitar,
+        guitarsRating: guitarsRating,
       },
       GUITARS_OTHER: {
-        commentsCount: commentsCount,
+        currentGuitarComments: currentGuitarComments,
       },
     });
-    const {container} = render(
+    render(
       <Provider store={store}>
         <Router history={history}>
-          <GuitarList
-            guitars={guitars}
-            commentsCount={commentsCount}
-            guitarsRating={guitarsRating}
-          />
+          <GuitarPage />
         </Router>
       </Provider>);
-      expect(container.querySelector('cards catalog__cards'));
+      expect(screen.getAllByText('Товар')[0]).toBeInTheDocument();
+      expect(screen.getByText('Отзывы')).toBeInTheDocument();
   });
 });
