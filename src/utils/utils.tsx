@@ -40,6 +40,7 @@ const sortByRating = (guitars: Guitar[], isSortedFromHighToLow: boolean, isSorte
   return guitars.sort((a: Guitar, b: Guitar) => b.rating - a.rating);
 };
 
+
 export {
   translateNameOfGuitar,
   sortByPrice,
