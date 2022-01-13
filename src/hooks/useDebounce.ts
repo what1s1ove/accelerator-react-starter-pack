@@ -13,7 +13,7 @@ function useDebounce(value: string | number |undefined, delay: number): string {
     };
   }, [value, delay]);
 
-  return <string>debouncedValue;
+  return debouncedValue as string;
 }
 
 export default useDebounce;
