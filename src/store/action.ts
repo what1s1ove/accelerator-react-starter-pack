@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { AppRoute, SortOrder, SortType } from '../const';
+import { AppRoute, FetchStatus, SortOrder, SortType } from '../const';
 import { ActionType } from '../types/action';
 import { CommentType } from '../types/comment';
 import { GuitarType } from '../types/guitar';
@@ -46,4 +46,11 @@ const loadComments = createAction(
   }),
 );
 
-export {loadGuitars, loadGuitarsCount, setSortType, setSortOrder, redirectToRoute, loadComments};
+const setCatalogFetchStatusAction = createAction(
+  ActionType.SetCatalogFetchStatus,
+  (status: FetchStatus) => ({
+    payload: status,
+  }),
+);
+
+export {loadGuitars, loadGuitarsCount, setSortType, setSortOrder, redirectToRoute, loadComments, setCatalogFetchStatusAction};

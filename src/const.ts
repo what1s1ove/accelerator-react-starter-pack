@@ -79,4 +79,11 @@ enum stringLabels {
   twelveStrings = 12,
 }
 
-export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, ENTER_KEY};
+enum FetchStatus {
+  Unset = 'Unset',
+  InProgress = 'InProgress',
+  Success = 'Success',
+  Error = 'Error',
+}
+
+export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, ENTER_KEY, FetchStatus};
