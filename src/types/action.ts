@@ -9,6 +9,7 @@ enum ActionType {
   SetSortType = 'catalog/setSortType',
   SetSortOrder = 'catalog/setSortOrder',
   RedirectToRoute = 'redirectToRoute',
+  SetCatalogFetchStatus = 'Catalog/SetCatalogFetchStatus',
 }
 
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, RootState, AxiosInstance, Action>;

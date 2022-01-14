@@ -1,20 +1,21 @@
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
-import { FilterParams, FIRST_PAGE, pageNavigationRoute, stringLabels, stringValues } from '../../const';
+import { FilterParams, FIRST_PAGE, pageNavigationRoute, stringLabels, stringValues, ENTER_KEY } from '../../const';
 import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
 import { getGuitars, getSortType, getSortOrder } from '../../store/selectors';
-import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType } from '../../utils/utils';
+import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType, getAvailableStringCountId } from '../../utils/utils';
 
 function CatalogFilters(): JSX.Element {
   const dispatch = useDispatch();
   const guitars = useSelector(getGuitars);
-  const sort = useSelector(getSortType);
-  const order = useSelector(getSortOrder);
+  const sortType = useSelector(getSortType);
+  const sortOrder = useSelector(getSortOrder);
 
   const [currentTypes, setCurrentTypes] = useState<string[]>([]);
   const [currentStringCount, setcurrentStringCount] = useState<string[]>([]);
   const [availableStringCount, setAvailableStringCount] = useState<number[]>(stringValues);
+  const [currentAndAvailableStringCount, setCurrentAndAvailableStringCount] = useState<string[]>([]);
 
   const history = useHistory();
   const filterParams = useLocation<string>().search;
@@ -23,9 +24,15 @@ function CatalogFilters(): JSX.Element {
   const maxPrice = getMaxPrice(guitars);
 
   useEffect(() => {
-    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
-    dispatch(fetchGuitarsCountAction(filterParams));
+    handleFiltersInput();
+  }, [currentAndAvailableStringCount]);
 
+  useEffect(() => {
+    dispatch(fetchFilteredGuitarsAction(filterParams, sortType, sortOrder, FIRST_PAGE));
+    dispatch(fetchGuitarsCountAction(filterParams));
+  }, [dispatch, filterParams, sortOrder, sortType]);
+
+  useEffect(() => {
     stringValues.forEach((value) => {
       document.getElementById(`${getElementIdByStrings(value)}`)?.setAttribute('disabled', 'true');
     });
@@ -33,7 +40,9 @@ function CatalogFilters(): JSX.Element {
     availableStringCount.forEach((value) => {
       document.getElementById(`${getElementIdByStrings(value)}`)?.removeAttribute('disabled');
     });
-  }, [availableStringCount, dispatch, filterParams, order, sort]);
+
+    setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
+  }, [availableStringCount, currentStringCount]);
 
   const priceMinRef = useRef<HTMLInputElement | null>(null);
   const priceMaxRef = useRef<HTMLInputElement | null>(null);
@@ -51,11 +60,11 @@ function CatalogFilters(): JSX.Element {
 
     currentTypes.map((type) => filtersInput += `${FilterParams.Type}${type}&`);
 
-    currentStringCount.map((stringCount) => filtersInput += `${FilterParams.FilterStringCount}${getStringsByElementId(stringCount)}&`);
+    currentAndAvailableStringCount.map((stringCount) => filtersInput += `${FilterParams.FilterStringCount}${getStringsByElementId(stringCount)}&`);
 
     history.push(String(pageNavigationRoute.PageNaviation(FIRST_PAGE, filtersInput)));
 
-    dispatch(fetchFilteredGuitarsAction(filterParams, sort, order, FIRST_PAGE));
+    dispatch(fetchFilteredGuitarsAction(filterParams, sortType, sortOrder, FIRST_PAGE));
     dispatch(fetchGuitarsCountAction(filterParams));
   };
 
@@ -87,6 +96,13 @@ function CatalogFilters(): JSX.Element {
       const index = currentStringCount.indexOf(target.id);
       currentStringCount.splice(index, 1);
     }
+    setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
+  };
+
+  const handleKeyPress = (event: { key: string; }) => {
+    if (event.key === ENTER_KEY) {
+      handleFiltersInput();
+    }
   };
 
   return (
@@ -104,7 +120,7 @@ function CatalogFilters(): JSX.Element {
               name="от"
               min="0"
               ref={priceMinRef}
-              onInput={handleFiltersInput}
+              onKeyPress={handleKeyPress}
               data-testid="minPrice"
             >
             </input>
@@ -118,7 +134,7 @@ function CatalogFilters(): JSX.Element {
               name="до"
               min="0"
               ref={priceMaxRef}
-              onInput={handleFiltersInput}
+              onKeyPress={handleKeyPress}
               data-testid="maxPrice"
             >
             </input>
@@ -135,7 +151,6 @@ function CatalogFilters(): JSX.Element {
             name="acoustic"
             onInput={(event) => {
               handleTypeInput(event);
-              handleFiltersInput();
             }}
           >
           </input>
@@ -149,7 +164,6 @@ function CatalogFilters(): JSX.Element {
             name="electric"
             onInput={(event) => {
               handleTypeInput(event);
-              handleFiltersInput();
             }}
           >
           </input>
@@ -163,7 +177,6 @@ function CatalogFilters(): JSX.Element {
             name="ukulele"
             onInput={(event) => {
               handleTypeInput(event);
-              handleFiltersInput();
             }}
           >
           </input>
@@ -180,7 +193,6 @@ function CatalogFilters(): JSX.Element {
             name="4-strings"
             onInput={(event) => {
               handleStringCountInput(event);
-              handleFiltersInput();
             }}
           >
           </input>
@@ -194,7 +206,6 @@ function CatalogFilters(): JSX.Element {
             name="6-strings"
             onInput={(event) => {
               handleStringCountInput(event);
-              handleFiltersInput();
             }}
           >
           </input>
@@ -208,7 +219,6 @@ function CatalogFilters(): JSX.Element {
             name="7-strings"
             onInput={(event) => {
               handleStringCountInput(event);
-              handleFiltersInput();
             }}
           >
           </input>
@@ -222,7 +232,6 @@ function CatalogFilters(): JSX.Element {
             name="12-strings"
             onInput={(event) => {
               handleStringCountInput(event);
-              handleFiltersInput();
             }}
           >
           </input>

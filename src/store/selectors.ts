@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { SortOrder, SortType } from '../const';
+import { FetchStatus, SortOrder, SortType } from '../const';
 import { NameSpace, RootState } from './root-reducer';
 
 const getGuitars = (state: RootState) => state[NameSpace.Data].catalog;
@@ -17,5 +17,6 @@ const getCommentsCount = createSelector(
     return guitarComments.length;
   });
 
+const getCatalogFetchStatusSelector = (state: RootState): FetchStatus => state[NameSpace.Data].catalogFetchStatus;
 
-export {getGuitars, getDataLoadingStatus, getGuitarsCount, getSortType, getSortOrder, getCommentsCount};
+export {getGuitars, getDataLoadingStatus, getGuitarsCount, getSortType, getSortOrder, getCommentsCount, getCatalogFetchStatusSelector};

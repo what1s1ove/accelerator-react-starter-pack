@@ -1,13 +1,15 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { FetchStatus } from '../../const';
 import { CommentType } from '../../types/comment';
 import { GuitarType } from '../../types/guitar';
-import { loadComments, loadGuitars, loadGuitarsCount } from '../action';
+import { loadComments, loadGuitars, loadGuitarsCount, setCatalogFetchStatusAction } from '../action';
 
 type CatalogType = {
   catalog: GuitarType[],
   isDataLoaded: boolean,
   guitarsCount: number,
   comments: CommentType[],
+  catalogFetchStatus: FetchStatus;
 }
 
 const initialState: CatalogType = {
@@ -27,6 +29,7 @@ const initialState: CatalogType = {
   isDataLoaded: false,
   guitarsCount: 0,
   comments: [],
+  catalogFetchStatus: FetchStatus.Unset,
 };
 
 const guitarData = createReducer(initialState, (builder) => {
@@ -43,6 +46,9 @@ const guitarData = createReducer(initialState, (builder) => {
     .addCase(loadComments, (state, action) => {
       const {comments} = action.payload;
       state.comments = state.comments.concat(comments);
+    })
+    .addCase(setCatalogFetchStatusAction, (state, action) => {
+      state.catalogFetchStatus = action.payload;
     });
 });
 

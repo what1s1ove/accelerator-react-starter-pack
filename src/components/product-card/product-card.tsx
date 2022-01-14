@@ -19,7 +19,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
   return (
     <div className="product-card">
       <img
-        src={imageSrc}
+        src={`/${ imageSrc }`}
         width="75"
         height="190"
         alt={name}
