@@ -12,11 +12,13 @@ export enum APIRoute {
 }
 
 export enum SortTypeOptions {
+  Default = 'не применено',
   Popular = 'по популярности',
   Price = 'по цене',
 }
 
 export enum SortOrderOptions {
+  Default = 'not applied',
   Ascending = 'ascending',
   Descending = 'descending',
 }

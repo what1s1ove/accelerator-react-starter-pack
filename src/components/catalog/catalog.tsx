@@ -9,12 +9,12 @@ import Footer from '../footer/footer';
 import GuitarsList from '../guitars-list/guitars-list';
 import Header from '../header/header';
 function Catalog(): JSX.Element {
-  const guitars = useSelector(getGuitarsList);
   const [priceFrom, setPriceFrom] = useState<number>();
   const [priceTo, setPriceTo] = useState<number>();
   const [typeGuitars, setTypeGuitars] = useState<string[]>([]);
   const [numberStrings, setNumberStrings] = useState<number[]>([]);
 
+  const guitars = useSelector(getGuitarsList);
   const minPrice = useSelector(getMinPrice);
   const maxPrice = useSelector(getMaxPrice);
 
@@ -56,11 +56,11 @@ function Catalog(): JSX.Element {
   let filteredGuitars = guitars.slice();
 
   if (priceFrom && priceTo) {
-    filteredGuitars = guitars.filter((guitar) => (guitar.price >= priceFrom) && (guitar.price <= priceTo));
+    filteredGuitars = filteredGuitars.filter((guitar) => (guitar.price >= priceFrom) && (guitar.price <= priceTo));
   } else if (priceFrom) {
-    filteredGuitars = guitars.filter((guitar) => guitar.price >= priceFrom);
+    filteredGuitars = filteredGuitars.filter((guitar) => guitar.price >= priceFrom);
   } else if (priceTo) {
-    filteredGuitars = guitars.filter((guitar) => guitar.price <= priceTo);
+    filteredGuitars = filteredGuitars.filter((guitar) => guitar.price <= priceTo);
   }
 
   for (const type of Object.values(GuitarsType)) {

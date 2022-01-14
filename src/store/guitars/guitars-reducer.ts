@@ -9,8 +9,8 @@ import { changeSortOrder, changeSortType, setGuitars } from '../action';
 
 export const initialState: Guitars = {
   guitars: [],
-  sortType: SortTypeOptions.Price,
-  sortOrder: SortOrderOptions.Ascending,
+  sortType: SortTypeOptions.Default,
+  sortOrder: SortOrderOptions.Default,
 };
 
 const guitarsReducer = createReducer(initialState, (builder) => {

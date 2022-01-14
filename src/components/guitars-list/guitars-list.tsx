@@ -1,43 +1,63 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SortOrderOptions, SortTypeOptions } from '../../const';
-import { fetchGuitarsAction } from '../../store/api-actions';
-import { getSortOrder, getSortType } from '../../store/guitars/selectors';
 import { Guitar } from '../../types/guitar';
 import GuitarItem from '../guitar-item/guitar-item';
 import { GuitarsListProps } from './types';
 
 function GuitarsList({filteredGuitars}: GuitarsListProps): JSX.Element {
-  const sortType = useSelector(getSortType);
-  const sortOrder = useSelector(getSortOrder);
+  const [sortType, setSortType] = useState<SortTypeOptions>(SortTypeOptions.Default);
+  const [sortOrder, setSortOrder] = useState<SortOrderOptions>(SortOrderOptions.Default);
   if (sortType === SortTypeOptions.Popular) {
-    filteredGuitars.sort((first: Guitar, second: Guitar) => second.rating - first.rating);
+    filteredGuitars.sort((first: Guitar, second: Guitar) => first.rating - second.rating);
   }
   if (sortType === SortTypeOptions.Price) {
-    filteredGuitars.sort((first: Guitar, second: Guitar) => second.price - first.price);
+    filteredGuitars.sort((first: Guitar, second: Guitar) =>  first.price - second.price);
   }
   if (sortOrder === SortOrderOptions.Descending) {
     filteredGuitars.reverse();
   }
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchGuitarsAction());
-  }, [dispatch]);
+  if (sortType === SortTypeOptions.Default && sortOrder !== SortOrderOptions.Default) {
+    setSortType(SortTypeOptions.Price);
+  }
 
   return (
     <React.Fragment>
       <div className="catalog-sort">
         <h2 className="catalog-sort__title">Сортировать:</h2>
         <div className="catalog-sort__type">
-          <button className="catalog-sort__type-button catalog-sort__type-button--active" aria-label="по цене" tabIndex={-1}>по цене</button>
-          <button className="catalog-sort__type-button" aria-label="по популярности">по популярности</button>
+          <button
+            onClick={() => setSortType(SortTypeOptions.Price)}
+            className={`catalog-sort__type-button
+            ${sortType === SortTypeOptions.Price ? 'catalog-sort__type-button--active' : ''}`}
+            aria-label="по цене" tabIndex={-1}
+          >
+            по цене
+          </button>
+          <button
+            onClick={() => setSortType(SortTypeOptions.Popular)}
+            className={`catalog-sort__type-button
+            ${sortType === SortTypeOptions.Popular ? 'catalog-sort__type-button--active' : ''}`}
+            aria-label="по популярности"
+          >
+            по популярности
+          </button>
         </div>
         <div className="catalog-sort__order">
-          <button className="catalog-sort__order-button catalog-sort__order-button--up catalog-sort__order-button--active" aria-label="По возрастанию" tabIndex={-1}></button>
-          <button className="catalog-sort__order-button catalog-sort__order-button--down" aria-label="По убыванию"></button>
+          <button
+            onClick={() => setSortOrder(SortOrderOptions.Ascending)}
+            className={`catalog-sort__order-button catalog-sort__order-button--up
+            ${sortOrder === SortOrderOptions.Ascending ? 'catalog-sort__order-button--active' : ''}`}
+            aria-label="По возрастанию" tabIndex={-1}
+          >
+          </button>
+          <button
+            onClick={() => setSortOrder(SortOrderOptions.Descending)}
+            className={`catalog-sort__order-button catalog-sort__order-button--down
+            ${sortOrder === SortOrderOptions.Descending ? 'catalog-sort__order-button--active' : ''}`}
+            aria-label="По убыванию"
+          >
+          </button>
         </div>
       </div>
       <div className="cards catalog__cards">
