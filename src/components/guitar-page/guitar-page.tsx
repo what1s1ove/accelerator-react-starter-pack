@@ -1,6 +1,6 @@
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import {useParams} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 import {getCurrentGuitar} from '../../store/guitars-data/selectors';
 import {getCurrentGuitarComments} from '../../store/guitars-other-data/selectors';
 import {getGuitarsRating} from '../../store/guitars-data/selectors';
@@ -25,7 +25,7 @@ function GuitarPage(): JSX.Element {
   useEffect(() => {
     dispatch(fetchCurrentGuitarAction(guitarId));
     dispatch(fetchCurrentGuitarCommentsAction(guitarId));
-  }, [guitarId]);
+  }, [guitarId, dispatch]);
 
   let currentGuitarType;
 
@@ -46,11 +46,11 @@ function GuitarPage(): JSX.Element {
         <div className="container">
           <h1 className="page-content__title title title--bigger">Товар</h1>
           <ul className="breadcrumbs page-content__breadcrumbs">
-            <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
+            <li className="breadcrumbs__item"><Link className="link" to="/">Главная</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link" href="./main.html">Каталог</a>
+            <li className="breadcrumbs__item"><Link className="link" to="/">Каталог</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link">Товар</a>
+            <li className="breadcrumbs__item"><a className="link" href="/" aria-disabled>Товар</a>
             </li>
           </ul>
           <div className="product-container">
@@ -100,7 +100,7 @@ function GuitarPage(): JSX.Element {
             </div>
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">{currentGuitar.price} ₽</p><a className="button button--red button--big product-container__button" href="#">Добавить в корзину</a>
+              <p className="product-container__price-info product-container__price-info--value">{currentGuitar.price} ₽</p><a className="button button--red button--big product-container__button" href="/" onClick={(evt) => evt.preventDefault()}>Добавить в корзину</a>
             </div>
           </div>
 

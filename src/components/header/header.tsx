@@ -1,10 +1,15 @@
 import {ChangeEvent, FocusEvent, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {Link, useHistory} from 'react-router-dom';
-import {getGuitars} from '../../store/guitars-data/selectors';
+import {getGuitars, getPage} from '../../store/guitars-data/selectors';
+import {getFilterPrice, getFilterString, getFilterType} from '../../store/guitars-other-data/selectors';
 
 function Header(): JSX.Element {
   const guitars = useSelector(getGuitars);
+  const page = useSelector(getPage);
+  const filterPrice = useSelector(getFilterPrice);
+  const filterType = useSelector(getFilterType);
+  const filterString = useSelector(getFilterString);
 
   const [searchedGuitars, setSearchedGuitars] = useState(guitars);
 
@@ -38,11 +43,11 @@ function Header(): JSX.Element {
         </Link>
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li><a className="link main-nav__link" href="#">Каталог</a>
+            <li><Link className="link main-nav__link" to="/">Каталог</Link>
             </li>
-            <li><a className="link main-nav__link" href="#">Где купить?</a>
+            <li><a className="link main-nav__link" href="/" onClick={(evt) => evt.preventDefault()}>Где купить?</a>
             </li>
-            <li><a className="link main-nav__link" href="#">О компании</a>
+            <li><a className="link main-nav__link" href="/" onClick={(evt) => evt.preventDefault()}>О компании</a>
             </li>
           </ul>
         </nav>
@@ -62,10 +67,10 @@ function Header(): JSX.Element {
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
           <ul className="form-search__select-list hidden" ref={searchListRef} data-testid="search-list">
-            {searchedGuitars.map((guitar) => <li className="form-search__select-item" data-testid="select-item" tabIndex={0} key={guitar.id} onClick={() => {history.push(`guitars/${guitar.id}`);}}>{guitar.name}</li>)}
+            {searchedGuitars.map((guitar) => <li className="form-search__select-item" data-testid="select-item" tabIndex={0} key={guitar.id} onClick={() => {history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${guitar.id}`);}}>{guitar.name}</li>)}
           </ul>
         </div>
-        <a className="header__cart-link" href="#" aria-label="Корзина">
+        <a className="header__cart-link" href="/" onClick={(evt) => evt.preventDefault()} aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg>

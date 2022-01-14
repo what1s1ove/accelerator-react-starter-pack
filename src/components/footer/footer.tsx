@@ -1,7 +1,12 @@
+import {Link} from 'react-router-dom';
+
 function Footer(): JSX.Element {
   return (
     <footer className="footer">
-      <div className="footer__container container"><a className="footer__logo logo"><img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип"/></a>
+      <div className="footer__container container">
+        <Link className="footer__logo logo" to='/' data-testid="logo">
+          <img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип"/>
+        </Link>
         <div className="socials footer__socials">
           <ul className="socials__list">
             <li className="socials-item">

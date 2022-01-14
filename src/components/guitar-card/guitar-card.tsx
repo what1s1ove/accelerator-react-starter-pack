@@ -1,5 +1,5 @@
 import {Guitar} from '../../types/guitar';
-import {useHistory} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {useSelector} from 'react-redux';
 import {getPage} from '../../store/guitars-data/selectors';
 import {getFilterPrice, getFilterString, getFilterType} from '../../store/guitars-other-data/selectors';
@@ -53,8 +53,8 @@ function GuitarCard({guitar, commentCount, guitarRating}: GuitarCardProps): JSX.
         </p>
       </div>
       <div className="product-card__buttons">
-        <a className="button button--mini" href="#">Подробнее</a>
-        <a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
+        <Link className="button button--mini" to={`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${guitar.id}`}>Подробнее</Link>
+        <Link className="button button--red button--mini button--add-to-cart" to={`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${guitar.id}`}>Купить</Link>
       </div>
     </div>
   );

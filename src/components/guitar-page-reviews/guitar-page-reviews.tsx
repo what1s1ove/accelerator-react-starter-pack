@@ -1,5 +1,6 @@
 import {Comments} from '../../types/comment';
 import {MONTHS} from '../../const';
+import {Link} from 'react-router-dom';
 
 type GuitarPageReviewsParams = {
   currentGuitarComments: Comments,
@@ -8,7 +9,8 @@ type GuitarPageReviewsParams = {
 function GuitarPageReviews({currentGuitarComments}: GuitarPageReviewsParams): JSX.Element {
   return (
     <section className="reviews">
-      <h3 className="reviews__title title title--bigger">Отзывы</h3><a className="button button--red-border button--big reviews__sumbit-button" href="#">Оставить отзыв</a>
+      <h3 className="reviews__title title title--bigger">Отзывы</h3>
+      <Link className="button button--red-border button--big reviews__sumbit-button" to="/">Оставить отзыв</Link>
       {currentGuitarComments.map((comment) =>
         (
           <div className="review" key={comment.id}>

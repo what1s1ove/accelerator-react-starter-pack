@@ -104,17 +104,18 @@ function Main(): JSX.Element {
 
   useEffect(() => {
     let tempPagedGuitars = [...sortedGuitars];
-    [...new Array(Math.ceil(sortedGuitars.length / 9))].map((_, idx) => idx + 1).map((item) => {
+    const pagesArray = [...new Array(Math.ceil(sortedGuitars.length / 9))].map((_, idx) => idx + 1);
+    for (const item of pagesArray) {
       if (page === item) {
         tempPagedGuitars = sortedGuitars.slice(item * 9 - 9, item * 9);
       }
-    });
+    }
     history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}`);
     setPagedGuitars(tempPagedGuitars);
     dispatch(fetchCommentsCountAction(sortedGuitars));
     const tempGuitarsRating = tempPagedGuitars.map((guitar) => guitar.rating);
     dispatch(loadGuitarsRating(tempGuitarsRating));
-  }, [sortedGuitars, page]);
+  }, [sortedGuitars, page, filterPrice, filterType, filterString, history, dispatch]);
 
   useEffect(() => {
     const tempSortedGuitars = [...filteredGuitars];
@@ -149,7 +150,7 @@ function Main(): JSX.Element {
     }
     dispatch(changePage(1));
     setFilteredByPriceGuitars(tempFilteredGuitars);
-  }, [guitars, filterPrice]);
+  }, [guitars, filterPrice, dispatch]);
 
   useEffect(() => {
     let tempFilteredGuitars = [...filteredByPriceGuitars];
@@ -167,7 +168,7 @@ function Main(): JSX.Element {
     }
     dispatch(changePage(1));
     setFilteredByTypeGuitars(tempFilteredGuitars);
-  }, [filteredByPriceGuitars, filterType]);
+  }, [filteredByPriceGuitars, filterType, dispatch]);
 
   useEffect(() => {
     let tempFilteredGuitars = [...filteredByTypeGuitars];
@@ -176,7 +177,7 @@ function Main(): JSX.Element {
     }
     dispatch(changePage(1));
     setFilteredGuitars(tempFilteredGuitars);
-  }, [filteredByTypeGuitars, filterString]);
+  }, [filteredByTypeGuitars, filterString, dispatch]);
 
   return (
     <div className="wrapper">
@@ -189,7 +190,7 @@ function Main(): JSX.Element {
           <ul className="breadcrumbs page-content__breadcrumbs">
             <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
             </li>
-            <li className="breadcrumbs__item"><a className="link">Каталог</a>
+            <li className="breadcrumbs__item"><a className="link" href="/" aria-disabled>Каталог</a>
             </li>
           </ul>
           <div className="catalog">

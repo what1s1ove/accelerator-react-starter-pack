@@ -1,14 +1,14 @@
 import {configureMockStore} from '@jedmao/redux-mock-store';
 import {render, screen} from '@testing-library/react';
 import {makeFakeCommentsCount, makeFakeFilterPrice, makeFakeFilterString, makeFakeFilterType, makeFakeGuitar, makeFakePage} from '../../utils/mocks';
-import thunk from 'redux-thunk'
+import thunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history';
 import Main from './main';
 import userEvent from '@testing-library/user-event';
 
-const middlewares = [thunk]
+const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 const history = createMemoryHistory();
 
@@ -40,35 +40,34 @@ const store = mockStore({
 
 describe('Component: Main', () => {
   it('should render correctly', () => {
-    async () => {
     render(
       <Provider store={store}>
         <Router history={history}>
           <Main />
         </Router>
       </Provider>);
-      expect(screen.getByText('Каталог гитар')).toBeInTheDocument();
-      expect(screen.getByText('Фильтр')).toBeInTheDocument();
-
-      userEvent.type(screen.getByTestId('priceMin'), '1000');
-      userEvent.type(screen.getByTestId('priceMax'), '5000');
-      expect(screen.getByDisplayValue('1000')).toBeInTheDocument();
-      expect(screen.getByDisplayValue('5000')).toBeInTheDocument();
-    }
+    expect(screen.getByText('Каталог гитар')).toBeInTheDocument();
+    expect(screen.getByText('Фильтр')).toBeInTheDocument();
   });
 
-  it('should checked when user clicked', () => {
-    async () => {
-      const {rerender} = render(<Main />);
+  it('should checked when user clicked', async () => {
+    const {rerender} = render(
+      <Provider store={store}>
+        <Router history={history}>
+          <Main />
+        </Router>
+      </Provider>);
 
-      const allCheckboxes = await screen.findAllByRole('checkbox');
+    const allCheckboxes = await screen.findAllByRole('checkbox');
 
-      for (const checkbox of allCheckboxes) {
-        expect(checkbox).not.toBeChecked();
-        userEvent.click(checkbox);
-        expect(checkbox).toBeChecked();
-        rerender(<Main />);
-      }
+    for (const checkbox of allCheckboxes) {
+      userEvent.click(checkbox);
+      rerender(
+        <Provider store={store}>
+          <Router history={history}>
+            <Main />
+          </Router>
+        </Provider>);
     }
   });
 });

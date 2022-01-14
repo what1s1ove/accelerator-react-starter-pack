@@ -5,9 +5,9 @@ import {Provider} from 'react-redux';
 import {configureMockStore} from '@jedmao/redux-mock-store';
 import App from './app';
 import {makeFakeCommentsCount, makeFakeFilterPrice, makeFakeFilterString, makeFakeFilterType, makeFakeGuitar, makeFakePage} from '../../utils/mocks';
-import thunk from 'redux-thunk'
+import thunk from 'redux-thunk';
 
-const middlewares = [thunk]
+const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
 
 const guitars = [...new Array(20)].map((_, idx) => makeFakeGuitar(idx + 1));
@@ -75,7 +75,7 @@ describe('Application Routing', () => {
   });
 
   it('should render "GuitarPage" when user navigate to "/page-:pageNumber/:filters/:guitarId"', () => {
-    async () => {
+    const testFunc = async () => {
       history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${currentGuitar.id}`);
       render(fakeApp);
 
@@ -83,11 +83,12 @@ describe('Application Routing', () => {
       expect(text1).toBeInTheDocument();
       const text2 = await screen.findByText('Отзывы');
       expect(text2).toBeInTheDocument();
-    }
+    };
+    testFunc();
   });
-  
+
   it('should render "NotFoundScreen" when user navigate to non-existent route', () => {
-    async () => {
+    const testFunc = async () => {
       history.push('/non-existent-route');
       render(fakeApp);
 
@@ -95,6 +96,7 @@ describe('Application Routing', () => {
       expect(text1).toBeInTheDocument();
       const text2 = await screen.findByText('Вернуться на главную');
       expect(text2).toBeInTheDocument();
-    }
+    };
+    testFunc();
   });
 });
