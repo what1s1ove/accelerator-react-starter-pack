@@ -8,7 +8,7 @@ const getMinPriceGuitar = (minPriceGuitar: Guitar, currentGuitar: Guitar) => (
 );
 
 const getMaxPriceGuitar = (maxPriceGuitar: Guitar, currentGuitar: Guitar) => (
-  currentGuitar.price > maxPriceGuitar.price ? maxPriceGuitar : maxPriceGuitar
+  currentGuitar.price > maxPriceGuitar.price ? currentGuitar : maxPriceGuitar
 );
 
 export const getGuitarsList = (state: State): Guitar[] => state[NameSpace.Guitars].guitars.slice();

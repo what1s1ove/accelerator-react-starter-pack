@@ -22,8 +22,10 @@ export enum SortOrderOptions {
 }
 
 export enum GuitarsType {
-  All = 'Все типы',
-  Acoustic = 'Акустические гитары',
-  Electric = 'Электрогитары',
-  Ukulele = 'Укулеле',
+  All = 'all',
+  Acoustic = 'acoustic',
+  Electric = 'electric',
+  Ukulele = 'ukulele',
 }
+
+export const strings = [4, 6, 7, 12];

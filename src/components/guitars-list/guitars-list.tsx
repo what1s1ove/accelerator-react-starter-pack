@@ -3,22 +3,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { SortOrderOptions, SortTypeOptions } from '../../const';
 import { fetchGuitarsAction } from '../../store/api-actions';
-import { getGuitarsList, getSortOrder, getSortType } from '../../store/guitars/selectors';
+import { getSortOrder, getSortType } from '../../store/guitars/selectors';
 import { Guitar } from '../../types/guitar';
 import GuitarItem from '../guitar-item/guitar-item';
+import { GuitarsListProps } from './types';
 
-function GuitarsList(): JSX.Element {
-  const guitars = useSelector(getGuitarsList);
+function GuitarsList({filteredGuitars}: GuitarsListProps): JSX.Element {
   const sortType = useSelector(getSortType);
   const sortOrder = useSelector(getSortOrder);
   if (sortType === SortTypeOptions.Popular) {
-    guitars.sort((first: Guitar, second: Guitar) => second.rating - first.rating);
+    filteredGuitars.sort((first: Guitar, second: Guitar) => second.rating - first.rating);
   }
   if (sortType === SortTypeOptions.Price) {
-    guitars.sort((first: Guitar, second: Guitar) => second.price - first.price);
+    filteredGuitars.sort((first: Guitar, second: Guitar) => second.price - first.price);
   }
   if (sortOrder === SortOrderOptions.Descending) {
-    guitars.reverse();
+    filteredGuitars.reverse();
   }
 
   const dispatch = useDispatch();
@@ -42,7 +42,7 @@ function GuitarsList(): JSX.Element {
       </div>
       <div className="cards catalog__cards">
         {
-          guitars.map((guitar) => (
+          filteredGuitars.map((guitar) => (
             <GuitarItem guitar={guitar} key={guitar.id} />
           ))
         }
