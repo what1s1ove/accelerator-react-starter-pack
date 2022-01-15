@@ -5,13 +5,14 @@ import {
   SortOrderOptions
 } from '../../const';
 import { Guitars } from '../../types/state';
-import { changeSortOrder, changeSortType, setGuitars, setSearchString } from '../action';
+import { changeSortOrder, changeSortType, setComments, setGuitars, setSearchString } from '../action';
 
 export const initialState: Guitars = {
   guitars: [],
   sortType: SortTypeOptions.Default,
   sortOrder: SortOrderOptions.Default,
   searchString: '',
+  commentsCount: {},
 };
 
 const guitarsReducer = createReducer(initialState, (builder) => {
@@ -27,6 +28,9 @@ const guitarsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setSearchString, (state, action) => {
       state.searchString = action.payload;
+    })
+    .addCase(setComments, (state, action) => {
+      state.commentsCount = {...state.commentsCount, [action.payload.guitarId]: action.payload.comments.length};
     });
 });
 

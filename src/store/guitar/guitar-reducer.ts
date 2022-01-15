@@ -14,7 +14,7 @@ const guitarReducer = createReducer(initialState, (builder) => {
       state.guitar = action.payload;
     })
     .addCase(setComments, (state, action) => {
-      state.comments = action.payload;
+      state.comments = action.payload.comments;
     });
 });
 

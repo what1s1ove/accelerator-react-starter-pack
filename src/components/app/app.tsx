@@ -3,6 +3,7 @@ import { Switch } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import Catalog from '../catalog/catalog';
 import NotFound from '../not-found/not-found';
+import Product from '../product/product';
 
 function App(): JSX.Element {
   return (
@@ -12,6 +13,9 @@ function App(): JSX.Element {
       </Route>
       <Route exact path={AppRoute.Catalog}>
         <Catalog />
+      </Route>
+      <Route exact path={AppRoute.Product}>
+        <Product />
       </Route>
       <Route>
         <NotFound />

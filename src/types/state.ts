@@ -8,6 +8,9 @@ export type Guitars = {
   sortType: SortTypeOptions,
   sortOrder: SortOrderOptions,
   searchString: string,
+  commentsCount: {
+    [id:number]: number,
+  };
 };
 
 export type GuitarItem = {

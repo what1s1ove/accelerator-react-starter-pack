@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { capitalize } from '../../utils/utils';
 import { setSearchString } from '../../store/action';
 import { getGuitarsList, getSearchString } from '../../store/guitars/selectors';
+import { AppRoute } from '../../const';
 
 function Header(): JSX.Element {
   const searchString = useSelector(getSearchString);
@@ -17,7 +18,7 @@ function Header(): JSX.Element {
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
-        <Link className="header__logo logo" to="#">
+        <Link className="header__logo logo" to={AppRoute.Main}>
           <img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип"/>
         </Link>
         <nav className="main-nav">

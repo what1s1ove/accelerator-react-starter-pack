@@ -1,3 +1,5 @@
 export type RatingProps = {
-  rating: number;
+  rating: number,
+  width: number,
+  height: number,
 }

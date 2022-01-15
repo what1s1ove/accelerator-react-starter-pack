@@ -182,7 +182,6 @@ function Catalog(): JSX.Element {
                     </div>
                   ))
                 }
-                <p>{numberStrings}</p>
               </fieldset>
             </form>
             <GuitarsList filteredGuitars={filteredGuitars} />
