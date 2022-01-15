@@ -2262,6 +2262,7 @@ button,
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+  z-index: 1;
 }
 
 .form-search__select-list::-webkit-scrollbar {

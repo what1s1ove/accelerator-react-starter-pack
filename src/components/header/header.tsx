@@ -1,11 +1,24 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { capitalize } from '../../utils/utils';
+import { setSearchString } from '../../store/action';
+import { getGuitarsList, getSearchString } from '../../store/guitars/selectors';
 
 function Header(): JSX.Element {
+  const searchString = useSelector(getSearchString);
+  const guitars = useSelector(getGuitarsList);
+  const dispatch = useDispatch();
+  const handleSearchStringChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setSearchString(evt.target.value));
+  };
+
+  const selectedGuitars = guitars.filter((guitar) =>
+    `${guitar.name} ${capitalize(guitar.type)}`.search(searchString) !== -1);
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
         <Link className="header__logo logo" to="#">
-          <img className="logo__img" width="70" height="70" src="/img/logo.svg" alt="Логотип"/>
+          <img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип"/>
         </Link>
         <nav className="main-nav">
           <ul className="main-nav__list">
@@ -28,16 +41,27 @@ function Header(): JSX.Element {
               />
               <span className="visually-hidden">Начать поиск</span>
             </button>
-            <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?"/>
+            <input
+              onChange={handleSearchStringChange}
+              className="form-search__input"
+              value={searchString}
+              id="search"
+              type="text"
+              autoComplete="off"
+              placeholder="что вы ищете?"
+            />
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
-          <ul className="form-search__select-list hidden">
-            <li className="form-search__select-item" tabIndex={0}>Четстер Plus</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX2</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX3</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX4</li>
-            <li className="form-search__select-item" tabIndex={0}>Четстер UX5</li>
+          <ul className={`form-search__select-list ${ !searchString ? 'hidden' : ''}`}>
+            {
+              selectedGuitars.map((guitar) =>(
+                <li key={guitar.id}
+                  className="form-search__select-item"
+                  tabIndex={0}
+                >{guitar.name} {capitalize(guitar.type)}
+                </li>
+              ))
+            }
           </ul>
         </div>
         <Link className="header__cart-link" to="#" aria-label="Корзина">

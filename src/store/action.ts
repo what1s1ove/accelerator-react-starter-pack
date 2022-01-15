@@ -39,6 +39,13 @@ export const changeSortOrder = createAction(
   }),
 );
 
+export const setSearchString = createAction(
+  ActionType.SetSearchString,
+  (searchString: string) => ({
+    payload: searchString,
+  }),
+);
+
 // POST /comments – отправить новый комментарий.
 // POST /coupons – отправить купон. Если купон валидный, роут возвращает процент скидки.
 // POST /orders – отправить новый заказ.

@@ -7,6 +7,7 @@ export type Guitars = {
   guitars: Guitar[],
   sortType: SortTypeOptions,
   sortOrder: SortOrderOptions,
+  searchString: string,
 };
 
 export type GuitarItem = {

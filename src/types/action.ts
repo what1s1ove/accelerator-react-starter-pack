@@ -9,6 +9,7 @@ export enum ActionType {
   SetGuitars = 'setGuitars',
   SetGuitar = 'setGuitar',
   SetComments = 'setComments',
+  SetSearchString = 'SetSearchString',
   PostComments = 'postComments',
   PostCoupons = 'postCoupons',
   PostOrders = 'postOrders',

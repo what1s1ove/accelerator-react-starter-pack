@@ -5,12 +5,13 @@ import {
   SortOrderOptions
 } from '../../const';
 import { Guitars } from '../../types/state';
-import { changeSortOrder, changeSortType, setGuitars } from '../action';
+import { changeSortOrder, changeSortType, setGuitars, setSearchString } from '../action';
 
 export const initialState: Guitars = {
   guitars: [],
   sortType: SortTypeOptions.Default,
   sortOrder: SortOrderOptions.Default,
+  searchString: '',
 };
 
 const guitarsReducer = createReducer(initialState, (builder) => {
@@ -23,6 +24,9 @@ const guitarsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(changeSortOrder, (state, action) => {
       state.sortOrder = action.payload;
+    })
+    .addCase(setSearchString, (state, action) => {
+      state.searchString = action.payload;
     });
 });
 
