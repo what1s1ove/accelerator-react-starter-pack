@@ -59,7 +59,10 @@ function Header(): JSX.Element {
                 <li key={guitar.id}
                   className="form-search__select-item"
                   tabIndex={0}
-                >{guitar.name} {capitalize(guitar.type)}
+                >
+                  <Link className="form-search__select-item" to={AppRoute.Product.replace(':id', guitar.id.toString())}>
+                    {guitar.name} {capitalize(guitar.type)}
+                  </Link>
                 </li>
               ))
             }

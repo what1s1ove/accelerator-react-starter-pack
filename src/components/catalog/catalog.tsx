@@ -70,12 +70,15 @@ function Catalog(): JSX.Element {
     }
   }
 
+  const avaliableStringNumber = new Set(filteredGuitars.map((guitar) => guitar.stringCount));
+
   for (const string of strings) {
     if (numberStrings.includes(string)) {
       filteredGuitars = filteredGuitars.filter((guitar) =>
         numberStrings.includes(guitar.stringCount));
     }
   }
+
   return (
     <div className="wrapper">
       <Header />
@@ -176,7 +179,7 @@ function Catalog(): JSX.Element {
                         id={`${string}-strings`}
                         name={`${string}-strings`}
                         checked={numberStrings.includes(string)}
-                        disabled={!numberStrings}
+                        disabled={!avaliableStringNumber.has(string)}
                       />
                       <label htmlFor={`${string}-strings`}>{string}</label>
                     </div>
