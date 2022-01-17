@@ -28,12 +28,16 @@ function Filter(): JSX.Element {
   };
 
   const handlePriceFieldBlur = (evt: React.FocusEvent<HTMLInputElement>) => {
-    let price = parseInt(evt.target.value, 10);
-    if (price < minPrice) {
-      price = minPrice;
-    }
-    if (price > maxPrice) {
-      price = maxPrice;
+    let price: number | undefined = parseInt(evt.target.value, 10);
+    if (isNaN(price)) {
+      price = undefined;
+    } else {
+      if (price < minPrice) {
+        price = minPrice;
+      }
+      if (price > maxPrice) {
+        price = maxPrice;
+      }
     }
     switch(evt.target.id) {
       case 'priceMin':

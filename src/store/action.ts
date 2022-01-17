@@ -48,14 +48,14 @@ export const setSearchString = createAction(
 
 export const setPriceFrom = createAction(
   ActionType.SetPriceFrom,
-  (priceFrom: number) => ({
+  (priceFrom: number | undefined) => ({
     payload: priceFrom,
   }),
 );
 
 export const setPriceTo = createAction(
   ActionType.SetPriceTo,
-  (priceTo: number) => ({
+  (priceTo: number | undefined) => ({
     payload: priceTo,
   }),
 );
