@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GuitarsType } from '../../const';
+import { GuitarsType, strings } from '../../const';
 import { fetchGuitarsAction } from '../../store/api-actions';
-import { getMaxPrice, getMinPrice } from '../../store/guitars/selectors';
+import { getGuitarsList, getMaxPrice, getMinPrice } from '../../store/guitars/selectors';
 import { toggleArrayElement } from '../../utils/utils';
 
 function Filter(): JSX.Element {
   const [priceFrom, setPriceFrom] = useState<number>();
   const [priceTo, setPriceTo] = useState<number>();
-  const [typeGuitars, setTypeGuitars] = useState<GuitarsType[]>([]);
+  const [typeGuitars, setTypeGuitars] = useState<string[]>([]);
   const [numberStrings, setNumberStrings] = useState<number[]>([]);
 
+  const guitars = useSelector(getGuitarsList);
   const minPrice = useSelector(getMinPrice);
   const maxPrice = useSelector(getMaxPrice);
 
@@ -48,6 +49,31 @@ function Filter(): JSX.Element {
         break;
     }
   };
+  let filteredGuitars = guitars.slice();
+
+  if (priceFrom && priceTo) {
+    filteredGuitars = filteredGuitars.filter((guitar) => (guitar.price >= priceFrom) && (guitar.price <= priceTo));
+  } else if (priceFrom) {
+    filteredGuitars = filteredGuitars.filter((guitar) => guitar.price >= priceFrom);
+  } else if (priceTo) {
+    filteredGuitars = filteredGuitars.filter((guitar) => guitar.price <= priceTo);
+  }
+
+  for (const type of Object.values(GuitarsType)) {
+    if (typeGuitars.includes(type)) {
+      filteredGuitars = filteredGuitars.filter((guitar) =>
+        typeGuitars.includes(guitar.type));
+    }
+  }
+
+  const avaliableStringNumber = new Set(filteredGuitars.map((guitar) => guitar.stringCount));
+
+  for (const string of strings) {
+    if (numberStrings.includes(string)) {
+      filteredGuitars = filteredGuitars.filter((guitar) =>
+        numberStrings.includes(guitar.stringCount));
+    }
+  }
 
   return (
     <form className="catalog-filter">
@@ -125,60 +151,24 @@ function Filter(): JSX.Element {
       </fieldset>
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Количество струн</legend>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input
-            onChange={() => {
-              setNumberStrings(toggleArrayElement(numberStrings, 4));
-            }}
-            className="visually-hidden"
-            type="checkbox"
-            id="4-strings"
-            name="4-strings"
-            checked={numberStrings.includes(4)}
-          />
-          <label htmlFor="4-strings">4</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input
-            onChange={() => {
-              setNumberStrings(toggleArrayElement(numberStrings, 6));
-            }}
-            className="visually-hidden"
-            type="checkbox"
-            id="6-strings"
-            name="6-strings"
-            checked={numberStrings.includes(6)}
-          />
-          <label htmlFor="6-strings">6</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input
-            onChange={() => {
-              setNumberStrings(toggleArrayElement(numberStrings, 7));
-            }}
-            className="visually-hidden"
-            type="checkbox"
-            id="7-strings"
-            name="7-strings"
-            checked={numberStrings.includes(7)}
-          />
-          <label htmlFor="7-strings">7</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input
-            onChange={() => {
-              setNumberStrings(toggleArrayElement(numberStrings, 12));
-            }}
-            className="visually-hidden"
-            type="checkbox"
-            id="12-strings"
-            name="12-strings"
-            checked={numberStrings.includes(12)}
-            disabled
-          />
-          <label htmlFor="12-strings">12</label>
-        </div>
-        <p>{numberStrings}</p>
+        {
+          strings.map((string) => (
+            <div key={string} className="form-checkbox catalog-filter__block-item">
+              <input
+                onChange={() => {
+                  setNumberStrings(toggleArrayElement(numberStrings, string));
+                }}
+                className="visually-hidden"
+                type="checkbox"
+                id={`${string}-strings`}
+                name={`${string}-strings`}
+                checked={numberStrings.includes(string)}
+                disabled={!avaliableStringNumber.has(string)}
+              />
+              <label htmlFor={`${string}-strings`}>{string}</label>
+            </div>
+          ))
+        }
       </fieldset>
     </form>
   );
