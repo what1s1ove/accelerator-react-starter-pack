@@ -1,33 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { GuitarsType, strings } from '../../const';
+import { setPriceFrom, setPriceTo, toggleNumberString, toggleTypeGuitar } from '../../store/action';
 import { fetchGuitarsAction } from '../../store/api-actions';
-import { getGuitarsList, getMaxPrice, getMinPrice } from '../../store/guitars/selectors';
-import { toggleArrayElement } from '../../utils/utils';
+import { getMaxPrice, getMinPrice, getNumberStrings, getPriceFrom, getPriceTo, getTypeGuitars } from '../../store/guitars/selectors';
+import { translateTypeGuitars } from '../../utils/utils';
 
 function Filter(): JSX.Element {
-  const [priceFrom, setPriceFrom] = useState<number>();
-  const [priceTo, setPriceTo] = useState<number>();
-  const [typeGuitars, setTypeGuitars] = useState<string[]>([]);
-  const [numberStrings, setNumberStrings] = useState<number[]>([]);
-
-  const guitars = useSelector(getGuitarsList);
+  const priceFrom = useSelector(getPriceFrom);
+  const priceTo = useSelector(getPriceTo);
   const minPrice = useSelector(getMinPrice);
   const maxPrice = useSelector(getMaxPrice);
-
+  const typeGuitars = useSelector(getTypeGuitars);
+  const numberStrings = useSelector(getNumberStrings);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchGuitarsAction());
-  }, [dispatch]);
 
   const handlePriceChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const price = parseInt(evt.target.value, 10);
     switch(evt.target.id) {
       case 'priceMin':
-        setPriceFrom(price);
+        dispatch(setPriceFrom(price));
         break;
       case 'priceMax':
-        setPriceTo(price);
+        dispatch(setPriceTo(price));
         break;
     }
   };
@@ -42,38 +37,28 @@ function Filter(): JSX.Element {
     }
     switch(evt.target.id) {
       case 'priceMin':
-        setPriceFrom(price);
+        dispatch(setPriceFrom(price));
+        dispatch(fetchGuitarsAction());
         break;
       case 'priceMax':
-        setPriceTo(price);
+        dispatch(setPriceTo(price));
+        dispatch(fetchGuitarsAction());
         break;
     }
   };
-  let filteredGuitars = guitars.slice();
 
-  if (priceFrom && priceTo) {
-    filteredGuitars = filteredGuitars.filter((guitar) => (guitar.price >= priceFrom) && (guitar.price <= priceTo));
-  } else if (priceFrom) {
-    filteredGuitars = filteredGuitars.filter((guitar) => guitar.price >= priceFrom);
-  } else if (priceTo) {
-    filteredGuitars = filteredGuitars.filter((guitar) => guitar.price <= priceTo);
-  }
+  const handleTypeGuitarsChange = (type: GuitarsType) => {
+    dispatch(toggleTypeGuitar(type));
+    dispatch(fetchGuitarsAction());
+  };
 
-  for (const type of Object.values(GuitarsType)) {
-    if (typeGuitars.includes(type)) {
-      filteredGuitars = filteredGuitars.filter((guitar) =>
-        typeGuitars.includes(guitar.type));
-    }
-  }
+  const handleNumberStringsChange = (string: number) => {
+    dispatch(toggleNumberString(string));
+    dispatch(fetchGuitarsAction());
+  };
 
-  const avaliableStringNumber = new Set(filteredGuitars.map((guitar) => guitar.stringCount));
+  // const avaliableStringNumber = new Set(guitars.map((guitar) => guitar.stringCount));
 
-  for (const string of strings) {
-    if (numberStrings.includes(string)) {
-      filteredGuitars = filteredGuitars.filter((guitar) =>
-        numberStrings.includes(guitar.stringCount));
-    }
-  }
 
   return (
     <form className="catalog-filter">
@@ -109,45 +94,21 @@ function Filter(): JSX.Element {
       </fieldset>
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Тип гитар</legend>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input
-            onChange={() => {
-              setTypeGuitars(toggleArrayElement(typeGuitars, GuitarsType.Acoustic));
-            }}
-            className="visually-hidden"
-            type="checkbox"
-            id="acoustic"
-            name="acoustic"
-            checked={typeGuitars.includes(GuitarsType.Acoustic)}
-          />
-          <label htmlFor="acoustic">Акустические гитары</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input
-            onChange={() => {
-              setTypeGuitars(toggleArrayElement(typeGuitars, GuitarsType.Electric));
-            }}
-            className="visually-hidden"
-            type="checkbox"
-            id="electric"
-            name="electric"
-            checked={typeGuitars.includes(GuitarsType.Electric)}
-          />
-          <label htmlFor="electric">Электрогитары</label>
-        </div>
-        <div className="form-checkbox catalog-filter__block-item">
-          <input
-            onChange={() => {
-              setTypeGuitars(toggleArrayElement(typeGuitars, GuitarsType.Ukulele));
-            }}
-            className="visually-hidden"
-            type="checkbox"
-            id="ukulele"
-            name="ukulele"
-            checked={typeGuitars.includes(GuitarsType.Ukulele)}
-          />
-          <label htmlFor="ukulele">Укулеле</label>
-        </div>
+        {
+          Object.values(GuitarsType).map((type) => (
+            <div key={type} className="form-checkbox catalog-filter__block-item">
+              <input
+                onChange={() => handleTypeGuitarsChange(type)}
+                className="visually-hidden"
+                type="checkbox"
+                id={type}
+                name={type}
+                checked={typeGuitars.includes(type)}
+              />
+              <label htmlFor={type}>{translateTypeGuitars(type)}</label>
+            </div>
+          ))
+        }
       </fieldset>
       <fieldset className="catalog-filter__block">
         <legend className="catalog-filter__block-title">Количество струн</legend>
@@ -155,15 +116,13 @@ function Filter(): JSX.Element {
           strings.map((string) => (
             <div key={string} className="form-checkbox catalog-filter__block-item">
               <input
-                onChange={() => {
-                  setNumberStrings(toggleArrayElement(numberStrings, string));
-                }}
+                onChange={() => handleNumberStringsChange(string)}
                 className="visually-hidden"
                 type="checkbox"
                 id={`${string}-strings`}
                 name={`${string}-strings`}
                 checked={numberStrings.includes(string)}
-                disabled={!avaliableStringNumber.has(string)}
+                disabled={!numberStrings}
               />
               <label htmlFor={`${string}-strings`}>{string}</label>
             </div>

@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { SortOrderOptions, SortTypeOptions } from '../const';
+import { GuitarsType, SortOrderOptions, SortTypeOptions } from '../const';
 import { ActionType } from '../types/action';
 import { Comment } from '../types/comment';
 import { Guitar } from '../types/guitar';
@@ -43,6 +43,34 @@ export const setSearchString = createAction(
   ActionType.SetSearchString,
   (searchString: string) => ({
     payload: searchString,
+  }),
+);
+
+export const setPriceFrom = createAction(
+  ActionType.SetPriceFrom,
+  (priceFrom: number) => ({
+    payload: priceFrom,
+  }),
+);
+
+export const setPriceTo = createAction(
+  ActionType.SetPriceTo,
+  (priceTo: number) => ({
+    payload: priceTo,
+  }),
+);
+
+export const toggleTypeGuitar = createAction(
+  ActionType.SetTypeGuitars,
+  (typeGuitar: GuitarsType) => ({
+    payload: typeGuitar,
+  }),
+);
+
+export const toggleNumberString = createAction(
+  ActionType.SetNumberStrings,
+  (numberString: number) => ({
+    payload: numberString,
   }),
 );
 

@@ -4,17 +4,21 @@ import { capitalize } from '../../utils/utils';
 import { setSearchString } from '../../store/action';
 import { getGuitarsList, getSearchString } from '../../store/guitars/selectors';
 import { AppRoute } from '../../const';
+import { fetchGuitarsAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 function Header(): JSX.Element {
   const searchString = useSelector(getSearchString);
   const guitars = useSelector(getGuitarsList);
   const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchGuitarsAction());
+  }, [dispatch]);
   const handleSearchStringChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchString(evt.target.value));
+    dispatch(fetchGuitarsAction());
   };
 
-  const selectedGuitars = guitars.filter((guitar) =>
-    `${guitar.name} ${capitalize(guitar.type)}`.search(searchString) !== -1);
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
@@ -55,7 +59,7 @@ function Header(): JSX.Element {
           </form>
           <ul className={`form-search__select-list ${ !searchString ? 'hidden' : ''}`}>
             {
-              selectedGuitars.map((guitar) =>(
+              guitars.map((guitar) =>(
                 <li key={guitar.id}
                   className="form-search__select-item"
                   tabIndex={0}

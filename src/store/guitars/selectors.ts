@@ -1,3 +1,4 @@
+import { GuitarsType, SortOrderOptions, SortTypeOptions } from '../../const';
 import { Guitar } from '../../types/guitar';
 import { State } from '../../types/state';
 import { NameSpace } from '../root-reducer';
@@ -11,8 +12,15 @@ const getMaxPriceGuitar = (maxPriceGuitar: Guitar, currentGuitar: Guitar) => (
 );
 
 export const getGuitarsList = (state: State): Guitar[] => state[NameSpace.Guitars].guitars.slice();
-export const getSearchString = (state: State): string => state[NameSpace.Guitars].searchString;
+export const getFilteredGuitars = (state: State): Guitar[] => state[NameSpace.Guitars].filteredGuitars;
+export const getSearchString = (state: State): string | undefined => state[NameSpace.Guitars].searchString;
 export const getCommentsCount = (state: State): {[id: string]: number} => state[NameSpace.Guitars].commentsCount;
+export const getTypeGuitars = (state: State): GuitarsType[] => state[NameSpace.Guitars].typeGuitars;
+export const getNumberStrings = (state: State): number[] => state[NameSpace.Guitars].numberStrings;
+export const getSortType = (state: State): SortTypeOptions => state[NameSpace.Guitars].sortType;
+export const getSortOrder = (state: State): SortOrderOptions => state[NameSpace.Guitars].sortOrder;
+export const getPriceFrom = (state: State): number | undefined => state[NameSpace.Guitars].priceFrom;
+export const getPriceTo = (state: State): number | undefined => state[NameSpace.Guitars].priceTo;
 export const getMinPrice = (state: State): number => {
   const guitarsList = state[NameSpace.Guitars].guitars;
   if (guitarsList.length === 0) {

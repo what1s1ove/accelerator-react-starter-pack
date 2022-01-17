@@ -4,14 +4,32 @@ import {
   SortTypeOptions,
   SortOrderOptions
 } from '../../const';
+import {
+  toggleArrayElement
+} from '../../utils/utils';
 import { Guitars } from '../../types/state';
-import { changeSortOrder, changeSortType, setComments, setGuitars, setSearchString } from '../action';
+import {
+  changeSortOrder,
+  changeSortType,
+  setComments,
+  setGuitars,
+  setPriceFrom,
+  setPriceTo,
+  setSearchString,
+  toggleTypeGuitar,
+  toggleNumberString
+} from '../action';
 
 export const initialState: Guitars = {
   guitars: [],
+  filteredGuitars: [],
   sortType: SortTypeOptions.Default,
   sortOrder: SortOrderOptions.Default,
-  searchString: '',
+  searchString: undefined,
+  priceFrom: undefined,
+  priceTo: undefined,
+  typeGuitars: [],
+  numberStrings: [],
   commentsCount: {},
 };
 
@@ -28,6 +46,18 @@ const guitarsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setSearchString, (state, action) => {
       state.searchString = action.payload;
+    })
+    .addCase(setPriceFrom, (state, action) => {
+      state.priceFrom = action.payload;
+    })
+    .addCase(setPriceTo, (state, action) => {
+      state.priceTo = action.payload;
+    })
+    .addCase(toggleTypeGuitar, (state, action) => {
+      state.typeGuitars = toggleArrayElement(state.typeGuitars, action.payload);
+    })
+    .addCase(toggleNumberString, (state, action) => {
+      state.numberStrings = toggleArrayElement(state.numberStrings, action.payload);
     })
     .addCase(setComments, (state, action) => {
       state.commentsCount = {...state.commentsCount, [action.payload.guitarId]: action.payload.comments.length};

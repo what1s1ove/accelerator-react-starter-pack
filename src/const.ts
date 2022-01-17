@@ -25,7 +25,6 @@ export enum SortOrderOptions {
 }
 
 export enum GuitarsType {
-  All = 'all',
   Acoustic = 'acoustic',
   Electric = 'electric',
   Ukulele = 'ukulele',
