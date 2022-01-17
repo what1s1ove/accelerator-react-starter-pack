@@ -11,6 +11,7 @@ export const fetchGuitarsAction = (): ThunkActionResult =>
     const {data} = await api.get<Guitar[]>(
       APIRoute.Guitars, {
         params: {
+          _embed: 'comments',
           'name_like': state[NameSpace.Guitars].searchString,
           type: state[NameSpace.Guitars].typeGuitars,
           _order: state[NameSpace.Guitars].sortOrder,

@@ -11,7 +11,6 @@ import { Guitars } from '../../types/state';
 import {
   changeSortOrder,
   changeSortType,
-  setComments,
   setGuitars,
   setPriceFrom,
   setPriceTo,
@@ -30,7 +29,6 @@ export const initialState: Guitars = {
   priceTo: undefined,
   typeGuitars: [],
   numberStrings: [],
-  commentsCount: {},
 };
 
 const guitarsReducer = createReducer(initialState, (builder) => {
@@ -58,9 +56,6 @@ const guitarsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(toggleNumberString, (state, action) => {
       state.numberStrings = toggleArrayElement(state.numberStrings, action.payload);
-    })
-    .addCase(setComments, (state, action) => {
-      state.commentsCount = {...state.commentsCount, [action.payload.guitarId]: action.payload.comments.length};
     });
 });
 

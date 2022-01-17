@@ -13,9 +13,6 @@ export type Guitars = {
   priceTo: number | undefined,
   typeGuitars: GuitarsType[],
   numberStrings: number[],
-  commentsCount: {
-    [id:number]: number,
-  };
 };
 
 export type GuitarItem = {

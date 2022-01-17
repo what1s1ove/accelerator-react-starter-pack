@@ -14,7 +14,6 @@ const getMaxPriceGuitar = (maxPriceGuitar: Guitar, currentGuitar: Guitar) => (
 export const getGuitarsList = (state: State): Guitar[] => state[NameSpace.Guitars].guitars.slice();
 export const getFilteredGuitars = (state: State): Guitar[] => state[NameSpace.Guitars].filteredGuitars;
 export const getSearchString = (state: State): string | undefined => state[NameSpace.Guitars].searchString;
-export const getCommentsCount = (state: State): {[id: string]: number} => state[NameSpace.Guitars].commentsCount;
 export const getTypeGuitars = (state: State): GuitarsType[] => state[NameSpace.Guitars].typeGuitars;
 export const getNumberStrings = (state: State): number[] => state[NameSpace.Guitars].numberStrings;
 export const getSortType = (state: State): SortTypeOptions => state[NameSpace.Guitars].sortType;
