@@ -30,4 +30,10 @@ export enum GuitarsType {
   Ukulele = 'ukulele',
 }
 
+export const StringCounts = {
+  [GuitarsType.Acoustic]: [6, 7, 12],
+  [GuitarsType.Electric]: [4, 6, 7],
+  [GuitarsType.Ukulele]: [4],
+};
+
 export const strings = [4, 6, 7, 12];

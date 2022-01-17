@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { GuitarsType, strings } from '../../const';
+import { GuitarsType, StringCounts, strings } from '../../const';
 import { setPriceFrom, setPriceTo, toggleNumberString, toggleTypeGuitar } from '../../store/action';
 import { fetchGuitarsAction } from '../../store/api-actions';
 import { getMaxPrice, getMinPrice, getNumberStrings, getPriceFrom, getPriceTo, getTypeGuitars } from '../../store/guitars/selectors';
@@ -61,8 +61,13 @@ function Filter(): JSX.Element {
     dispatch(fetchGuitarsAction());
   };
 
-  // const avaliableStringNumber = new Set(guitars.map((guitar) => guitar.stringCount));
-
+  let avaliableStringNumber: number[] = [];
+  if (typeGuitars.length === 0) {
+    avaliableStringNumber = [4, 6, 7, 12];
+  }
+  typeGuitars.forEach((typeGuitar) => (
+    avaliableStringNumber = avaliableStringNumber.concat(StringCounts[typeGuitar])
+  ));
 
   return (
     <form className="catalog-filter">
@@ -126,7 +131,7 @@ function Filter(): JSX.Element {
                 id={`${string}-strings`}
                 name={`${string}-strings`}
                 checked={numberStrings.includes(string)}
-                disabled={!numberStrings}
+                disabled={!avaliableStringNumber.includes(string)}
               />
               <label htmlFor={`${string}-strings`}>{string}</label>
             </div>
