@@ -1,7 +1,8 @@
 export enum AppRoute {
   Root = '/',
-  Catalog = '/page-:pageNumber/:filters',
-  GuitarPage = '/page-:pageNumber/:filters/:guitarId',
+  Catalog = '/page-:pageNumber',
+  FilteredCatalog = '/page-:pageNumber/:filters',
+  GuitarPage = '/guitar/:guitarId',
 }
 
 export enum APIRoute {
@@ -23,3 +24,15 @@ export const MONTHS = [
   'ноября',
   'декабря',
 ];
+
+export const GUITAR_TYPES_RU = {
+  electric: 'Электрогитара',
+  ukulele: 'Укулеле',
+  acoustic: 'Акустическая',
+};
+
+export const GUITAR_TYPES_EN = {
+  electric: 'electric',
+  ukulele: 'ukulele',
+  acoustic: 'acoustic',
+};

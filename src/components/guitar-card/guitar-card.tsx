@@ -1,8 +1,5 @@
 import {Guitar} from '../../types/guitar';
 import {Link, useHistory} from 'react-router-dom';
-import {useSelector} from 'react-redux';
-import {getPage} from '../../store/guitars-data/selectors';
-import {getFilterPrice, getFilterString, getFilterType} from '../../store/guitars-other-data/selectors';
 
 type GuitarCardProps = {
   guitar: Guitar,
@@ -12,20 +9,16 @@ type GuitarCardProps = {
 
 function GuitarCard({guitar, commentCount, guitarRating}: GuitarCardProps): JSX.Element {
   const history = useHistory();
-  const page = useSelector(getPage);
-  const filterPrice = useSelector(getFilterPrice);
-  const filterType = useSelector(getFilterType);
-  const filterString = useSelector(getFilterString);
 
   return (
     <div
       className="product-card"
       data-testid="product-card"
       onClick={() => {
-        history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${guitar.id}`);
+        history.push(`/guitar/${guitar.id}`);
       }}
     >
-      <img src={guitar.previewImg} width="75" height="190" alt={guitar.name}/>
+      <img src={`../${guitar.previewImg}`} width="75" height="190" alt={guitar.name}/>
       <div className="product-card__info">
         <div className="rate product-card__rate" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
           {[1, 2, 3, 4, 5].map((idx) => {
@@ -53,8 +46,8 @@ function GuitarCard({guitar, commentCount, guitarRating}: GuitarCardProps): JSX.
         </p>
       </div>
       <div className="product-card__buttons">
-        <Link className="button button--mini" to={`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${guitar.id}`}>Подробнее</Link>
-        <Link className="button button--red button--mini button--add-to-cart" to={`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${guitar.id}`}>Купить</Link>
+        <Link className="button button--mini" to={`/guitar/${guitar.id}`}>Подробнее</Link>
+        <Link className="button button--red button--mini button--add-to-cart" to={`/guitar/${guitar.id}`}>Купить</Link>
       </div>
     </div>
   );

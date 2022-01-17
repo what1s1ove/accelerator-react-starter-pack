@@ -54,7 +54,7 @@ describe('Component: GuitarCard', () => {
     expect(screen.getByText(/Купить/i)).toBeInTheDocument();
   });
 
-  it('when user click on component should redirect', async () => {
+  it('when user click on component should redirect', () => {
     history.push('/fake');
     render(
       <Provider store={store}>
@@ -71,7 +71,7 @@ describe('Component: GuitarCard', () => {
       </Provider>,
     );
     expect(screen.queryByText('Mock Guitar Page')).not.toBeInTheDocument();
-    const guitarCards = await screen.findAllByTestId('product-card');
+    const guitarCards = screen.getAllByTestId('product-card');
     for (const card of guitarCards) {
       userEvent.click(card);
       expect(screen.getByText('Mock Guitar Page')).toBeInTheDocument();

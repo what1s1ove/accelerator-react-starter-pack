@@ -8,6 +8,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useEffect} from 'react';
 import {fetchCurrentGuitarAction, fetchCurrentGuitarCommentsAction} from '../../store/api-actions';
 import GuitarPageReviews from '../guitar-page-reviews/guitar-page-reviews';
+import {GUITAR_TYPES_RU, GUITAR_TYPES_EN} from '../../const';
 
 type GuitarPageParams = {
   guitarId: string;
@@ -29,12 +30,12 @@ function GuitarPage(): JSX.Element {
 
   let currentGuitarType;
 
-  if (currentGuitar.type === 'electric') {
-    currentGuitarType = 'Электрогитара';
-  } else if (currentGuitar.type === 'ukulele') {
-    currentGuitarType = 'Укулеле';
-  } else if (currentGuitar.type === 'acoustic') {
-    currentGuitarType = 'Акустическая';
+  if (currentGuitar.type === GUITAR_TYPES_EN.electric) {
+    currentGuitarType = GUITAR_TYPES_RU.electric;
+  } else if (currentGuitar.type === GUITAR_TYPES_EN.ukulele) {
+    currentGuitarType = GUITAR_TYPES_RU.ukulele;
+  } else if (currentGuitar.type === GUITAR_TYPES_EN.acoustic) {
+    currentGuitarType = GUITAR_TYPES_RU.acoustic;
   }
 
   return (

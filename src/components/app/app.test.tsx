@@ -66,17 +66,25 @@ describe('Application Routing', () => {
     expect(screen.getByText('Фильтр')).toBeInTheDocument();
   });
 
-  it('should render "Main" when user navigate to or "/page-:pageNumber/:filters"', () => {
-    history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}`);
+  it('should render "Main" when user navigate to or "/page-:pageNumber"', () => {
+    history.push(`/page-${page}`);
     render(fakeApp);
 
     expect(screen.getByText('Каталог гитар')).toBeInTheDocument();
     expect(screen.getByText('Фильтр')).toBeInTheDocument();
   });
 
-  it('should render "GuitarPage" when user navigate to "/page-:pageNumber/:filters/:guitarId"', () => {
+  it('should render "Main" when user navigate to or "/page-:pageNumber/:filters"', () => {
+    history.push(`/page-${page}/prices=${Object.values(filterPrice).join('_')};type=${Object.values(filterType).join('_')};strings=${Object.values(filterString).join('_')}`);
+    render(fakeApp);
+
+    expect(screen.getByText('Каталог гитар')).toBeInTheDocument();
+    expect(screen.getByText('Фильтр')).toBeInTheDocument();
+  });
+
+  it('should render "GuitarPage" when user navigate to "/guitar/:guitarId"', () => {
     const testFunc = async () => {
-      history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${currentGuitar.id}`);
+      history.push(`/guitar/${currentGuitar.id}`);
       render(fakeApp);
 
       const text1 = await screen.findByText('Товар');

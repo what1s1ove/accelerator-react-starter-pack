@@ -1,15 +1,10 @@
 import {ChangeEvent, FocusEvent, useRef, useState} from 'react';
 import {useSelector} from 'react-redux';
 import {Link, useHistory} from 'react-router-dom';
-import {getGuitars, getPage} from '../../store/guitars-data/selectors';
-import {getFilterPrice, getFilterString, getFilterType} from '../../store/guitars-other-data/selectors';
+import {getGuitars} from '../../store/guitars-data/selectors';
 
 function Header(): JSX.Element {
   const guitars = useSelector(getGuitars);
-  const page = useSelector(getPage);
-  const filterPrice = useSelector(getFilterPrice);
-  const filterType = useSelector(getFilterType);
-  const filterString = useSelector(getFilterString);
 
   const [searchedGuitars, setSearchedGuitars] = useState(guitars);
 
@@ -67,7 +62,7 @@ function Header(): JSX.Element {
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
           <ul className="form-search__select-list hidden" ref={searchListRef} data-testid="search-list">
-            {searchedGuitars.map((guitar) => <li className="form-search__select-item" data-testid="select-item" tabIndex={0} key={guitar.id} onClick={() => {history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}/${guitar.id}`);}}>{guitar.name}</li>)}
+            {searchedGuitars.map((guitar) => <li className="form-search__select-item" data-testid="select-item" tabIndex={0} key={guitar.id} onClick={() => {history.push(`/guitar/${guitar.id}`);}}>{guitar.name}</li>)}
           </ul>
         </div>
         <a className="header__cart-link" href="/" onClick={(evt) => evt.preventDefault()} aria-label="Корзина">

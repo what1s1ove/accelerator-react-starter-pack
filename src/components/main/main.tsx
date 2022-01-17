@@ -7,7 +7,7 @@ import {getGuitarsRating} from '../../store/guitars-data/selectors';
 import {getCommentsCount, getFilterPrice, getFilterString, getFilterType, getSortDirection, getSortTitle} from '../../store/guitars-other-data/selectors';
 import {ChangeEvent, FocusEvent, MouseEvent, useEffect, useState} from 'react';
 import {changeFilterPrice, changeFilterString, changeFilterType, changePage, changeSortDirection, changeSortTitle, loadGuitarsRating} from '../../store/action';
-import {useHistory} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {fetchCommentsCountAction} from '../../store/api-actions';
 
 function Main(): JSX.Element {
@@ -110,7 +110,11 @@ function Main(): JSX.Element {
         tempPagedGuitars = sortedGuitars.slice(item * 9 - 9, item * 9);
       }
     }
-    history.push(`/page-${page}/prices:${Object.values(filterPrice).join(',')};types:${Object.values(filterType).join(',')};strings:${Object.values(filterString).join(',')}`);
+    if (Object.values(filterPrice).join('') !== '' || Object.values(filterType).join('') !== '' || Object.values(filterString).join('') !== '') {
+      history.push(`/page-${page}/${Object.values(filterPrice).join('') !== '' ? `price=${Object.values(filterPrice).join('_')}&` : ''}${Object.values(filterType).join('') !== '' ? `type=${Object.values(filterType).join('_')}&` : ''}${Object.values(filterString).join('') !== '' ? `strings=${Object.values(filterString).join('_')}` : ''}`);
+    } else {
+      history.push(`/page-${page}`);
+    }
     setPagedGuitars(tempPagedGuitars);
     dispatch(fetchCommentsCountAction(sortedGuitars));
     const tempGuitarsRating = tempPagedGuitars.map((guitar) => guitar.rating);
@@ -188,9 +192,9 @@ function Main(): JSX.Element {
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <ul className="breadcrumbs page-content__breadcrumbs">
-            <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
+            <li className="breadcrumbs__item"><Link className="link" to="/">Главная</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link" href="/" aria-disabled>Каталог</a>
+            <li className="breadcrumbs__item"><Link className="link" to="/" aria-disabled>Каталог</Link>
             </li>
           </ul>
           <div className="catalog">

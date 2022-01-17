@@ -10,6 +10,7 @@ function App(): JSX.Element {
       <Switch>
         <Route exact path={AppRoute.Root} component={Main}/>
         <Route exact path={AppRoute.Catalog} component={Main}/>
+        <Route exact path={AppRoute.FilteredCatalog} component={Main}/>
         <Route exact path={AppRoute.GuitarPage} component={GuitarPage}/>
         <Route>
           <NotFoundScreen />
