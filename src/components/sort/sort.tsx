@@ -1,5 +1,5 @@
 import React, {MouseEvent, useState} from 'react';
-import {SortType, getSort, getOrder} from '../../const/const';
+import {SortType, getSort, getOrder, ORDER, SORT} from '../../const/const';
 import {ViewState} from '../catalog/catalog';
 
 const ACTIVE = -1;
@@ -16,8 +16,8 @@ function Sort({viewState, changeURL}:SortProps):JSX.Element {
 
   const handleSortClick = (sort: string) => {
     currentSortOrder.length === 0
-      ? changeURL({...viewState, 'sort': getSort(sort), 'order': getOrder(SortType.Ascend)})
-      : changeURL({...viewState, 'sort': getSort(sort)});
+      ? changeURL({...viewState, [SORT]: getSort(sort), [ORDER]: getOrder(SortType.Ascend)})
+      : changeURL({...viewState, [SORT]: getSort(sort)});
     setCurrentSortType(sort);
     if (currentSortOrder.length === 0) {
       setCurrentSortOrder(SortType.Ascend);
@@ -26,8 +26,8 @@ function Sort({viewState, changeURL}:SortProps):JSX.Element {
 
   const handleOrderClick = (order:string) => {
     currentSortType.length === 0
-      ? changeURL({...viewState, 'order': getOrder(order),  'sort': getSort(SortType.Price)})
-      : changeURL({...viewState, 'order': getOrder(order)});
+      ? changeURL({...viewState, [ORDER]: getOrder(order),  [SORT]: getSort(SortType.Price)})
+      : changeURL({...viewState, [ORDER]: getOrder(order)});
     setCurrentSortOrder(order);
     if (currentSortType.length === 0) {
       setCurrentSortType(SortType.Price);

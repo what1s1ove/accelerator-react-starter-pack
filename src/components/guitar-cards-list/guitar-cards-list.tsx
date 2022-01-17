@@ -16,12 +16,14 @@ type GuitarCardsListProps = {
   viewState: ViewState;
   changeURL: (updatedViewState: ViewState) => void;
 }
+
 const DEFAULT_PAGES_LIMIT = 3;
-const LIMIT = 1;
+const QUERY_LIMIT = 1;
 const FIRST_PAGE = '1';
+const ONE = 1;
 
 function GuitarCardsList({guitarsList, viewState, changeURL}:GuitarCardsListProps):JSX.Element {
-  const {data: guitarsCount} = useFetchGuitarsTotalCountQuery(LIMIT);
+  const {data: guitarsCount} = useFetchGuitarsTotalCountQuery(QUERY_LIMIT);
   const [currentPage, setCurrentPage] = useState<string>(getInitialPageNumber(viewState));
   const [startPage, setStartPage] = useState<string>(FIRST_PAGE);
 
@@ -42,7 +44,7 @@ function GuitarCardsList({guitarsList, viewState, changeURL}:GuitarCardsListProp
 
   const prevPageClickHandler = (prevPage: number) => {
     setCurrentPage(prevPage.toString());
-    setStartPage((prevPage - DEFAULT_PAGES_LIMIT + 1).toString());
+    setStartPage((prevPage - DEFAULT_PAGES_LIMIT + ONE).toString());
     changeURL({...viewState, page: prevPage.toString()});
   };
 
