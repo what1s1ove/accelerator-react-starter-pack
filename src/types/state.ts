@@ -17,7 +17,11 @@ export type Guitars = {
 
 export type GuitarItem = {
   guitar: Guitar | undefined,
-  comments: Comment[];
+  comments: Comment[],
 };
+
+export type Error = {
+  message: string,
+}
 
 export type State = RootState;

@@ -74,6 +74,14 @@ export const toggleNumberString = createAction(
   }),
 );
 
+export const setErrorMessage = createAction(
+  ActionType.SetErrorMessage,
+  (message: string) => ({
+    payload: message,
+  }),
+);
+
+
 // POST /comments – отправить новый комментарий.
 // POST /coupons – отправить купон. Если купон валидный, роут возвращает процент скидки.
 // POST /orders – отправить новый заказ.

@@ -20,8 +20,12 @@ function GuitarItem({guitar}: GuitarItemProps): JSX.Element {
         </p>
       </div>
       <div className="product-card__buttons">
-        <Link className="button button--mini" to={AppRoute.Product.replace(':id', guitar.id.toString())}>Подробнее</Link>
-        <Link className="button button--red button--mini button--add-to-cart" to="#">Купить</Link>
+        <Link className="button button--mini" to={AppRoute.Product.replace(':id', guitar.id.toString())}>
+          Подробнее
+        </Link>
+        <Link className="button button--red button--mini button--add-to-cart" to="#">
+          Купить
+        </Link>
       </div>
     </div>
   );

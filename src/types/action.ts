@@ -18,6 +18,7 @@ export enum ActionType {
   PostCoupons = 'postCoupons',
   PostOrders = 'postOrders',
   RedirectToRoute = 'redirectToRoute',
+  SetErrorMessage = 'setErrorMessage',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;

@@ -4,15 +4,11 @@ import { setSearchString } from '../../store/action';
 import { getGuitarsList, getSearchString } from '../../store/guitars/selectors';
 import { AppRoute } from '../../const';
 import { fetchGuitarsAction } from '../../store/api-actions';
-import { useEffect } from 'react';
 
 function Header(): JSX.Element {
   const searchString = useSelector(getSearchString);
   const guitars = useSelector(getGuitarsList);
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchGuitarsAction());
-  }, [dispatch]);
   const handleSearchStringChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setSearchString(evt.target.value));
     dispatch(fetchGuitarsAction());
