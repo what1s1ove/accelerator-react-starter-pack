@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import ErrorModal from '../error-modal/error-modal';
 import Filter from '../filter/filter';
 import Footer from '../footer/footer';
 import GuitarsList from '../guitars-list/guitars-list';
 import Header from '../header/header';
+import ModalCartAdd from '../modal-cart-add/modal-cart-add';
 function Catalog(): JSX.Element {
 
   return (
@@ -27,6 +29,8 @@ function Catalog(): JSX.Element {
         </div>
       </main>
       <Footer />
+      <ModalCartAdd />
+      <ErrorModal />
     </div>
   );
 }

@@ -22,6 +22,10 @@ export type GuitarItem = {
 
 export type Error = {
   message: string,
-}
+};
+
+export type Cart = {
+  modal: Guitar | null,
+};
 
 export type State = RootState;

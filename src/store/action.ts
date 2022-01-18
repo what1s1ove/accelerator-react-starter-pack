@@ -81,7 +81,14 @@ export const setErrorMessage = createAction(
   }),
 );
 
+export const openModal = createAction(
+  ActionType.OpenModal,
+  (guitar: Guitar) => ({
+    payload: guitar,
+  }),
+);
 
-// POST /comments – отправить новый комментарий.
-// POST /coupons – отправить купон. Если купон валидный, роут возвращает процент скидки.
-// POST /orders – отправить новый заказ.
+export const closeModal = createAction(
+  ActionType.CloseModal,
+  () => ({payload: null}),
+);

@@ -1,5 +1,7 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { closeModal } from '../../store/action';
+import { getModal } from '../../store/order/selectors';
 import { formatNumber, translateTypeGuitars } from '../../utils/utils';
-import { ModalCartAddProps } from './types';
 
 const modalStyle: React.CSSProperties = {
   position: 'relative',
@@ -8,7 +10,18 @@ const modalStyle: React.CSSProperties = {
   marginBottom: '50px',
 };
 
-function ModalCartAdd({guitar}: ModalCartAddProps): JSX.Element {
+function ModalCartAdd(): JSX.Element | null {
+  const guitar = useSelector(getModal);
+  const dispatch = useDispatch();
+
+  if (!guitar) {
+    return null;
+  }
+
+  const handleClose = () => {
+    dispatch(closeModal());
+  };
+
   return (
     <div style={modalStyle}>
       <div className="modal is-active modal-for-ui-kit">
@@ -35,7 +48,7 @@ function ModalCartAdd({guitar}: ModalCartAddProps): JSX.Element {
             <div className="modal__button-container">
               <button className="button button--red button--big modal__button modal__button--add">Добавить в корзину</button>
             </div>
-            <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть">
+            <button onClick={handleClose} className="modal__close-btn button-cross" type="button" aria-label="Закрыть">
               <span className="button-cross__icon"></span>
               <span className="modal__close-btn-interactive-area"></span>
             </button>

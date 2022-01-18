@@ -1,10 +1,15 @@
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
+import { openModal } from '../../store/action';
 import { capitalize, formatNumber } from '../../utils/utils';
 import Rating from '../rating/rating';
 import { GuitarItemProps } from './types';
 
 function GuitarItem({guitar}: GuitarItemProps): JSX.Element {
+  const dispatch = useDispatch();
+  const handleModalButton = () =>
+    dispatch(openModal(guitar));
   return (
     <div className="product-card">
       <img src={`/${guitar.previewImg}`} width="75" height="190" alt={guitar.name}/>
@@ -23,7 +28,10 @@ function GuitarItem({guitar}: GuitarItemProps): JSX.Element {
         <Link className="button button--mini" to={AppRoute.Product.replace(':id', guitar.id.toString())}>
           Подробнее
         </Link>
-        <Link className="button button--red button--mini button--add-to-cart" to="#">
+        <Link
+          onClick={handleModalButton}
+          className="button button--red button--mini button--add-to-cart" to="#"
+        >
           Купить
         </Link>
       </div>
