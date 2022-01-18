@@ -22,7 +22,7 @@ function Catalog(): JSX.Element {
               <Link className="link" to="">Каталог</Link>
             </li>
           </ul>
-          <div className="catalog">
+          <div className="catalog" data-testid="Catalog">
             <Filter />
             <GuitarsList />
           </div>

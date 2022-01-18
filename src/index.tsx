@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 import App from './components/app/app';
 import { createAPI } from './services/api';
+import { fetchGuitarsAction } from './store/api-actions';
 import { rootReducer } from './store/root-reducer';
 
 const api = createAPI();
@@ -18,6 +19,8 @@ const store = configureStore({
       },
     }),
 });
+
+store.dispatch(fetchGuitarsAction());
 
 ReactDOM.render(
   <React.StrictMode>

@@ -20,7 +20,7 @@ function Rating({rating, width, height}: RatingProps): JSX.Element {
 
   return (
     <>
-      <span className="visually-hidden">Рейтинг:</span>
+      <span className="visually-hidden" data-testid="Rating">Рейтинг:</span>
       {stars}
     </>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { SortOrderOptions, SortTypeOptions } from '../../const';
 import { changeSortOrder, changeSortType } from '../../store/action';
@@ -13,9 +13,6 @@ function GuitarsList(): JSX.Element {
   const sortOrder = useSelector(getSortOrder);
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchGuitarsAction());
-  }, [dispatch]);
 
   const handleSortTypeChange = (type: SortTypeOptions) => {
     dispatch(changeSortType(type));
@@ -68,7 +65,7 @@ function GuitarsList(): JSX.Element {
           </button>
         </div>
       </div>
-      <div className="cards catalog__cards">
+      <div className="cards catalog__cards" data-testid="GuitarsList">
         {
           guitars.map((guitar) => (
             <GuitarItem guitar={guitar} key={guitar.id} />
