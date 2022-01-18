@@ -88,6 +88,11 @@ function GuitarsList(): JSX.Element {
       </div>
       <div className="pagination page-content__pagination">
         <ul className="pagination__list">
+          <li className="pagination__page pagination__page--prev" id="prev">
+            <Link className="link pagination__page-link" to="1">
+              Назад
+            </Link>
+          </li>
           <li className="pagination__page pagination__page--active">
             <Link className="link pagination__page-link" to="1">
               1

@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { capitalize } from '../../utils/utils';
 import { setSearchString } from '../../store/action';
 import { getGuitarsList, getSearchString } from '../../store/guitars/selectors';
 import { AppRoute } from '../../const';
@@ -18,6 +17,9 @@ function Header(): JSX.Element {
     dispatch(setSearchString(evt.target.value));
     dispatch(fetchGuitarsAction());
   };
+
+  const handleSearchStringReset = () =>
+    dispatch(dispatch(setSearchString('')));
 
   return (
     <header className="header" id="header">
@@ -64,8 +66,11 @@ function Header(): JSX.Element {
                   className="form-search__select-item"
                   tabIndex={0}
                 >
-                  <Link className="form-search__select-item" to={AppRoute.Product.replace(':id', guitar.id.toString())}>
-                    {guitar.name} {capitalize(guitar.type)}
+                  <Link onClick={handleSearchStringReset}
+                    className="form-search__select-item"
+                    to={AppRoute.Product.replace(':id', guitar.id.toString())}
+                  >
+                    {guitar.name}
                   </Link>
                 </li>
               ))

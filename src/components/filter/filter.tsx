@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { GuitarsType, StringCounts, strings } from '../../const';
 import { setPriceFrom, setPriceTo, toggleNumberString, toggleTypeGuitar } from '../../store/action';
 import { fetchGuitarsAction } from '../../store/api-actions';
-import { getMaxPrice, getMinPrice, getNumberStrings, getPriceFrom, getPriceTo, getTypeGuitars } from '../../store/guitars/selectors';
+import {
+  getMaxPrice,
+  getMinPrice,
+  getNumberStrings,
+  getPriceFrom,
+  getPriceTo,
+  getTypeGuitars } from '../../store/guitars/selectors';
 import { translateTypeGuitars } from '../../utils/utils';
 
 function Filter(): JSX.Element {
@@ -63,11 +69,11 @@ function Filter(): JSX.Element {
 
   let avaliableStringNumber: number[] = [];
   if (typeGuitars.length === 0) {
-    avaliableStringNumber = [4, 6, 7, 12];
+    avaliableStringNumber = strings;
   }
-  typeGuitars.forEach((typeGuitar) => (
-    avaliableStringNumber = avaliableStringNumber.concat(StringCounts[typeGuitar])
-  ));
+  typeGuitars.forEach((typeGuitar) =>
+    avaliableStringNumber = [...avaliableStringNumber, ...StringCounts[typeGuitar]],
+  );
 
   return (
     <form className="catalog-filter">
