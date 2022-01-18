@@ -12,6 +12,8 @@ export enum ActionType {
   SetSearchString = 'SetSearchString',
   SetPriceFrom = 'setPriceFrom',
   SetPriceTo = 'setPriceTo',
+  SetPageNumber = 'setPageNumber',
+  SetPageCount = 'setPageCount',
   SetTypeGuitars = 'setTypeGuitars',
   SetNumberStrings = 'setNumberStrings',
   PostComments = 'postComments',

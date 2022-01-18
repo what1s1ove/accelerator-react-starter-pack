@@ -16,7 +16,9 @@ import {
   setPriceTo,
   setSearchString,
   toggleTypeGuitar,
-  toggleNumberString
+  toggleNumberString,
+  setPageNumber,
+  setPageCount
 } from '../action';
 
 export const initialState: Guitars = {
@@ -27,6 +29,8 @@ export const initialState: Guitars = {
   searchString: undefined,
   priceFrom: undefined,
   priceTo: undefined,
+  pageNumber: 1,
+  pageCount: 1,
   typeGuitars: [],
   numberStrings: [],
 };
@@ -50,6 +54,12 @@ const guitarsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setPriceTo, (state, action) => {
       state.priceTo = action.payload;
+    })
+    .addCase(setPageNumber, (state, action) => {
+      state.pageNumber = action.payload;
+    })
+    .addCase(setPageCount, (state, action) => {
+      state.pageCount = action.payload;
     })
     .addCase(toggleTypeGuitar, (state, action) => {
       state.typeGuitars = toggleArrayElement(state.typeGuitars, action.payload);

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { SortOrderOptions, SortTypeOptions } from '../../const';
 import { changeSortOrder, changeSortType } from '../../store/action';
 import { fetchGuitarsAction } from '../../store/api-actions';
 import { getGuitarsList, getSortOrder, getSortType } from '../../store/guitars/selectors';
 import { Guitar } from '../../types/guitar';
 import GuitarItem from '../guitar-item/guitar-item';
+import Pagination from '../pagination/pagination';
 
 function GuitarsList(): JSX.Element {
   const guitars = useSelector(getGuitarsList);
@@ -86,35 +86,7 @@ function GuitarsList(): JSX.Element {
           ))
         }
       </div>
-      <div className="pagination page-content__pagination">
-        <ul className="pagination__list">
-          <li className="pagination__page pagination__page--prev" id="prev">
-            <Link className="link pagination__page-link" to="1">
-              Назад
-            </Link>
-          </li>
-          <li className="pagination__page pagination__page--active">
-            <Link className="link pagination__page-link" to="1">
-              1
-            </Link>
-          </li>
-          <li className="pagination__page">
-            <Link className="link pagination__page-link" to="2">
-              2
-            </Link>
-          </li>
-          <li className="pagination__page">
-            <Link className="link pagination__page-link" to="3">
-              3
-            </Link>
-          </li>
-          <li className="pagination__page pagination__page--next" id="next">
-            <Link className="link pagination__page-link" to="2">
-              Далее
-            </Link>
-          </li>
-        </ul>
-      </div>
+      <Pagination />
     </React.Fragment>
   );
 }

@@ -11,6 +11,8 @@ export type Guitars = {
   searchString: string | undefined,
   priceFrom: number | undefined,
   priceTo: number | undefined,
+  pageNumber: number,
+  pageCount: number,
   typeGuitars: GuitarsType[],
   numberStrings: number[],
 };

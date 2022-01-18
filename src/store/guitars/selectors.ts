@@ -20,6 +20,8 @@ export const getSortType = (state: State): SortTypeOptions => state[NameSpace.Gu
 export const getSortOrder = (state: State): SortOrderOptions => state[NameSpace.Guitars].sortOrder;
 export const getPriceFrom = (state: State): number | undefined => state[NameSpace.Guitars].priceFrom;
 export const getPriceTo = (state: State): number | undefined => state[NameSpace.Guitars].priceTo;
+export const getPageNumber = (state: State): number | undefined => state[NameSpace.Guitars].pageNumber;
+export const getPageCount = (state: State): number => state[NameSpace.Guitars].pageCount;
 export const getMinPrice = (state: State): number => {
   const guitarsList = state[NameSpace.Guitars].guitars;
   if (guitarsList.length === 0) {

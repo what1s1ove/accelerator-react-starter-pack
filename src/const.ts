@@ -37,3 +37,5 @@ export const StringCounts = {
 };
 
 export const strings = [4, 6, 7, 12];
+
+export const PRODUCTS_ON_PAGE = 9;

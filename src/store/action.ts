@@ -11,6 +11,13 @@ export const setGuitars = createAction(
   }),
 );
 
+export const setPageCount = createAction(
+  ActionType.SetPageCount,
+  (count: number) => ({
+    payload: count,
+  }),
+);
+
 export const setGuitar = createAction(
   ActionType.SetGuitar,
   (guitar: Guitar) => ({
@@ -57,6 +64,13 @@ export const setPriceTo = createAction(
   ActionType.SetPriceTo,
   (priceTo: number | undefined) => ({
     payload: priceTo,
+  }),
+);
+
+export const setPageNumber = createAction(
+  ActionType.SetPageNumber,
+  (pageNumber: number) => ({
+    payload: pageNumber,
   }),
 );
 
