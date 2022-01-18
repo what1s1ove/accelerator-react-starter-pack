@@ -3,6 +3,7 @@ import { GuitarsType, SortOrderOptions, SortTypeOptions } from '../const';
 import { ActionType } from '../types/action';
 import { Comment } from '../types/comment';
 import { Guitar } from '../types/guitar';
+import { translateSortOptions } from '../utils/utils';
 
 export const setGuitars = createAction(
   ActionType.SetGuitars,
@@ -35,14 +36,14 @@ export const setComments = createAction(
 export const changeSortType = createAction(
   ActionType.ChangeSortType,
   (sortType: SortTypeOptions) => ({
-    payload: sortType,
+    payload: translateSortOptions(sortType),
   }),
 );
 
 export const changeSortOrder = createAction(
   ActionType.ChangeSortOrder,
   (sortOrder: SortOrderOptions) => ({
-    payload: sortOrder,
+    payload: translateSortOptions(sortOrder),
   }),
 );
 

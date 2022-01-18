@@ -1,4 +1,4 @@
-import { GuitarsType, SortOrderOptions, SortTypeOptions } from '../const';
+import { GuitarsType } from '../const';
 import { RootState } from '../store/root-reducer';
 import { Comment } from './comment';
 import { Guitar } from './guitar';
@@ -6,8 +6,8 @@ import { Guitar } from './guitar';
 export type Guitars = {
   guitars: Guitar[],
   filteredGuitars: Guitar[],
-  sortType: SortTypeOptions,
-  sortOrder: SortOrderOptions,
+  sortType: string,
+  sortOrder: string,
   searchString: string | undefined,
   priceFrom: number | undefined,
   priceTo: number | undefined,

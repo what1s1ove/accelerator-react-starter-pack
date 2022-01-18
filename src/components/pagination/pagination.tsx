@@ -21,7 +21,7 @@ function Pagination(): JSX.Element {
         <Link
           onClick={() => handlePageNumber(index)}
           className="link pagination__page-link"
-          to={AppRoute.Catalog.replace(':id', pageNumber ? pageNumber.toString(): '1')}
+          to={AppRoute.Catalog.replace(':id', index.toString())}
         >
           {index}
         </Link>
@@ -31,23 +31,23 @@ function Pagination(): JSX.Element {
   return (
     <div className="pagination page-content__pagination">
       <ul className="pagination__list">
-        {(pageNumber && (pageNumber > 1)) && (
+        {pageNumber > 1 && (
           <li className="pagination__page pagination__page--prev" id="prev">
             <Link
               onClick={() => handlePageNumber(pageNumber - 1)}
               className="link pagination__page-link"
-              to={AppRoute.Catalog.replace(':id', pageNumber.toString())}
+              to={AppRoute.Catalog.replace(':id', (pageNumber - 1).toString())}
             >
               Назад
             </Link>
           </li>)}
         {pages}
-        {(pageNumber && (pageNumber < pageCount)) && (
+        {pageNumber < pageCount && (
           <li className="pagination__page pagination__page--next" id="next">
             <Link
               onClick={() => handlePageNumber(pageNumber + 1)}
               className="link pagination__page-link"
-              to={AppRoute.Catalog.replace(':id', pageNumber.toString())}
+              to={AppRoute.Catalog.replace(':id', (pageNumber + 1).toString())}
             >
               Далее
             </Link>

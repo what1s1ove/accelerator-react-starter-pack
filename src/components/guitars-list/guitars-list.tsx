@@ -4,7 +4,6 @@ import { SortOrderOptions, SortTypeOptions } from '../../const';
 import { changeSortOrder, changeSortType } from '../../store/action';
 import { fetchGuitarsAction } from '../../store/api-actions';
 import { getGuitarsList, getSortOrder, getSortType } from '../../store/guitars/selectors';
-import { Guitar } from '../../types/guitar';
 import GuitarItem from '../guitar-item/guitar-item';
 import Pagination from '../pagination/pagination';
 
@@ -24,21 +23,11 @@ function GuitarsList(): JSX.Element {
   };
   const handleSortOrderChange = (type: SortOrderOptions) => {
     dispatch(changeSortOrder(type));
+    if (sortType === SortTypeOptions.Default) {
+      dispatch(changeSortType(SortTypeOptions.Price));
+    }
     dispatch(fetchGuitarsAction());
   };
-
-  if (sortType === SortTypeOptions.Popular) {
-    guitars.sort((first: Guitar, second: Guitar) => first.rating - second.rating);
-  }
-  if (sortType === SortTypeOptions.Price) {
-    guitars.sort((first: Guitar, second: Guitar) =>  first.price - second.price);
-  }
-  if (sortOrder === SortOrderOptions.Descending) {
-    guitars.reverse();
-  }
-  if (sortType === SortTypeOptions.Default && sortOrder !== SortOrderOptions.Default) {
-    handleSortTypeChange(SortTypeOptions.Price);
-  }
 
   return (
     <React.Fragment>

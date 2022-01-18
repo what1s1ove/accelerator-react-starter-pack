@@ -1,4 +1,4 @@
-import { GuitarsType } from '../const';
+import { GuitarsType, SortOrderOptions, SortTypeOptions } from '../const';
 
 export const capitalize = (string: string): string =>
   string.charAt(0).toUpperCase() + string.slice(1);
@@ -25,6 +25,21 @@ export const translateTypeGuitars = (type: string): string => {
       return 'Электрогитара';
     case GuitarsType.Ukulele:
       return 'Укулеле';
+    default:
+      return 'Неизвестно';
+  }
+};
+
+export const translateSortOptions = (type: string): string => {
+  switch(type) {
+    case SortTypeOptions.Price:
+      return 'price';
+    case SortTypeOptions.Popular:
+      return 'rating';
+    case SortOrderOptions.Ascending:
+      return 'asc';
+    case SortOrderOptions.Descending:
+      return 'desc';
     default:
       return 'Неизвестно';
   }
