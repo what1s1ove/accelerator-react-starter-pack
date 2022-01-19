@@ -14,7 +14,15 @@ function Header(): JSX.Element {
 
   const searchingHandler = (evt: ChangeEvent<HTMLInputElement>) => {
     evt.preventDefault();
-    const tempSearchedGuitars = guitars.filter((guitar) => evt.target.value.length > 0 && evt.target.value !== ' ' ? guitar.name.toLowerCase().indexOf(evt.target.value.toLowerCase()) !== -1 : false);
+    const tempSearchedGuitars = guitars.filter((guitar) => {
+      if (evt.target.value.length > 1 && evt.target.value !== ' ') {
+        return guitar.name.toLowerCase().indexOf(evt.target.value.toLowerCase()) !== -1;
+      } else if (evt.target.value.length === 1 && evt.target.value !== ' ') {
+        return evt.target.value.toLowerCase() === guitar.name.toLowerCase()[0];
+      } else {
+        return false;
+      }
+    });
     if (tempSearchedGuitars.length !== 0) {
       searchListRef.current?.classList.remove('hidden');
     } else {

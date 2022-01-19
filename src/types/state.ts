@@ -7,6 +7,7 @@ export type GuitarsData = {
   currentGuitar: Guitar,
   guitarsRating: number[],
   page: number,
+  isDataLoaded: boolean,
 }
 
 export type GuitarsOtherData = {

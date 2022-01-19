@@ -7,10 +7,11 @@ import {APIRoute} from '../const';
 import {State} from '../types/state';
 import {makeFakeCommentsCount, makeFakeCurrentGuitarComment, makeFakeGuitar} from '../utils/mocks';
 import {fetchCommentsCountAction, fetchCurrentGuitarAction, fetchCurrentGuitarCommentsAction, fetchGuitarsAction} from './api-actions';
-import {loadCommentsCount, loadCurrentGuitar, loadCurrentGuitarComments, loadGuitars} from './action';
+import {changeIsDataLoaded, loadCommentsCount, loadCurrentGuitar, loadCurrentGuitarComments, loadGuitars} from './action';
 
 describe('Async actions', () => {
-  const api = createAPI();
+  const fakeChangeIsDataLoaded = jest.fn();
+  const api = createAPI(fakeChangeIsDataLoaded());
   const mockAPI = new MockAdapter(api);
   const middlewares = [thunk.withExtraArgument(api)];
 
@@ -31,6 +32,7 @@ describe('Async actions', () => {
 
     expect(store.getActions()).toEqual([
       loadGuitars(mockGuitars),
+      changeIsDataLoaded(true),
     ]);
   });
 

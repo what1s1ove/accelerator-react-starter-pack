@@ -3,8 +3,18 @@ import {AppRoute} from '../../const';
 import Main from '../main/main';
 import GuitarPage from '../guitar-page/guitar-page';
 import NotFoundScreen from '../not-found-screen/not-found-screen';
+import LoadingScreen from '../loading-screen/loading-screen';
+import {useSelector} from 'react-redux';
+import {getIsDataLoaded} from '../../store/guitars-data/selectors';
 
 function App(): JSX.Element {
+  const isDataLoaded = useSelector(getIsDataLoaded);
+
+  if (!isDataLoaded) {
+    return (
+      <LoadingScreen />
+    );
+  }
   return (
     <BrowserRouter>
       <Switch>

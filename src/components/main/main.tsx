@@ -7,8 +7,12 @@ import {getGuitarsRating} from '../../store/guitars-data/selectors';
 import {getCommentsCount, getFilterPrice, getFilterString, getFilterType, getSortDirection, getSortTitle} from '../../store/guitars-other-data/selectors';
 import {ChangeEvent, FocusEvent, MouseEvent, useEffect, useState} from 'react';
 import {changeFilterPrice, changeFilterString, changeFilterType, changePage, changeSortDirection, changeSortTitle, loadGuitarsRating} from '../../store/action';
-import {Link, useHistory} from 'react-router-dom';
+import {Link, useHistory, useParams} from 'react-router-dom';
 import {fetchCommentsCountAction} from '../../store/api-actions';
+
+type FiltersParams = {
+  filters: string
+};
 
 function Main(): JSX.Element {
   const guitars = useSelector(getGuitars);
@@ -24,6 +28,57 @@ function Main(): JSX.Element {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const {filters} = useParams<FiltersParams>();
+
+  useEffect(() => {
+    if (filters) {
+      if (filters.indexOf('price') !== -1) {
+        let priceMin = '';
+        let priceMax = '';
+        for (const symbol of filters) {
+          if (symbol !== '_') {
+            if (parseInt(symbol, 10) || symbol === '0') {
+              priceMin += symbol;
+            }
+          } else {
+            break;
+          }
+        }
+        for (let j = 0; filters[j] !== '&'; j++) {
+          if (filters[j] === '_') {
+            for (let i = j; filters[i] !== '&'; i++) {
+              if (parseInt(filters[i], 10) || filters[i] === '0') {
+                priceMax += filters[i];
+              }
+            }
+            break;
+          }
+        }
+        setPriceMin(priceMin);
+        setPriceMax(priceMax);
+        dispatch(changeFilterPrice({
+          'priceMin': priceMin,
+          'priceMax': priceMax,
+        }));
+      }
+      if (filters.indexOf('type') !== -1) {
+        dispatch(changeFilterType({
+          'acoustic': filters.indexOf('acoustic') !== -1 ? 'acoustic' : '',
+          'electric': filters.indexOf('electric') !== -1 ? 'electric' : '',
+          'ukulele': filters.indexOf('ukulele') !== -1 ? 'ukulele' : '',
+        }));
+      }
+      if (filters.indexOf('strings') !== -1) {
+        dispatch(changeFilterString({
+          '4-strings': filters.indexOf('4-strings') !== -1 ? '4-strings' : '',
+          '6-strings': filters.indexOf('6-strings') !== -1 ? '6-strings' : '',
+          '7-strings': filters.indexOf('7-strings') !== -1 ? '7-strings' : '',
+          '12-strings': filters.indexOf('12-strings') !== -1 ? '12-strings' : '',
+        }));
+      }
+    }
+  }, [filters, dispatch]);
+
   const sortedByPriceGuitars = [...guitars];
   sortedByPriceGuitars.sort((guitar1, guitar2) => guitar1.price - guitar2.price);
 
@@ -36,6 +91,9 @@ function Main(): JSX.Element {
   const [isDisabledString6, setIsDisabledString6] = useState(false);
   const [isDisabledString7, setIsDisabledString7] = useState(false);
   const [isDisabledString12, setIsDisabledString12] = useState(false);
+
+  const [priceMin, setPriceMin] = useState('');
+  const [priceMax, setPriceMax] = useState('');
 
   const sortTitleHandler = (evt: MouseEvent<HTMLElement>) => {
     evt.preventDefault();
@@ -55,7 +113,7 @@ function Main(): JSX.Element {
     dispatch(changeSortDirection(evt.currentTarget.ariaLabel));
   };
 
-  const priceBlurHandler = (evt: FocusEvent<HTMLInputElement>) => {
+  const priceMinBlurHandler = (evt: FocusEvent<HTMLInputElement>) => {
     if (evt.currentTarget.value !== '') {
       let price = Number(evt.currentTarget.value);
       if (price > sortedByPriceGuitars[sortedByPriceGuitars.length - 1].price) {
@@ -63,18 +121,62 @@ function Main(): JSX.Element {
       } else if (price < sortedByPriceGuitars[0].price) {
         price = sortedByPriceGuitars[0].price;
       }
+      setPriceMin(String(price));
       dispatch(changeFilterPrice({
         ...filterPrice,
         [evt.currentTarget.id]: String(price),
       }));
+    } else {
+      dispatch(changeFilterPrice({
+        ...filterPrice,
+        [evt.currentTarget.id]: '',
+      }));
     }
   };
 
-  const priceChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
-    dispatch(changeFilterPrice({
-      ...filterPrice,
-      [evt.currentTarget.id]: evt.currentTarget.value,
-    }));
+  const priceMaxBlurHandler = (evt: FocusEvent<HTMLInputElement>) => {
+    if (evt.currentTarget.value !== '') {
+      let price = Number(evt.currentTarget.value);
+      if (price > sortedByPriceGuitars[sortedByPriceGuitars.length - 1].price) {
+        price = sortedByPriceGuitars[sortedByPriceGuitars.length - 1].price;
+      } else if (price < sortedByPriceGuitars[0].price) {
+        price = sortedByPriceGuitars[0].price;
+      }
+      setPriceMax(String(price));
+      dispatch(changeFilterPrice({
+        ...filterPrice,
+        [evt.currentTarget.id]: String(price),
+      }));
+    } else {
+      dispatch(changeFilterPrice({
+        ...filterPrice,
+        [evt.currentTarget.id]: '',
+      }));
+    }
+  };
+
+  const priceMinChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+    setPriceMin(evt.currentTarget.value);
+    if (sortedByPriceGuitars[0]) {
+      if (Number(evt.currentTarget.value) > sortedByPriceGuitars[0].price) {
+        dispatch(changeFilterPrice({
+          ...filterPrice,
+          [evt.currentTarget.id]: evt.currentTarget.value,
+        }));
+      }
+    }
+  };
+
+  const priceMaxChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
+    setPriceMax(evt.currentTarget.value);
+    if (sortedByPriceGuitars[0]) {
+      if (Number(evt.currentTarget.value) > sortedByPriceGuitars[0].price) {
+        dispatch(changeFilterPrice({
+          ...filterPrice,
+          [evt.currentTarget.id]: evt.currentTarget.value,
+        }));
+      }
+    }
   };
 
   const stringChangeHandler = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -88,6 +190,12 @@ function Main(): JSX.Element {
     dispatch(changeFilterType({
       ...filterType,
       [evt.currentTarget.name]: evt.currentTarget.checked ? evt.currentTarget.name : '',
+    }));
+    dispatch(changeFilterString({
+      '4-strings': evt.currentTarget.name === 'acoustic' ? '' : filterString['4-strings'],
+      '6-strings': evt.currentTarget.name === 'ukulele' ? '' : filterString['6-strings'],
+      '7-strings': evt.currentTarget.name === 'ukulele' ? '' : filterString['7-strings'],
+      '12-strings': evt.currentTarget.name === 'ukulele' || evt.currentTarget.name === 'electric' ? '' : filterString['12-strings'],
     }));
   };
 
@@ -212,9 +320,9 @@ function Main(): JSX.Element {
                       name="от"
                       min={sortedByPriceGuitars[0] ? String(sortedByPriceGuitars[0].price) : ''}
                       max={sortedByPriceGuitars[0] ? String(sortedByPriceGuitars[sortedByPriceGuitars.length - 1].price) : ''}
-                      value={filterPrice.priceMin}
-                      onBlur={priceBlurHandler}
-                      onChange={priceChangeHandler}
+                      value={priceMin}
+                      onBlur={priceMinBlurHandler}
+                      onChange={priceMinChangeHandler}
                       data-testid="priceMin"
                     />
                   </div>
@@ -227,9 +335,9 @@ function Main(): JSX.Element {
                       name="до"
                       min={sortedByPriceGuitars[0] ? String(sortedByPriceGuitars[0].price) : ''}
                       max={sortedByPriceGuitars[0] ? String(sortedByPriceGuitars[sortedByPriceGuitars.length - 1].price) : ''}
-                      value={filterPrice.priceMax}
-                      onBlur={priceBlurHandler}
-                      onChange={priceChangeHandler}
+                      value={priceMax}
+                      onBlur={priceMaxBlurHandler}
+                      onChange={priceMaxChangeHandler}
                       data-testid="priceMax"
                     />
                   </div>
@@ -349,7 +457,7 @@ function Main(): JSX.Element {
                       <a className="link pagination__page-link" href="1" onClick={pageClickHandler}>{idx + 1}</a>
                     </li>
                   ))}
-                {page === Math.ceil(sortedGuitars.length / 9) ? '' :
+                {page === Math.ceil(sortedGuitars.length / 9) || Math.ceil(sortedGuitars.length / 9) === 0 ? '' :
                   <li className="pagination__page pagination__page--next" id="next">
                     <a className="link pagination__page-link" href="3" onClick={pageClickHandler}>Далее</a>
                   </li>}

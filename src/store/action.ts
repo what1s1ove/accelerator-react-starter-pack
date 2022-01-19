@@ -87,3 +87,10 @@ export const redirectToRoute = createAction(
     payload: url,
   }),
 );
+
+export const changeIsDataLoaded = createAction(
+  ActionType.ChangeIsDataLoaded,
+  (isTrue: boolean) => ({
+    payload: isTrue,
+  }),
+);

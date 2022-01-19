@@ -1,5 +1,5 @@
 import {ThunkActionResult} from '../types/action';
-import {loadCommentsCount, loadCurrentGuitar, loadGuitars, loadCurrentGuitarComments} from './action';
+import {loadCommentsCount, loadCurrentGuitar, loadGuitars, loadCurrentGuitarComments, changeIsDataLoaded} from './action';
 import {APIRoute} from '../const';
 import {Guitars, Guitar} from '../types/guitar';
 import {Comments} from '../types/comment';
@@ -10,6 +10,7 @@ export const fetchGuitarsAction = (): ThunkActionResult =>
     try {
       const {data} = await api.get<Guitars>(APIRoute.Guitars);
       dispatch(loadGuitars(data));
+      dispatch(changeIsDataLoaded(true));
     } catch(error) {
       toast.info('Сервер недоступен');
     }

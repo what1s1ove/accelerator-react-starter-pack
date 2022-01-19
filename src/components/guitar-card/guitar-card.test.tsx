@@ -28,6 +28,7 @@ const store = mockStore({
     guitarsRating: guitarsRating,
     currentGuitar: currentGuitar,
     page: page,
+    isDataLoaded: true,
   },
   GUITARS_OTHER: {
     commentsCount: commentsCount,

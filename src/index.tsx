@@ -8,8 +8,11 @@ import {fetchGuitarsAction} from './store/api-actions';
 import {rootReducer} from './store/root-reducer';
 import browserHistory from './browser-history';
 import {Router as BrowserRouter} from 'react-router-dom';
+import {changeIsDataLoaded} from './store/action';
 
-const api = createAPI();
+const api = createAPI(
+  () => store.dispatch(changeIsDataLoaded(true)),
+);
 
 const store = configureStore({
   reducer: rootReducer,

@@ -21,6 +21,7 @@ export enum ActionType {
   RedirectToRoute = 'guitars/redirectToRoute',
   LoadCurrentGuitarComments = 'comments/loadCurrentGuitarComments',
   LoadCommentsCount = 'comments/loadCommentsCount',
+  ChangeIsDataLoaded = 'guitars/changeIsDataLoaded',
 }
 
 export type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Action>;
