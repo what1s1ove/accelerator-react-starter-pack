@@ -7,6 +7,7 @@ enum AppRoute {
   Catalog = '/',
   Guitar = '/guitars/:id',
   PageNotFound = '*',
+  Query = '/?',
   Pagination = '/catalog/page_:pageNumber',
 }
 
@@ -86,4 +87,57 @@ enum FetchStatus {
   Error = 'Error',
 }
 
-export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, ENTER_KEY, FetchStatus};
+enum StringCount {
+  FourStrings = '4-strings',
+  SixStrings = '6-strings',
+  SevenStrings = '7-strings',
+  TwelveStrings = '12-strings',
+}
+
+enum BooleanToString {
+  True = '1',
+  False = '0'
+}
+
+enum FilterPath {
+  Sort = '&_sort=',
+  Order = '&_order=',
+  PriceGte = '&price_gte=',
+  PriceLte = '&price_lte=',
+  Type = '&type_like=',
+  String = '&stringCount_like=',
+  PaginationStart = '&_start=',
+  PaginationEnd = '&_end=',
+}
+
+export type FetchGuitarProperty = {
+  sortType: SortType | string,
+  orderType: SortOrder | string,
+  userPriceMin: string,
+  userPriceMax: string,
+  isAcousticCheck: boolean,
+  isElectricCheck: boolean,
+  isUkuleleCheck: boolean,
+  isFourStringsCheck: boolean,
+  isSixStringsCheck: boolean,
+  isSevenStringsCheck: boolean,
+  isTwelveStringsCheck: boolean,
+  currentPageNumber: number,
+};
+
+export enum QueryParam {
+  Sort = '_sort',
+  Order = '_order',
+  PriceGte = 'price_gte',
+  PriceLte = 'price_lte',
+  AcousticType = 'acousticType',
+  ElectricType = 'electricType',
+  UkuleleType = 'ukuleleType',
+  FourString = '4stringCount',
+  SixString = '6stringCount',
+  SevenString = '7stringCount',
+  TwelveString = '12stringCount',
+  CurrentPageNumber = 'page',
+}
+
+export {FilterPath, BooleanToString, StringCount, AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, ENTER_KEY, FetchStatus, FilterByType};

@@ -53,4 +53,40 @@ const setCatalogFetchStatusAction = createAction(
   }),
 );
 
-export {loadGuitars, loadGuitarsCount, setSortType, setSortOrder, redirectToRoute, loadComments, setCatalogFetchStatusAction};
+const setUserPriceMin = createAction(
+  ActionType.SetUserPriceMin,
+  (userPriceMin: string) => ({
+    payload: {
+      userPriceMin,
+    },
+  }),
+);
+
+const setUserPriceMax = createAction(
+  ActionType.SetUserPriceMax,
+  (userPriceMax: string) => ({
+    payload: {
+      userPriceMax,
+    },
+  }),
+);
+
+const loadGuitarsOnPage = createAction(
+  ActionType.LoadGuitarsOnPage,
+  (guitarsOnPage: GuitarType[]) => ({
+    payload: {
+      guitarsOnPage,
+    },
+  }),
+);
+
+const setGuitarsCount = createAction(
+  ActionType.SetGuitarsCount,
+  (guitarsCount: number) => ({
+    payload: {
+      guitarsCount,
+    },
+  }),
+);
+
+export {setGuitarsCount, loadGuitarsOnPage, setUserPriceMin, setUserPriceMax, loadGuitars, loadGuitarsCount, setSortType, setSortOrder, redirectToRoute, loadComments, setCatalogFetchStatusAction};

@@ -6,10 +6,14 @@ enum ActionType {
   LoadGuitars = 'data/loadGuitars',
   LoadComments = 'data/loadComments',
   LoadGuitarsCount = 'data/loadGuitarsCount',
+  LoadGuitarsOnPage = 'data/loadGuitarsOnPage',
   SetSortType = 'catalog/setSortType',
   SetSortOrder = 'catalog/setSortOrder',
   RedirectToRoute = 'redirectToRoute',
   SetCatalogFetchStatus = 'Catalog/SetCatalogFetchStatus',
+  SetUserPriceMin = 'filter/setUserPriceMin',
+  SetUserPriceMax = 'filter/setUserPriceMax',
+  SetGuitarsCount = 'pagination/setGuitarsCount',
 }
 
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, RootState, AxiosInstance, Action>;
