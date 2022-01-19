@@ -5,6 +5,6 @@ export type Comment = {
   disadvantages: string,
   comment: string,
   rating: number,
-  createAt: Date,
+  createAt: string,
   guitarId: number
 };

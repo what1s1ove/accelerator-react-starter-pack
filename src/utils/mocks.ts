@@ -12,7 +12,7 @@ export const makeFakeComment = (): Comment => ({
   disadvantages: commerce.productDescription(),
   comment: commerce.productDescription(),
   rating: datatype.number(5),
-  createAt: datatype.datetime(),
+  createAt: datatype.datetime().toString(),
   guitarId: datatype.number(),
 } as Comment);
 
@@ -50,3 +50,5 @@ export const getRandomNumberStringsArray = (): number[] =>
     (_, index) => strings[index]) as number[]);
 
 export const getFakeErrorMessage = (): string => commerce.productDescription();
+
+export const getFakePageCount = (): number => datatype.number(5);
