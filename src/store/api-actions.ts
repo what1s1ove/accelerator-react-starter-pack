@@ -1,29 +1,15 @@
-/* eslint-disable no-console */
 import { toast } from 'react-toastify';
-import { APIRoute, AppRoute, FetchGuitarProperty, FetchStatus, FilterByType, FilterPath, PRODUCTS_PER_PAGE, stringLabels } from '../const';
+import { APIRoute, FetchGuitarProperty, FilterByType, FilterPath, PRODUCTS_PER_PAGE, stringLabels } from '../const';
 import { ThunkActionResult } from '../types/action';
 import { CommentType } from '../types/comment';
 import { GuitarType } from '../types/guitar';
-import { loadComments, loadGuitars, loadGuitarsCount, loadGuitarsOnPage, redirectToRoute, setCatalogFetchStatusAction, setGuitarsCount } from './action';
+import { loadComments, loadGuitars, setGuitarsCount, setPriceRangeMax, setPriceRangeMin } from './action';
 
-const fetchGuitarsAction = ():ThunkActionResult =>
-  async (dispatch, _getState, api): Promise<void> => {
-    dispatch(setCatalogFetchStatusAction(FetchStatus.InProgress));
-    try {
-      const {data} = await api.get<GuitarType[]>(APIRoute.Catalog);
-      dispatch(loadGuitars(data));
-      dispatch(setCatalogFetchStatusAction(FetchStatus.Success));
-      data.map((guitar) => api.get<CommentType[]>(APIRoute.CurrentGuitarComments(guitar.id)).then((response) => {
-        dispatch(loadComments(response.data));
-      }));
-    } catch (error) {
-      toast.error('Сервер недоступен');
-    }
-  };
-
-const fetchFilteredGuitarsAction = (fetchProperty: FetchGuitarProperty): ThunkActionResult =>
+const fetchGuitarsAction = (fetchProperty: FetchGuitarProperty): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
     const {
+      sortType,
+      orderType,
       userPriceMin,
       userPriceMax,
       isAcousticCheck,
@@ -37,6 +23,12 @@ const fetchFilteredGuitarsAction = (fetchProperty: FetchGuitarProperty): ThunkAc
 
     let path = `${APIRoute.Catalog}?`;
 
+    if (sortType) {
+      path += `${FilterPath.Sort}${sortType}`;
+    }
+    if (orderType) {
+      path += `${FilterPath.Order}${orderType}`;
+    }
     if (userPriceMin) {
       path += `${FilterPath.PriceGte}${userPriceMin}`;
     }
@@ -44,7 +36,6 @@ const fetchFilteredGuitarsAction = (fetchProperty: FetchGuitarProperty): ThunkAc
       path += `${FilterPath.PriceLte}${userPriceMax}`;
     }
     if (isAcousticCheck) {
-      console.log(isAcousticCheck);
       path += `${FilterPath.Type}${FilterByType.Acoustic}`;
     }
     if (isElectricCheck) {
@@ -65,25 +56,25 @@ const fetchFilteredGuitarsAction = (fetchProperty: FetchGuitarProperty): ThunkAc
     if (isTwelveStringsCheck) {
       path += `${FilterPath.String}${stringLabels.twelveStrings}`;
     }
-
-    dispatch(setCatalogFetchStatusAction(FetchStatus.InProgress));
-    try {
-      const {data} = await api.get<GuitarType[]>(path);
-      dispatch(loadGuitars(data));
-      dispatch(setCatalogFetchStatusAction(FetchStatus.Success));
-    } catch (error) {
-      dispatch(redirectToRoute(AppRoute.PageNotFound));
+    const { data } = await api.get<GuitarType[]>(path);
+    dispatch(loadGuitars(data));
+    if (
+      isAcousticCheck ||
+      isElectricCheck ||
+      isUkuleleCheck ||
+      isFourStringsCheck ||
+      isSixStringsCheck ||
+      isSevenStringsCheck ||
+      isTwelveStringsCheck) {
+      dispatch(setPriceRangeMin(data.slice().sort((a, b) => a.price - b.price)[0].price));
+      dispatch(setPriceRangeMax(data.slice().sort((a, b) => b.price - a.price)[0].price));
     }
   };
 
-const fetchGuitarsCountAction = (filterParams: string): ThunkActionResult =>
+const fetchCommentsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
-    try {
-      const {data} = await api.get<GuitarType[]>(APIRoute.GuitarsCount(filterParams));
-      dispatch(loadGuitarsCount(data));
-    } catch (error) {
-      dispatch(redirectToRoute(AppRoute.PageNotFound));
-    }
+    const { data } = await api.get<CommentType[]>(APIRoute.Comments);
+    dispatch(loadComments(data));
   };
 
 const fetchGuitarsOnPageAction = (fetchProperty: FetchGuitarProperty): ThunkActionResult =>
@@ -138,18 +129,15 @@ const fetchGuitarsOnPageAction = (fetchProperty: FetchGuitarProperty): ThunkActi
     if (isTwelveStringsCheck) {
       path += `${FilterPath.String}${stringLabels.twelveStrings}`;
     }
-    // dispatch(setIsDataLoaded(false));
     try {
       const { data, headers } = await api.get<GuitarType[]>(path);
       await
-      // dispatch(fetchCommentsAction());
-      dispatch(loadGuitarsOnPage(data));
+      dispatch(fetchCommentsAction());
+      dispatch(loadGuitars(data));
       dispatch(setGuitarsCount(+headers['x-total-count']));
-      // dispatch(setIsDataLoaded(true));
     } catch (error) {
-      // dispatch(setIsDataLoaded(true));
+      toast.error('Сервер недоступен');
     }
   };
 
-
-export {fetchGuitarsAction, fetchFilteredGuitarsAction, fetchGuitarsCountAction, fetchGuitarsOnPageAction};
+export {fetchCommentsAction, fetchGuitarsAction, fetchGuitarsOnPageAction};
