@@ -1,12 +1,10 @@
 import { createSelector } from 'reselect';
-import { FetchStatus, SortOrder, SortType } from '../const';
 import { NameSpace, RootState } from './root-reducer';
 
 const getGuitars = (state: RootState) => state[NameSpace.Data].catalog;
 const getDataLoadingStatus = (state: RootState): boolean => state[NameSpace.Data].isDataLoaded;
-const getGuitarsCount = (state: RootState): number => state[NameSpace.Data].guitarsCount;
-const getSortType = (state: RootState): SortType => state[NameSpace.SearchParameters].sortType;
-const getSortOrder = (state: RootState): SortOrder => state[NameSpace.SearchParameters].sortOrder;
+const getGuitarsCount = (state: RootState): number => state[NameSpace.Pagination].guitarsCount;
+
 const getCommentsCount = createSelector(
   [
     (state: RootState) => state[NameSpace.Data].comments,
@@ -17,6 +15,8 @@ const getCommentsCount = createSelector(
     return guitarComments.length;
   });
 
-const getCatalogFetchStatusSelector = (state: RootState): FetchStatus => state[NameSpace.Data].catalogFetchStatus;
+export const getPriceRangeMin = (state: RootState): number => state[NameSpace.SearchParameters].priceRangeMin;
+export const getPriceRangeMax = (state: RootState): number => state[NameSpace.SearchParameters].priceRangeMax;
 
-export {getGuitars, getDataLoadingStatus, getGuitarsCount, getSortType, getSortOrder, getCommentsCount, getCatalogFetchStatusSelector};
+
+export {getGuitars, getDataLoadingStatus, getGuitarsCount, getCommentsCount};
