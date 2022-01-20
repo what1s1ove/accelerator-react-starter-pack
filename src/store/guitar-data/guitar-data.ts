@@ -11,11 +11,6 @@ type CatalogType = {
   guitarsOnPage: GuitarType[],
 }
 
-type CatalogFilter = {
-  priceRangeMin: number,
-  priceRangeMax: number,
-};
-
 const initialState: CatalogType = {
   catalog: [
     {
@@ -53,4 +48,3 @@ const guitarData = createReducer(initialState, (builder) => {
 });
 
 export {guitarData};
-export type {CatalogFilter};
