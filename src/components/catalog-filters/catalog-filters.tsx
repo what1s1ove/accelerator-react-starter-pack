@@ -1,31 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useLocation } from 'react-router-dom';
-import { FilterParams, FIRST_PAGE, stringLabels, stringValues, ENTER_KEY, FilterByType, AppRoute, StringCount, BooleanToString, pageNavigationRoute, QueryParam } from '../../const';
+import { useHistory } from 'react-router-dom';
+import { stringLabels, stringValues, FilterByType, AppRoute, StringCount, QueryParam } from '../../const';
 import { useQueryParams } from '../../hooks/use-query-params';
 import { setUserPriceMax, setUserPriceMin } from '../../store/action';
-import { fetchFilteredGuitarsAction, fetchGuitarsCountAction } from '../../store/api-actions';
-import { getGuitars, getSortType, getSortOrder } from '../../store/selectors';
-import { getMaxPrice, getMinPrice, getElementIdByStrings, getStringsByElementId, matchStringsWithType, getAvailableStringCountId } from '../../utils/utils';
+import { getGuitars } from '../../store/selectors';
+import { getMaxPrice, getMinPrice, getElementIdByStrings, matchStringsWithType } from '../../utils/utils';
 
 function CatalogFilters(): JSX.Element {
   const dispatch = useDispatch();
   const queryParams = useQueryParams();
-
   const guitars = useSelector(getGuitars);
-  const sortType = useSelector(getSortType);
-  const sortOrder = useSelector(getSortOrder);
 
   const [currentTypes, setCurrentTypes] = useState<string[]>([]);
   const [currentStringCount, setcurrentStringCount] = useState<string[]>([]);
   const [availableStringCount, setAvailableStringCount] = useState<number[]>(stringValues);
-  // const [currentAndAvailableStringCount, setCurrentAndAvailableStringCount] = useState<string[]>([]);
   const [userPriceMinValue, setUserPriceMinValue] = useState('');
   const [userPriceMaxValue, setUserPriceMaxValue] = useState('');
 
   const history = useHistory();
-  const filterParams = useLocation<string>().search;
 
   const minPrice = getMinPrice(guitars);
   const maxPrice = getMaxPrice(guitars);
@@ -83,6 +76,7 @@ function CatalogFilters(): JSX.Element {
   };
 
   const handleGuitarTypeCheck = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    queryParams.set(QueryParam.CurrentPageNumber, '0');
     switch (target.name) {
       case FilterByType.Acoustic:
         queryParams.set(QueryParam.AcousticType, String(+target.checked));
@@ -100,6 +94,7 @@ function CatalogFilters(): JSX.Element {
   };
 
   const handleGuitarStringCheck = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    queryParams.set(QueryParam.CurrentPageNumber, '0');
     switch (target.name) {
       case StringCount.FourStrings:
         queryParams.set(QueryParam.FourString, String(+target.checked));
@@ -121,11 +116,6 @@ function CatalogFilters(): JSX.Element {
   };
 
   useEffect(() => {
-    // dispatch(fetchFilteredGuitarsAction(filterParams, sortType, sortOrder, FIRST_PAGE));
-    dispatch(fetchGuitarsCountAction(filterParams));
-  }, [dispatch, filterParams, sortOrder, sortType]);
-
-  useEffect(() => {
     stringValues.forEach((value) => {
       document.getElementById(`${getElementIdByStrings(value)}`)?.setAttribute('disabled', 'true');
     });
@@ -133,8 +123,6 @@ function CatalogFilters(): JSX.Element {
     availableStringCount.forEach((value) => {
       document.getElementById(`${getElementIdByStrings(value)}`)?.removeAttribute('disabled');
     });
-
-    // setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
   }, [availableStringCount, currentStringCount]);
 
   const handleTypeInput = (event: SyntheticEvent) => {
@@ -165,15 +153,7 @@ function CatalogFilters(): JSX.Element {
       const index = currentStringCount.indexOf(target.id);
       currentStringCount.splice(index, 1);
     }
-    // setCurrentAndAvailableStringCount(currentStringCount.filter((element) => getAvailableStringCountId(availableStringCount).includes(element)));
   };
-
-  // const handleKeyPress = (event: { key: string; }) => {
-  //   if (event.key === ENTER_KEY) {
-  //     handlePriceMinChange();
-  //     handlePriceMaxChange();
-  //   }
-  // };
 
   return (
     <form className="catalog-filter">
