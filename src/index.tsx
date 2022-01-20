@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import App from './components/app/app';
 import { createAPI } from './services/api';
-// import { fetchGuitarsAction } from './store/api-actions';
 import { redirect } from './store/middlewares/redirect';
 import { rootReducer } from './store/root-reducer';
 import { Router as BrowserRouter } from 'react-router-dom';
@@ -20,8 +19,6 @@ const store = configureStore({
       },
     }).concat(redirect),
 });
-
-// store.dispatch(fetchGuitarsAction());
 
 ReactDOM.render(
   <React.StrictMode>
