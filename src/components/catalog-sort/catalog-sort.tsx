@@ -1,89 +1,57 @@
-import { SyntheticEvent, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
-import {  SortOrder, SortType } from '../../const';
-import { setSortOrder, setSortType } from '../../store/action';
-// import { fetchFilteredGuitarsAction } from '../../store/api-actions';
-import { getSortOrder, getSortType } from '../../store/selectors';
+import { useHistory } from 'react-router-dom';
+import {  AppRoute, SortOrder, QueryParam, SortType } from '../../const';
+import { useQueryParams } from '../../hooks/use-query-params';
+import React from 'react';
 
 function CatalogSort(): JSX.Element {
-  const sortType = useSelector(getSortType);
-  const sortOrder = useSelector(getSortOrder);
-  const dispatch = useDispatch();
+  const history = useHistory();
+  const querysParams = useQueryParams();
 
-  const filterParams = String(useLocation<string>().search);
-
-  useEffect(() => {
-    // dispatch(fetchFilteredGuitarsAction(filterParams, sortType, sortOrder, FIRST_PAGE));
-  }, [sortType, sortOrder, filterParams, dispatch]);
-
-  const handleSortTypeChange = (event: SyntheticEvent): void => {
-    const target = event.target as HTMLInputElement;
-    const sortTypeBtn = document.querySelectorAll('.catalog-sort__type-button');
-
-    for (const button of sortTypeBtn) {
-      button.classList.remove('catalog-sort__type-button--active');
+  const handleSortTypeClick = ({ currentTarget }: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    switch (currentTarget.dataset.sort) {
+      case SortType.Price:
+        querysParams.set(QueryParam.Sort, SortType.Price);
+        break;
+      case SortType.Rating:
+        querysParams.set(QueryParam.Sort, SortType.Rating);
+        break;
     }
-
-    target.classList.toggle('catalog-sort__type-button--active');
+    history.push(`${AppRoute.Query}${querysParams.toString()}`);
   };
 
-  const handleSortOrderChange = (event: SyntheticEvent) => {
-    const target = event.target as HTMLInputElement;
-    const sortOrderBtn = document.querySelectorAll('.catalog-sort__order-button');
-
-    for (const button of sortOrderBtn) {
-      button.classList.remove('catalog-sort__order-button--active');
+  const handleSortOrderClick = ({ currentTarget }: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    switch (currentTarget.dataset.order) {
+      case SortOrder.Asc:
+        querysParams.set(QueryParam.Order, SortOrder.Asc);
+        break;
+      case SortOrder.Desc:
+        querysParams.set(QueryParam.Order, SortOrder.Desc);
+        break;
     }
-
-    target.classList.toggle('catalog-sort__order-button--active');
-    if (sortType === SortType.Unknown) {
-      dispatch(setSortType(SortType.Price));
+    if (!querysParams.has(QueryParam.Sort)) {
+      querysParams.set(QueryParam.Sort, SortType.Price);
     }
+    history.push(`${AppRoute.Query}${querysParams.toString()}`);
   };
 
   return (
     <div className="catalog-sort">
       <h2 className="catalog-sort__title">Сортировать:</h2>
       <div className="catalog-sort__type">
-        <button
-          className="catalog-sort__type-button"
-          aria-label="по цене"
-          tabIndex={-1}
-          onClick={(event) => {
-            dispatch(setSortType(SortType.Price));
-            handleSortTypeChange(event);
-          }}
-        >
-          по цене
-        </button>
-        <button className="catalog-sort__type-button"
-          aria-label="по популярности"
-          onClick={(event) => {
-            dispatch(setSortType(SortType.Rating));
-            handleSortTypeChange(event);
-          }}
-        >по популярности
-        </button>
+        {querysParams.get(QueryParam.Sort) === SortType.Price ?
+          <button className="catalog-sort__type-button catalog-sort__type-button--active" aria-label="по цене" tabIndex={-1} data-sort={SortType.Price} onClick={handleSortTypeClick}>по цене</button> :
+          <button className="catalog-sort__type-button catalog-sort__type-button" aria-label="по цене" tabIndex={-1} data-sort={SortType.Price} onClick={handleSortTypeClick}>по цене</button>}
+        {querysParams.get(QueryParam.Sort) === SortType.Rating ?
+          <button className="catalog-sort__type-button catalog-sort__type-button--active" aria-label="по популярности" data-sort={SortType.Rating} onClick={handleSortTypeClick}>по популярности</button> :
+          <button className="catalog-sort__type-button" aria-label="по популярности" data-sort={SortType.Rating} onClick={handleSortTypeClick}>по популярности</button>}
       </div>
       <div className="catalog-sort__order">
-        <button
-          className="catalog-sort__order-button catalog-sort__order-button--up"
-          aria-label="По возрастанию"
-          tabIndex={-1}
-          onClick={(event) => {
-            dispatch(setSortOrder(SortOrder.Asc));
-            handleSortOrderChange(event);
-          }}
-        />
-        <button
-          className="catalog-sort__order-button catalog-sort__order-button--down"
-          aria-label="По убыванию"
-          onClick={(event) => {
-            dispatch(setSortOrder(SortOrder.Desc));
-            handleSortOrderChange(event);
-          }}
-        />
+        {querysParams.get(QueryParam.Order) === SortOrder.Asc ?
+          <button className="catalog-sort__order-button catalog-sort__order-button--up catalog-sort__order-button--active" aria-label="По возрастанию" tabIndex={-1} data-order={SortOrder.Asc} onClick={handleSortOrderClick}></button> :
+          <button className="catalog-sort__order-button catalog-sort__order-button--up" aria-label="По возрастанию" tabIndex={-1} data-order={SortOrder.Asc} onClick={handleSortOrderClick}></button>}
+        {querysParams.get(QueryParam.Order) === SortOrder.Desc ?
+          <button className="catalog-sort__order-button catalog-sort__order-button--down catalog-sort__order-button--active" aria-label="По убыванию" data-order={SortOrder.Desc} onClick={handleSortOrderClick}></button> :
+          <button className="catalog-sort__order-button catalog-sort__order-button--down" aria-label="По убыванию" data-order={SortOrder.Desc} onClick={handleSortOrderClick}></button>}
       </div>
     </div>
   );
