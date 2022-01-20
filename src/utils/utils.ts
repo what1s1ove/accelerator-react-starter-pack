@@ -30,11 +30,9 @@ const matchStringsWithType = (guitarTypes: string[]) => {
   return [...new Set(stringsValues)];
 };
 
-const getStringsByElementId = (elementId: string) => (filtersByStringAndType.find((element) => element.elementId === elementId))?.value;
-
 const getFirstPage = (initialPage: number) => (Math.ceil(initialPage / PAGES_COUNT) - 1) * PAGES_COUNT + 1;
 const getPageCount = (guitarsCount: number) => Math.ceil(guitarsCount / PRODUCTS_PER_PAGE);
 
 const getAvailableStringCountId = (availableStringCount: number[]) => availableStringCount.map((element) => getElementIdByStrings(element));
 
-export {setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType, getStringsByElementId, getFirstPage, getPageCount, getAvailableStringCountId};
+export {setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType, getFirstPage, getPageCount, getAvailableStringCountId};
