@@ -1,22 +1,26 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { SortOrder, SortType } from '../../const';
-import { SearchParameters } from '../../types/search';
-import { setSortOrder, setSortType } from '../action';
+import { DefaultPriceRange } from '../../const';
+import { setPriceRangeMax, setPriceRangeMin } from '../action';
 
-const initialState: SearchParameters = {
-  sortType: SortType.Unknown,
-  sortOrder: SortOrder.Unknown,
+type CatalogFilter = {
+  priceRangeMin: number,
+  priceRangeMax: number,
+};
+
+const initialState: CatalogFilter = {
+  priceRangeMin: DefaultPriceRange.Min,
+  priceRangeMax: DefaultPriceRange.Max,
 };
 
 const filtersData = createReducer(initialState, (builder) => {
   builder
-    .addCase(setSortType, (state, action) => {
-      const sortType = action.payload;
-      state.sortType = sortType;
+    .addCase(setPriceRangeMin, (state, action) => {
+      const { priceRangeMin } = action.payload;
+      state.priceRangeMin = priceRangeMin;
     })
-    .addCase(setSortOrder, (state, action) => {
-      const sortOrder = action.payload;
-      state.sortOrder = sortOrder;
+    .addCase(setPriceRangeMax, (state, action) => {
+      const { priceRangeMax } = action.payload;
+      state.priceRangeMax = priceRangeMax;
     });
 });
 

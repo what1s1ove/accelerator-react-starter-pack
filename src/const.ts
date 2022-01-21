@@ -7,31 +7,26 @@ enum AppRoute {
   Catalog = '/',
   Guitar = '/guitars/:id',
   PageNotFound = '*',
+  Query = '/?',
   Pagination = '/catalog/page_:pageNumber',
 }
 
 const APIRoute  = {
   Catalog: '/guitars',
-  Comments: (id: number): string => `/guitars/${id}/comments`,
+  Comments: '/comments',
   FilterQuery: ((filterParams: string, sort: string, order: string, page: number): string => `/guitars${filterParams ? `${filterParams}` : '?'}${sort}${order}&_start=${(page - 1) * PRODUCTS_PER_PAGE}&_limit=${PRODUCTS_PER_PAGE}`),
   GuitarsCount:  ((filterParams: string): string => `/guitars${filterParams ? `${filterParams}` : '?'}`),
   CurrentGuitarComments: ((guitarId: number): string => `/guitars/${guitarId}/comments`),
 };
 
-const pageNavigationRoute = {
-  PageNaviation: ((pageNumber: number, filterParams: string): string => `/catalog/page_${pageNumber}${filterParams ? `${filterParams}` : ''}`),
-};
-
 enum SortType {
-  Price = '_sort=price',
-  Rating = '_sort=rating',
-  Unknown = '',
+  Price = 'price',
+  Rating = 'rating',
 }
 
 enum SortOrder {
-  Asc = '&_order=asc',
-  Desc = '&_order=desc',
-  Unknown = '',
+  Asc = 'asc',
+  Desc = 'desc',
 }
 
 enum FilterParams {
@@ -79,11 +74,62 @@ enum stringLabels {
   twelveStrings = 12,
 }
 
-enum FetchStatus {
-  Unset = 'Unset',
-  InProgress = 'InProgress',
-  Success = 'Success',
-  Error = 'Error',
+enum StringCount {
+  FourStrings = '4-strings',
+  SixStrings = '6-strings',
+  SevenStrings = '7-strings',
+  TwelveStrings = '12-strings',
 }
 
-export {AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, pageNavigationRoute, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, ENTER_KEY, FetchStatus};
+enum BooleanToString {
+  True = '1',
+  False = '0'
+}
+
+enum FilterPath {
+  Sort = '&_sort=',
+  Order = '&_order=',
+  PriceGte = '&price_gte=',
+  PriceLte = '&price_lte=',
+  Type = '&type_like=',
+  String = '&stringCount_like=',
+  PaginationStart = '&_start=',
+  PaginationEnd = '&_end=',
+}
+
+export type FetchGuitarProperty = {
+  sortType: SortType | string,
+  orderType: SortOrder | string,
+  userPriceMin: string,
+  userPriceMax: string,
+  isAcousticCheck: boolean,
+  isElectricCheck: boolean,
+  isUkuleleCheck: boolean,
+  isFourStringsCheck: boolean,
+  isSixStringsCheck: boolean,
+  isSevenStringsCheck: boolean,
+  isTwelveStringsCheck: boolean,
+  currentPageNumber: number,
+};
+
+enum QueryParam {
+  Sort = '_sort',
+  Order = '_order',
+  PriceGte = 'price_gte',
+  PriceLte = 'price_lte',
+  AcousticType = 'acousticType',
+  ElectricType = 'electricType',
+  UkuleleType = 'ukuleleType',
+  FourString = '4stringCount',
+  SixString = '6stringCount',
+  SevenString = '7stringCount',
+  TwelveString = '12stringCount',
+  CurrentPageNumber = 'page',
+}
+
+enum DefaultPriceRange {
+  Min = 1000,
+  Max = 30000,
+}
+
+export {QueryParam, FilterPath, BooleanToString, StringCount, AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, ENTER_KEY, FilterByType, DefaultPriceRange};
