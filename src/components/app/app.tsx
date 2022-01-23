@@ -1,9 +1,10 @@
-import {Router, Route, Switch} from 'react-router';
+import { Router, Route, Switch } from 'react-router';
 
-import {createBrowserHistory} from 'history';
+import { createBrowserHistory } from 'history';
 import { Suspense } from 'react';
 import { lazy } from 'react';
 import { AppRoute } from '../consts/app';
+import NotFoundScreen from '../notfoundscreen/not-found-screen';
 
 
 const MainPage = lazy(() => import('../main/main'));
@@ -20,6 +21,9 @@ function App(): JSX.Element {
           </Route>
           <Route exact path={AppRoute.Guitar}>
             <ProductMain />
+          </Route>
+          <Route>
+            <NotFoundScreen />
           </Route>
         </Switch>
       </Suspense>

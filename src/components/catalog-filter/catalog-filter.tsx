@@ -1,93 +1,110 @@
-/* eslint-disable no-alert */
-/* eslint-disable no-console */
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useLocation } from 'react-router-dom';
 import { updateGuitars } from '../../store/actions';
 import { Guitar } from '../../types/shop-types';
 import { State } from '../../types/state';
+import { getObjectFromQueryString, getQueryStringFromObject } from '../../utils/utils';
 
 function CatalogFilter() {
-
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const location = useLocation();
 
   const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
-  const sortedGuitars = useSelector<State, Guitar[]>((state) => state.sortedGuitars);
-
-
-  const dispatch = useDispatch();
 
   const [filteredGuitars, setFilteredGuitars] = useState<Guitar[]>([]);
   const [guitarTypeFilters, setGuitarTypeFilters] = useState<string[]>([]);
-  const [guitarStingCount, setGuitarStringCount] = useState<number[]>([]);
-  const [guitarsPrice, setGuitarsPrice] = useState<number[]>([guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0], sortedGuitars.map((guitar) => guitar.price).sort((a, b) => a - b)[sortedGuitars.length - 1]]);
+  const [guitarStingCountFilter, setGuitarStringCountFilter] = useState<number[]>([]);
+  const [guitarsPriceRangeFilter, setGuitarsPriceRangeFilter] = useState<number[]>([]);
 
-  const [lowPrice, setLowPrice] = useState('');
-  const [highPrice, setHighPrice] = useState('');
-
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
   useEffect(() => {
-    if (guitarTypeFilters.length) {
-      setFilteredGuitars(guitars.filter((guitar) => {
+    const searchParams = Object.values(getObjectFromQueryString(location.search));
+    if (searchParams[0] && getObjectFromQueryString(location.search).type) {
+      setGuitarTypeFilters(searchParams[1].split(','));
+      setGuitarStringCountFilter(searchParams[2].split(',').map(parseFloat));
+      setGuitarsPriceRangeFilter(searchParams[3].split(',').map(parseFloat));
+    }
+    else {
+      setFilteredGuitars(guitars);
+      dispatch(updateGuitars(guitars));
+      setGuitarsPriceRangeFilter([guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0], guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[guitars.length - 1]]);
+    }
+  }, [dispatch, guitars]);
+
+  useEffect(() => {
+    if (guitarTypeFilters.length !== 0) {
+      setGuitarStringCountFilter([...new Set(guitars.filter((guitar) => guitarTypeFilters.includes(guitar.type)).map((guitar) => guitar.stringCount))]);
+      return setFilteredGuitars(guitars.filter((guitar) => {
         if (guitarTypeFilters.some((guitarFilter) => guitarFilter === guitar.type)) {
           return guitar;
         }
       }));
-    } else {
-      setFilteredGuitars(guitars);
     }
+    setFilteredGuitars(guitars);
   }, [guitarTypeFilters, guitars]);
 
   useEffect(() => {
     dispatch(updateGuitars(filteredGuitars));
-  }, [dispatch, filteredGuitars, guitarStingCount]);
+  }, [dispatch, filteredGuitars]);
 
   useEffect(() => {
-    setGuitarStringCount([...new Set(filteredGuitars.map((guitar) => guitar.stringCount))]);
-  }, [filteredGuitars]);
+    dispatch(updateGuitars(filteredGuitars.filter((guitar) => guitar.price > guitarsPriceRangeFilter[0] && guitar.price < guitarsPriceRangeFilter[1])));
+  }, [dispatch, filteredGuitars, guitarsPriceRangeFilter]);
 
-  useEffect(() => {
-    const lowAndHighPrices = filteredGuitars.map((guitar) => guitar.price).sort((a, b) => a - b);
-    setGuitarsPrice([lowAndHighPrices[0], lowAndHighPrices[lowAndHighPrices.length - 1]]);
-  }, [filteredGuitars]);
-
-  useEffect(() => {
-    dispatch(updateGuitars(filteredGuitars.filter((guitar) => guitar.price > guitarsPrice[0] && guitar.price < guitarsPrice[1])));
-  }, [dispatch, filteredGuitars, guitarsPrice]);
-
-
-  const onLowPriceEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onMinPriceKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.code === 'Enter') {
-      if (parseFloat(event.currentTarget.value) < guitarsPrice[0]) {
-        return event.currentTarget.value = guitarsPrice[0].toString();
+      if (parseFloat(event.currentTarget.value) < guitarsPriceRangeFilter[0]) {
+        return event.currentTarget.value = guitarsPriceRangeFilter[0].toString();
       }
-      if (parseFloat(event.currentTarget.value) > guitarsPrice[1]) {
-        return event.currentTarget.value = guitarsPrice[1].toString();
+      if (parseFloat(event.currentTarget.value) > guitarsPriceRangeFilter[1]) {
+        return event.currentTarget.value = guitarsPriceRangeFilter[1].toString();
       }
-      if (!lowPrice) {
-        return setGuitarsPrice([guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0], guitarsPrice[1]]);
+      if (!minPrice) {
+        return setGuitarsPriceRangeFilter([guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0], guitarsPriceRangeFilter[1]]);
       }
-      setGuitarsPrice([parseFloat(event.currentTarget.value), guitarsPrice[1]]);
+      setGuitarsPriceRangeFilter([parseFloat(event.currentTarget.value), guitarsPriceRangeFilter[1]]);
 
     }
   };
 
-
-  const getQueryStringFromObject = (array: string[]) => console.log(new URLSearchParams(...array).toString());
-  console.log(guitarTypeFilters);
-
-  const onHighPriceEnterKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const onMaxPriceKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.code === 'Enter') {
-      if (parseFloat(event.currentTarget.value) > guitarsPrice[1]) {
-        return event.currentTarget.value = guitarsPrice[1].toString();
+      if (parseFloat(event.currentTarget.value) > guitarsPriceRangeFilter[1]) {
+        return event.currentTarget.value = guitarsPriceRangeFilter[1].toString();
       }
-      if (parseFloat(event.currentTarget.value) < guitarsPrice[0]) {
-        return event.currentTarget.value = guitarsPrice[0].toString();
+      if (parseFloat(event.currentTarget.value) < guitarsPriceRangeFilter[0]) {
+        return event.currentTarget.value = guitarsPriceRangeFilter[0].toString();
       }
-      if (!highPrice) {
-        return setGuitarsPrice([guitarsPrice[0], guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[guitars.length - 1]]);
+      if (!maxPrice) {
+        return setGuitarsPriceRangeFilter([guitarsPriceRangeFilter[0], guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[guitars.length - 1]]);
       }
-      setGuitarsPrice([guitarsPrice[0], parseFloat(event.currentTarget.value)]);
+      setGuitarsPriceRangeFilter([guitarsPriceRangeFilter[0], parseFloat(event.currentTarget.value)]);
 
     }
+  };
+
+  useEffect(() => {
+    const searchParams = getObjectFromQueryString(location.search);
+    searchParams.type = guitarTypeFilters.join(',');
+    searchParams.string = guitarStingCountFilter.join(',');
+    searchParams.price = guitarsPriceRangeFilter.join(',');
+    history.replace({
+      pathname: '/',
+      search: getQueryStringFromObject(searchParams),
+    });
+
+  }, [guitarStingCountFilter, guitarTypeFilters, guitarsPriceRangeFilter, history, location.search]);
+
+  const onGuitarTypeChange = (event: FormEvent<HTMLInputElement>, type: string) => {
+    if (event.currentTarget.checked) {
+      return setGuitarTypeFilters([...guitarTypeFilters, type]);
+    }
+    setGuitarTypeFilters(guitarTypeFilters.filter((filter) => filter !== type));
+
   };
 
   return (
@@ -100,25 +117,25 @@ function CatalogFilter() {
             <label className="visually-hidden">Минимальная цена</label>
             <input
               type="text"
-              placeholder={guitarsPrice[0] !== undefined ? guitarsPrice[0].toString() : '0'}
+              placeholder={guitarsPriceRangeFilter[0] !== undefined ? guitarsPriceRangeFilter[0].toString() : '0'}
               id="priceMin"
               name="от"
-              onKeyDown={onLowPriceEnterKeyDown}
-              value={lowPrice}
-              onChange={(e) => setLowPrice(e.target.value)}
-              onClick={() => getQueryStringFromObject(guitarTypeFilters)}
+              onKeyDown={onMinPriceKeyDown}
+              value={minPrice}
+              onChange={(e) => setMinPrice(e.target.value)}
+              defaultValue={guitarsPriceRangeFilter[0]}
             />
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
             <input
               type="number"
-              placeholder={guitarsPrice[1] !== undefined ? guitarsPrice[1].toString() : '0'}
+              placeholder={guitarsPriceRangeFilter[1] !== undefined ? guitarsPriceRangeFilter[1].toString() : '0'}
               id="priceMax"
               name="до"
-              onKeyDown={onHighPriceEnterKeyDown}
-              value={highPrice}
-              onChange={(e) => setHighPrice(e.target.value)}
+              onKeyDown={onMaxPriceKeyDown}
+              value={maxPrice}
+              onChange={(e) => setMaxPrice(e.target.value)}
 
             />
           </div>
@@ -131,12 +148,9 @@ function CatalogFilter() {
             type="checkbox"
             id="acoustic"
             name="acoustic"
-            onChange={(evt) => {
-              evt.currentTarget.checked ?
-                setGuitarTypeFilters([...guitarTypeFilters, 'acoustic']) :
+            onChange={(evt) => onGuitarTypeChange(evt, 'acoustic')}
+            checked={guitarTypeFilters.includes('acoustic')}
 
-                setGuitarTypeFilters(guitarTypeFilters.filter((filter) => filter !== 'acoustic'));
-            }}
           />
           <label htmlFor="acoustic">Акустические гитары</label>
         </div>
@@ -145,12 +159,8 @@ function CatalogFilter() {
             type="checkbox"
             id="electric"
             name="electric"
-            onChange={(evt) => {
-              evt.currentTarget.checked ?
-                setGuitarTypeFilters([...guitarTypeFilters, 'electric']) :
-
-                setGuitarTypeFilters(guitarTypeFilters.filter((filter) => filter !== 'electric'));
-            }}
+            onChange={(evt) => onGuitarTypeChange(evt, 'electric')}
+            checked={guitarTypeFilters.includes('electric')}
           />
           <label htmlFor="electric">Электрогитары</label>
         </div>
@@ -159,12 +169,8 @@ function CatalogFilter() {
             type="checkbox"
             id="ukulele"
             name="ukulele"
-            onChange={(evt) => {
-              evt.currentTarget.checked ?
-                setGuitarTypeFilters([...guitarTypeFilters, 'ukulele']) :
-
-                setGuitarTypeFilters(guitarTypeFilters.filter((filter) => filter !== 'ukulele'));
-            }}
+            onChange={(evt) => onGuitarTypeChange(evt, 'ukulele')}
+            checked={guitarTypeFilters.includes('ukulele')}
           />
           <label htmlFor="ukulele">Укулеле</label>
         </div>
@@ -175,7 +181,7 @@ function CatalogFilter() {
           <input className="visually-hidden" type="checkbox"
             id="4-strings"
             name="4-strings"
-            disabled={!guitarStingCount.includes(4)}
+            disabled={!guitarStingCountFilter.includes(4)}
             onChange={(evt) => {
               evt.currentTarget.checked ?
                 dispatch(updateGuitars((filteredGuitars.filter((guitar) => guitar.stringCount === 4)))) :
@@ -190,7 +196,7 @@ function CatalogFilter() {
             type="checkbox"
             id="6-strings"
             name="6-strings"
-            disabled={!guitarStingCount.includes(6)}
+            disabled={!guitarStingCountFilter.includes(6)}
             onChange={(evt) => {
               evt.currentTarget.checked ?
                 dispatch(updateGuitars((filteredGuitars.filter((guitar) => guitar.stringCount === 6)))) :
@@ -205,7 +211,7 @@ function CatalogFilter() {
             type="checkbox"
             id="7-strings"
             name="7-strings"
-            disabled={!guitarStingCount.includes(7)}
+            disabled={!guitarStingCountFilter.includes(7)}
             onChange={(evt) => {
               evt.currentTarget.checked ?
                 dispatch(updateGuitars((filteredGuitars.filter((guitar) => guitar.stringCount === 7)))) :
@@ -221,7 +227,7 @@ function CatalogFilter() {
             type="checkbox"
             id="12-strings"
             name="12-strings"
-            disabled={!guitarStingCount.includes(12)}
+            disabled={!guitarStingCountFilter.includes(12)}
             onChange={(evt) => {
               evt.currentTarget.checked ?
                 dispatch(updateGuitars((filteredGuitars.filter((guitar) => guitar.stringCount === 12)))) :

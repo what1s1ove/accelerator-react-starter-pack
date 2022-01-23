@@ -23,6 +23,7 @@ const filterGuitarsByType = (evt: FormEvent<HTMLInputElement>, sortedGuitars: Gu
   }
 };
 
+
 export {
   filterGuitarsByType
 };

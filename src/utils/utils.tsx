@@ -40,8 +40,18 @@ const sortByRating = (guitars: Guitar[], isSortedFromHighToLow: boolean, isSorte
   return guitars.sort((a: Guitar, b: Guitar) => b.rating - a.rating);
 };
 
+const getObjectFromQueryString = (search: string) => {
+  const paramsEntries = new URLSearchParams(search).entries();
+
+
+  return Object.fromEntries(paramsEntries);
+};
+
+const getQueryStringFromObject = (filter: any) => new URLSearchParams(filter).toString();
 
 export {
+  getQueryStringFromObject,
+  getObjectFromQueryString,
   translateNameOfGuitar,
   sortByPrice,
   sortByRating
