@@ -1,4 +1,4 @@
-import { filtersByStringAndType, PAGES_COUNT, PRODUCTS_PER_PAGE } from '../const';
+import { FilterByType, filtersByStringAndType, GuitarTypeToReadable} from '../const';
 import { GuitarType } from '../types/guitar';
 
 const ICON_FULL_STAR = '#icon-full-star';
@@ -30,9 +30,15 @@ const matchStringsWithType = (guitarTypes: string[]) => {
   return [...new Set(stringsValues)];
 };
 
-const getFirstPage = (initialPage: number) => (Math.ceil(initialPage / PAGES_COUNT) - 1) * PAGES_COUNT + 1;
-const getPageCount = (guitarsCount: number) => Math.ceil(guitarsCount / PRODUCTS_PER_PAGE);
+const changeGuitarTypeToReadable = (type: string) => {
+  switch (type) {
+    case FilterByType.Acoustic:
+      return GuitarTypeToReadable.Acoustic;
+    case FilterByType.Electric:
+      return GuitarTypeToReadable.Electric;
+    case FilterByType.Ukulele:
+      return GuitarTypeToReadable.Ukulele;
+  }
+};
 
-const getAvailableStringCountId = (availableStringCount: number[]) => availableStringCount.map((element) => getElementIdByStrings(element));
-
-export {setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType, getFirstPage, getPageCount, getAvailableStringCountId};
+export {changeGuitarTypeToReadable, setRatingStars, getMinPrice, getMaxPrice, getElementIdByStrings, matchStringsWithType};

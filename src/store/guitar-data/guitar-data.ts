@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { CommentType } from '../../types/comment';
 import { GuitarType } from '../../types/guitar';
-import { loadComments, loadGuitars, loadGuitarsCount } from '../action';
+import { loadComments, loadCommentsByGuitarId, loadGuitarById, loadGuitars, loadGuitarsCount, setAreCommentsLoaded, setIsProductCardLoaded } from '../action';
 
 type CatalogType = {
   catalog: GuitarType[],
@@ -9,6 +9,10 @@ type CatalogType = {
   guitarsCount: number,
   comments: CommentType[],
   guitarsOnPage: GuitarType[],
+  guitar: GuitarType | null,
+  commentsByGuitarId: CommentType[],
+  isCardLoaded: boolean,
+  areCommentsLoaded: boolean,
 }
 
 const initialState: CatalogType = {
@@ -29,6 +33,10 @@ const initialState: CatalogType = {
   guitarsCount: 0,
   comments: [],
   guitarsOnPage: [],
+  guitar: null,
+  commentsByGuitarId: [],
+  isCardLoaded: false,
+  areCommentsLoaded: false,
 };
 
 const guitarData = createReducer(initialState, (builder) => {
@@ -44,6 +52,22 @@ const guitarData = createReducer(initialState, (builder) => {
     .addCase(loadComments, (state, action) => {
       const {comments} = action.payload;
       state.comments = state.comments.concat(comments);
+    })
+    .addCase(loadGuitarById, (state, action) => {
+      const { guitar } = action.payload;
+      state.guitar = guitar;
+    })
+    .addCase(loadCommentsByGuitarId, (state, action) => {
+      const { commentsByGuitarId } = action.payload;
+      state.commentsByGuitarId = commentsByGuitarId;
+    })
+    .addCase(setIsProductCardLoaded, (state, action) => {
+      const { isProductCardLoaded } = action.payload;
+      state.isCardLoaded = isProductCardLoaded;
+    })
+    .addCase(setAreCommentsLoaded, (state, action) => {
+      const { areCommentsLoaded } = action.payload;
+      state.areCommentsLoaded = areCommentsLoaded;
     });
 });
 

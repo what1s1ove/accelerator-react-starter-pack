@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import { AppRoute, QueryParam } from '../../const';
+import { AppRoute, QueryParams } from '../../const';
 import { useQueryParams } from '../../hooks/use-query-params';
 
 type PaginationItemProps = {
@@ -12,7 +12,7 @@ function PaginationItem({ pageCount, activePage }: PaginationItemProps): JSX.Ele
   const queryParams = useQueryParams();
 
   const handlePageLinkClick = () => {
-    queryParams.set(QueryParam.CurrentPageNumber, String(pageCount - 1));
+    queryParams.set(QueryParams.CurrentPageNumber, String(pageCount - 1));
     history.push(`${AppRoute.Query}${queryParams.toString()}`);
   };
 

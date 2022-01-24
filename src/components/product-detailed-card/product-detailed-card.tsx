@@ -1,157 +1,134 @@
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { AppRoute } from '../../const';
+import { fetchCommentsByGuitarIdAction, fetchGuitarByIdAction } from '../../store/api-actions';
+import { getCommentsByGuitarId, getGuitarById, getIsCardLoaded } from '../../store/selectors';
+import { changeGuitarTypeToReadable, setRatingStars } from '../../utils/utils';
 import Footer from '../footer/footer';
 import Header from '../header/header';
+import PageNotFound from '../page-not-found/page-not-found';
+import ProductCardComments from '../product-card-comments/product-card-comments';
 import VisuallyHiddenComponent from '../visually-hidden-component/visually-hidden-component';
 
+type CardParams = {
+  id: string
+}
+
 function ProductDetailedCard(): JSX.Element {
+  const { id } = useParams<CardParams>();
+  const dispatch = useDispatch();
+  const guitar = useSelector(getGuitarById);
+  const comments = useSelector(getCommentsByGuitarId);
+  const isProductCardLoaded = useSelector(getIsCardLoaded);
+  const [isFirstTabChosen, setFirstTabChosen] = useState(true);
+
+  const handleCharacteristicsTabClick = () => {
+    setFirstTabChosen(true);
+  };
+
+  const handleDescriptionTabClick = () => {
+    setFirstTabChosen(false);
+  };
+
+  useEffect(() => {
+    dispatch(fetchGuitarByIdAction(+id));
+    dispatch(fetchCommentsByGuitarIdAction(+id));
+  }, [id, dispatch]);
+
+  if (!guitar || !isProductCardLoaded) {
+    return (isProductCardLoaded ? <PageNotFound /> :
+      <div className="wrapper">
+        <main className="page-content">
+          <div className="container">
+            <h1 className="page-content__title title title--bigger">Товар</h1>
+            <ul className="breadcrumbs page-content__breadcrumbs">
+              <li className="breadcrumbs__item"><Link to={AppRoute.Catalog} className="link">Главная</Link>
+              </li>
+              <li className="breadcrumbs__item"><Link to={AppRoute.Catalog} className="link">Каталог</Link>
+              </li>
+              <li className="breadcrumbs__item"><Link to={AppRoute.Guitar} className="link">Товар</Link>
+              </li>
+            </ul>
+            Loading...
+          </div>
+        </main>
+      </div>);
+  }
+
+  const {name, previewImg, price, rating, stringCount, type, vendorCode, description} = guitar;
+
+  const roundedRating = Math.round(rating);
+
   return (
     <>
       <VisuallyHiddenComponent/>
       <Header />
       <main className="page-content">
         <div className="container">
-          <h1 className="page-content__title title title--bigger">Товар</h1>
+          <h1 className="page-content__title title title--bigger">{name}</h1>
           <ul className="breadcrumbs page-content__breadcrumbs">
-            <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
+            <li className="breadcrumbs__item"><Link to={AppRoute.Catalog} className="link">Главная</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link" href="./main.html">Каталог</a>
+            <li className="breadcrumbs__item"><Link to={AppRoute.Catalog} className="link">Каталог</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link">Товар</a>
+            <li className="breadcrumbs__item"><Link to={AppRoute.Guitar} className="link">{name}</Link>
             </li>
           </ul>
-          <div className="product-container">
-            <img className="product-container__img" src="/img/content/guitar-2.jpg" width="90" height="235" alt="" />
+          <div className="product-container"><img className="product-container__img" src={`/${previewImg.replace('guitar', 'content/guitar')}`} width="90" height="235" alt="" />
             <div className="product-container__info-wrapper">
-              <h2 className="product-container__title title title--big title--uppercase">СURT Z30 Plus</h2>
+              <h2 className="product-container__title title title--big title--uppercase">{name}</h2>
               <div className="rate product-container__rating" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
                 <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
+                  <use xlinkHref={setRatingStars(roundedRating, 1)}></use> :
                 </svg>
                 <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
+                  <use xlinkHref={setRatingStars(roundedRating, 2)}></use> :
                 </svg>
                 <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
+                  <use xlinkHref={setRatingStars(roundedRating, 3)}></use> :
                 </svg>
                 <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
+                  <use xlinkHref={setRatingStars(roundedRating, 4)}></use> :
                 </svg>
                 <svg width="14" height="14" aria-hidden="true">
-                  <use xlinkHref="#icon-star"></use>
-                </svg><span className="rate__count"></span><span className="rate__message"></span>
+                  <use xlinkHref={setRatingStars(roundedRating, 5)}></use> :
+                </svg>
+                <span className="rate__count">{comments.length}</span><span className="rate__message"></span>
               </div>
-              <div className="tabs"><a className="button button--medium tabs__button" href="#characteristics">Характеристики</a><a className="button button--black-border button--medium tabs__button" href="#description">Описание</a>
+              <div className="tabs">
+                <button className={isFirstTabChosen ? 'button button--medium tabs__button' : 'button button--black-border button--medium tabs__button'} onClick={handleCharacteristicsTabClick}>Характеристики</button>
+                <button className={isFirstTabChosen ? 'button button--black-border button--medium tabs__button' : 'button button--medium tabs__button'} onClick={handleDescriptionTabClick}>Описание</button>
                 <div className="tabs__content" id="characteristics">
-                  <table className="tabs__table">
-                    <tr className="tabs__table-row">
-                      <td className="tabs__title">Артикул:</td>
-                      <td className="tabs__value">SO754565</td>
-                    </tr>
-                    <tr className="tabs__table-row">
-                      <td className="tabs__title">Тип:</td>
-                      <td className="tabs__value">Электрогитара</td>
-                    </tr>
-                    <tr className="tabs__table-row">
-                      <td className="tabs__title">Количество струн:</td>
-                      <td className="tabs__value">6 струнная</td>
-                    </tr>
+                  <table className={isFirstTabChosen ? 'tabs__table' : 'tabs__table hidden'}>
+                    <tbody>
+                      <tr className="tabs__table-row">
+                        <td className="tabs__title">Артикул:</td>
+                        <td className="tabs__value">{vendorCode}</td>
+                      </tr>
+                      <tr className="tabs__table-row">
+                        <td className="tabs__title">Тип:</td>
+                        <td className="tabs__value">{changeGuitarTypeToReadable(type)}</td>
+                      </tr>
+                      <tr className="tabs__table-row">
+                        <td className="tabs__title">Количество струн:</td>
+                        <td className="tabs__value">{stringCount} струнная</td>
+                      </tr>
+                    </tbody>
                   </table>
-                  <p className="tabs__product-description hidden">Гитара подходит как для старта обучения, так и для домашних занятий или использования в полевых условиях, например, в походах или для проведения уличных выступлений. Доступная стоимость, качество и надежная конструкция, а также приятный внешний вид, который сделает вас звездой вечеринки.</p>
+                  <p className={isFirstTabChosen ? 'tabs__product-description hidden' : 'tabs__product-description'}>
+                    {description}
+                  </p>
                 </div>
               </div>
             </div>
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">52 000 ₽</p><a className="button button--red button--big product-container__button" href="#">Добавить в корзину</a>
+              <p className="product-container__price-info product-container__price-info--value">{price} ₽</p>
+              <button className="button button--red button--big product-container__button">Добавить в корзину</button>
             </div>
           </div>
-          <section className="reviews">
-            <h3 className="reviews__title title title--bigger">Отзывы</h3><a className="button button--red-border button--big reviews__sumbit-button" href="#">Оставить отзыв</a>
-            <div className="review">
-              <div className="review__wrapper">
-                <h4 className="review__title review__title--author title title--lesser">Иванов Максим</h4><span className="review__date">12 декабря</span>
-              </div>
-              <div className="rate review__rating-panel" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-star"></use>
-                </svg><span className="rate__count"></span><span className="rate__message"></span>
-              </div>
-              <h4 className="review__title title title--lesser">Достоинства:</h4>
-              <p className="review__value">Хороший корпус, чистый звук, стурны хорошего качества</p>
-              <h4 className="review__title title title--lesser">Недостатки:</h4>
-              <p className="review__value">Тугие колонки</p>
-              <h4 className="review__title title title--lesser">Комментарий:</h4>
-              <p className="review__value">У гитары отличный цвет, хороше дерево. Тяжелая, в компдлекте неть чехла и ремня.</p>
-            </div>
-            <div className="review">
-              <div className="review__wrapper">
-                <h4 className="review__title review__title--author title title--lesser">Перова Ольга</h4><span className="review__date">12 декабря</span>
-              </div>
-              <div className="rate review__rating-panel" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-star"></use>
-                </svg><span className="rate__count"></span><span className="rate__message"></span>
-              </div>
-              <h4 className="review__title title title--lesser">Достоинства:</h4>
-              <p className="review__value">Хороший корпус, чистый звук, стурны хорошего качества</p>
-              <h4 className="review__title title title--lesser">Недостатки:</h4>
-              <p className="review__value">Тугие колонки</p>
-              <h4 className="review__title title title--lesser">Комментарий:</h4>
-              <p className="review__value">У гитары отличный цвет, хороше дерево.Тяжелая, в компдлекте неть чехла и ремня.</p>
-            </div>
-            <div className="review">
-              <div className="review__wrapper">
-                <h4 className="review__title review__title--author title title--lesser">Преображенская  Ксения</h4><span className="review__date">12 декабря</span>
-              </div>
-              <div className="rate review__rating-panel" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-full-star"></use>
-                </svg>
-                <svg width="16" height="16" aria-hidden="true">
-                  <use xlinkHref="#icon-star"></use>
-                </svg><span className="rate__count"></span><span className="rate__message"></span>
-              </div>
-              <h4 className="review__title title title--lesser">Достоинства:</h4>
-              <p className="review__value">Хороший корпус, чистый звук, стурны хорошего качества</p>
-              <h4 className="review__title title title--lesser">Недостатки:</h4>
-              <p className="review__value">Тугие колонки</p>
-              <h4 className="review__title title title--lesser">Комментарий:</h4>
-              <p className="review__value">У гитары отличный цвет, хороше дерево.Тяжелая, в компдлекте неть чехла и ремня.У гитары отличный цвет, хороше дерево.Тяжелая, в компдлекте неть чехла и ремня.У гитары отличный цвет, хороше дерево.Тяжелая, в компдлекте неть чехла и ремня.У гитары отличный цвет, хороше дерево.Тяжелая, в компдлекте неть чехла и ремня.</p>
-            </div>
-            <button className="button button--medium reviews__more-button">Показать еще отзывы</button><a className="button button--up button--red-border button--big reviews__up-button" href="#header">Наверх</a>
-          </section>
+          <ProductCardComments name={name} guitarId={id}/>
         </div>
       </main>
       <Footer />

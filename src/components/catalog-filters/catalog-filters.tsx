@@ -1,7 +1,7 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { stringLabels, stringValues, FilterByType, AppRoute, StringCount, QueryParam } from '../../const';
+import { stringLabels, stringValues, FilterByType, AppRoute, StringCount, QueryParams } from '../../const';
 import { useQueryParams } from '../../hooks/use-query-params';
 import { setUserPriceMax, setUserPriceMin } from '../../store/action';
 import { getGuitars } from '../../store/selectors';
@@ -31,85 +31,85 @@ function CatalogFilters(): JSX.Element {
   };
 
   const handlePriceMinBlur = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    queryParams.set(QueryParam.PriceGte, target.value);
+    queryParams.set(QueryParams.PriceGte, target.value);
     if (+target.value < minPrice && target.value !== '') {
       setUserPriceMinValue(minPrice.toString());
-      queryParams.set(QueryParam.PriceGte, minPrice.toString());
+      queryParams.set(QueryParams.PriceGte, minPrice.toString());
     }
     if (+target.value > maxPrice && target.value !== '') {
       setUserPriceMinValue(maxPrice.toString());
-      queryParams.set(QueryParam.PriceGte, maxPrice.toString());
+      queryParams.set(QueryParams.PriceGte, maxPrice.toString());
     }
     if (+target.value > +userPriceMaxValue && userPriceMaxValue !== '') {
       setUserPriceMinValue(userPriceMaxValue);
-      queryParams.set(QueryParam.PriceGte, userPriceMaxValue);
+      queryParams.set(QueryParams.PriceGte, userPriceMaxValue);
     }
-    queryParams.set(QueryParam.CurrentPageNumber, '0');
+    queryParams.set(QueryParams.CurrentPageNumber, '0');
     dispatch(setUserPriceMin(target.value));
     if (target.value === '') {
-      queryParams.delete(QueryParam.PriceGte);
+      queryParams.delete(QueryParams.PriceGte);
     }
     history.push(`${AppRoute.Query}${queryParams.toString()}`);
   };
 
   const handlePriceMaxBlur = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    queryParams.set(QueryParam.PriceLte, target.value);
+    queryParams.set(QueryParams.PriceLte, target.value);
     if (+target.value < minPrice && target.value !== '') {
       setUserPriceMaxValue(minPrice.toString());
-      queryParams.set(QueryParam.PriceLte, minPrice.toString());
+      queryParams.set(QueryParams.PriceLte, minPrice.toString());
 
     }
     if (+target.value > maxPrice && target.value !== '') {
       setUserPriceMaxValue(maxPrice.toString());
-      queryParams.set(QueryParam.PriceLte, maxPrice.toString());
+      queryParams.set(QueryParams.PriceLte, maxPrice.toString());
     }
     if (+target.value < +userPriceMinValue && userPriceMinValue !== '') {
       setUserPriceMaxValue(userPriceMinValue);
-      queryParams.set(QueryParam.PriceLte, userPriceMinValue);
+      queryParams.set(QueryParams.PriceLte, userPriceMinValue);
     }
-    queryParams.set(QueryParam.CurrentPageNumber, '0');
+    queryParams.set(QueryParams.CurrentPageNumber, '0');
     dispatch(setUserPriceMax(target.value));
     if (target.value === '') {
-      queryParams.delete(QueryParam.PriceLte);
+      queryParams.delete(QueryParams.PriceLte);
     }
     history.push(`${AppRoute.Query}${queryParams.toString()}`);
   };
 
   const handleGuitarTypeCheck = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    queryParams.set(QueryParam.CurrentPageNumber, '0');
+    queryParams.set(QueryParams.CurrentPageNumber, '0');
     switch (target.name) {
       case FilterByType.Acoustic:
-        queryParams.set(QueryParam.AcousticType, String(+target.checked));
+        queryParams.set(QueryParams.AcousticType, String(+target.checked));
         history.push(`${AppRoute.Query}${queryParams.toString()}`);
         break;
       case FilterByType.Electric:
-        queryParams.set(QueryParam.ElectricType, String(+target.checked));
+        queryParams.set(QueryParams.ElectricType, String(+target.checked));
         history.push(`${AppRoute.Query}${queryParams.toString()}`);
         break;
       case FilterByType.Ukulele:
-        queryParams.set(QueryParam.UkuleleType, String(+target.checked));
+        queryParams.set(QueryParams.UkuleleType, String(+target.checked));
         history.push(`${AppRoute.Query}${queryParams.toString()}`);
         break;
     }
   };
 
   const handleGuitarStringCheck = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    queryParams.set(QueryParam.CurrentPageNumber, '0');
+    queryParams.set(QueryParams.CurrentPageNumber, '0');
     switch (target.name) {
       case StringCount.FourStrings:
-        queryParams.set(QueryParam.FourString, String(+target.checked));
+        queryParams.set(QueryParams.FourString, String(+target.checked));
         history.push(`${AppRoute.Query}${queryParams.toString()}`);
         break;
       case StringCount.SixStrings:
-        queryParams.set(QueryParam.SixString, String(+target.checked));
+        queryParams.set(QueryParams.SixString, String(+target.checked));
         history.push(`${AppRoute.Query}${queryParams.toString()}`);
         break;
       case StringCount.SevenStrings:
-        queryParams.set(QueryParam.SevenString, String(+target.checked));
+        queryParams.set(QueryParams.SevenString, String(+target.checked));
         history.push(`${AppRoute.Query}${queryParams.toString()}`);
         break;
       case StringCount.TwelveStrings:
-        queryParams.set(QueryParam.TwelveString, String(+target.checked));
+        queryParams.set(QueryParams.TwelveString, String(+target.checked));
         history.push(`${AppRoute.Query}${queryParams.toString()}`);
         break;
     }
@@ -203,7 +203,7 @@ function CatalogFilters(): JSX.Element {
               handleTypeInput(event);
             }}
             onChange={handleGuitarTypeCheck}
-            checked={queryParams.has(QueryParam.AcousticType) ? Boolean(Number(queryParams.get(QueryParam.AcousticType))) : false}
+            checked={queryParams.has(QueryParams.AcousticType) ? Boolean(Number(queryParams.get(QueryParams.AcousticType))) : false}
           >
           </input>
           <label htmlFor="acoustic">Акустические гитары</label>
@@ -218,7 +218,7 @@ function CatalogFilters(): JSX.Element {
               handleTypeInput(event);
             }}
             onChange={handleGuitarTypeCheck}
-            checked={queryParams.has(QueryParam.ElectricType) ? Boolean(Number(queryParams.get(QueryParam.ElectricType))) : false}
+            checked={queryParams.has(QueryParams.ElectricType) ? Boolean(Number(queryParams.get(QueryParams.ElectricType))) : false}
           >
           </input>
           <label htmlFor="electric">Электрогитары</label>
@@ -233,7 +233,7 @@ function CatalogFilters(): JSX.Element {
               handleTypeInput(event);
             }}
             onChange={handleGuitarTypeCheck}
-            checked={queryParams.has(QueryParam.UkuleleType) ? Boolean(Number(queryParams.get(QueryParam.UkuleleType))) : false}
+            checked={queryParams.has(QueryParams.UkuleleType) ? Boolean(Number(queryParams.get(QueryParams.UkuleleType))) : false}
           >
           </input>
           <label htmlFor="ukulele">Укулеле</label>
@@ -250,7 +250,7 @@ function CatalogFilters(): JSX.Element {
             onInput={(event) => {
               handleStringCountInput(event);
             }}
-            checked={queryParams.has(QueryParam.FourString) ? Boolean(Number(queryParams.get(QueryParam.FourString))) : false}
+            checked={queryParams.has(QueryParams.FourString) ? Boolean(Number(queryParams.get(QueryParams.FourString))) : false}
             onChange={handleGuitarStringCheck}
           >
           </input>
@@ -265,7 +265,7 @@ function CatalogFilters(): JSX.Element {
             onInput={(event) => {
               handleStringCountInput(event);
             }}
-            checked={queryParams.has(QueryParam.SixString) ? Boolean(Number(queryParams.get(QueryParam.SixString))) : false}
+            checked={queryParams.has(QueryParams.SixString) ? Boolean(Number(queryParams.get(QueryParams.SixString))) : false}
             onChange={handleGuitarStringCheck}
           >
           </input>
@@ -280,7 +280,7 @@ function CatalogFilters(): JSX.Element {
             onInput={(event) => {
               handleStringCountInput(event);
             }}
-            checked={queryParams.has(QueryParam.SevenString) ? Boolean(Number(queryParams.get(QueryParam.SevenString))) : false}
+            checked={queryParams.has(QueryParams.SevenString) ? Boolean(Number(queryParams.get(QueryParams.SevenString))) : false}
             onChange={handleGuitarStringCheck}
           >
           </input>
@@ -295,7 +295,7 @@ function CatalogFilters(): JSX.Element {
             onInput={(event) => {
               handleStringCountInput(event);
             }}
-            checked={queryParams.has(QueryParam.TwelveString) ? Boolean(Number(queryParams.get(QueryParam.TwelveString))) : false}
+            checked={queryParams.has(QueryParams.TwelveString) ? Boolean(Number(queryParams.get(QueryParams.TwelveString))) : false}
             onChange={handleGuitarStringCheck}
           >
           </input>

@@ -13,6 +13,10 @@ enum ActionType {
   SetUserPriceMin = 'filter/setUserPriceMin',
   SetUserPriceMax = 'filter/setUserPriceMax',
   SetGuitarsCount = 'pagination/setGuitarsCount',
+  LoadGuitarById = 'data/loadGuitarById',
+  LoadCommentsByGuitarId = 'data/loadCommentsByGuitarId',
+  SetIsCardLoaded = 'data/setIsProductCardLoaded',
+  SetAreCommentsLoaded = 'data/setIsCommentsLoaded',
 }
 
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, RootState, AxiosInstance, Action>;

@@ -103,7 +103,7 @@ enum FilterPath {
   PaginationEnd = '&_end=',
 }
 
-export type FetchGuitarProperty = {
+type FetchGuitarProperty = {
   sortType: SortType | string,
   orderType: SortOrder | string,
   userPriceMin: string,
@@ -118,7 +118,7 @@ export type FetchGuitarProperty = {
   currentPageNumber: number,
 };
 
-enum QueryParam {
+enum QueryParams {
   Sort = '_sort',
   Order = '_order',
   PriceGte = 'price_gte',
@@ -138,4 +138,5 @@ enum DefaultPriceRange {
   Max = 30000,
 }
 
-export {MIN_COMMENT_LENGTH, GuitarTypeToReadable, QueryParam, FilterPath, BooleanToString, StringCount, AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, FilterByType, DefaultPriceRange};
+export {MIN_COMMENT_LENGTH, GuitarTypeToReadable, QueryParams, FilterPath, BooleanToString, StringCount, AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, FilterByType, DefaultPriceRange};
+export type {FetchGuitarProperty};
