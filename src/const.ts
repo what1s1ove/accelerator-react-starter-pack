@@ -1,7 +1,7 @@
 const PRODUCTS_PER_PAGE = 9;
 const PAGES_COUNT = 3;
 const FIRST_PAGE = 1;
-const ENTER_KEY = 'Enter';
+const MIN_COMMENT_LENGTH = 3;
 
 enum AppRoute {
   Catalog = '/',
@@ -42,6 +42,12 @@ enum FilterByType {
   Acoustic = 'acoustic',
   Electric = 'electric',
   Ukulele = 'ukulele',
+}
+
+enum GuitarTypeToReadable {
+  Electric = 'Электрогитара',
+  Acoustic = 'Акустическая гитара',
+  Ukulele = 'Укулеле',
 }
 
 const filtersByStringAndType = [
@@ -132,4 +138,4 @@ enum DefaultPriceRange {
   Max = 30000,
 }
 
-export {QueryParam, FilterPath, BooleanToString, StringCount, AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, ENTER_KEY, FilterByType, DefaultPriceRange};
+export {MIN_COMMENT_LENGTH, GuitarTypeToReadable, QueryParam, FilterPath, BooleanToString, StringCount, AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, FilterByType, DefaultPriceRange};
