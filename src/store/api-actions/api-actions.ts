@@ -1,7 +1,7 @@
-import { ApiRoute } from '../components/consts/api';
-import { ThunkActionResult } from '../types/actions';
-import { Guitar } from '../types/shop-types';
-import { uploadGuitars } from './actions';
+import { ApiRoute } from '../../components/consts/api';
+import { ThunkActionResult } from '../../types/actions';
+import { Guitar } from '../../types/shop-types';
+import { uploadGuitars } from '../actions';
 
 const fetchGuitarsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {

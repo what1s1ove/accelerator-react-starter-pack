@@ -8,15 +8,17 @@ import { useHistory } from 'react-router-dom';
 
 function Header(): JSX.Element {
 
+
+  const history = useHistory();
   const [searchTerm, setSearchTerm] = useState('');
 
   const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
-  const history = useHistory();
 
   const memorizedSearchSuggestions = useMemo(() => guitars.filter((guitar) => {
-    if (searchTerm !== '') { if (guitar.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-      return guitar;
-    }
+    if (searchTerm !== '') {
+      if (guitar.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return guitar;
+      }
     } return null;
   }).map((guitar) => (
     <li className="form-search__select-item" tabIndex={0} onClick={() => history.push(`/guitars/${guitar.id}`)} key={uniqid()}>{guitar.name}</li>
@@ -45,8 +47,8 @@ function Header(): JSX.Element {
             <input className="form-search__input" id="search" type="text" autoComplete="off" placeholder="что вы ищите?" onInput={(evt) => setSearchTerm(evt.currentTarget.value)} />
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
-          { memorizedSearchSuggestions.length !== 0 ?
-            <ul className="form-search__select-list" style={{zIndex: 10}}>
+          {memorizedSearchSuggestions.length !== 0 ?
+            <ul className="form-search__select-list" style={{ zIndex: 10 }}>
               {memorizedSearchSuggestions}
             </ul>
             : ''}

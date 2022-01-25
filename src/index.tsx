@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './components/app/app';
 import createAPI from './components/services/api';
-import { fetchGuitarsAction } from './store/api-actions';
-import { guitarReducer } from './store/guitar-reducer';
+import { fetchGuitarsAction } from './store/api-actions/api-actions';
+import { guitarReducer } from './store/guitar-reducer/guitar-reducer';
 
 const api = createAPI();
 

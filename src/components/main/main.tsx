@@ -3,7 +3,7 @@ import { Guitar } from '../../types/shop-types';
 import { State } from '../../types/state';
 import Footer from '../footer/footer';
 import Header from '../header/header';
-import ProductCard from '../product/product-card';
+import ProductCard from '../product/product-card/product-card';
 import uniqid from 'uniqid';
 import { useEffect, useMemo, useState } from 'react';
 import { getObjectFromQueryString, getQueryStringFromObject, sortByPrice, sortByRating } from '../../utils/utils';
