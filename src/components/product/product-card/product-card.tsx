@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Guitar } from '../../../types/shop-types';
 import { translateNameOfGuitar } from '../../../utils/utils';
 

@@ -1,6 +1,5 @@
 import { render, screen } from '@testing-library/react';
 import Footer from './footer';
-import React from 'React';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
 import '@testing-library/jest-dom';
