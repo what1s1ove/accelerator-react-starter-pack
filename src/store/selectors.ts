@@ -1,4 +1,6 @@
 import { createSelector } from 'reselect';
+import { CommentType } from '../types/comment';
+import { GuitarType } from '../types/guitar';
 import { NameSpace, RootState } from './root-reducer';
 
 const getGuitars = (state: RootState) => state[NameSpace.Data].catalog;
@@ -15,8 +17,11 @@ const getCommentsCount = createSelector(
     return guitarComments.length;
   });
 
-export const getPriceRangeMin = (state: RootState): number => state[NameSpace.SearchParameters].priceRangeMin;
-export const getPriceRangeMax = (state: RootState): number => state[NameSpace.SearchParameters].priceRangeMax;
+const getPriceRangeMin = (state: RootState): number => state[NameSpace.SearchParameters].priceRangeMin;
+const getPriceRangeMax = (state: RootState): number => state[NameSpace.SearchParameters].priceRangeMax;
+const getGuitarById = (state: RootState): GuitarType | null => state[NameSpace.Data].guitar;
+const getCommentsByGuitarId = (state: RootState): CommentType[] => state[NameSpace.Data].commentsByGuitarId;
+const getIsCardLoaded = (state: RootState): boolean => state[NameSpace.Data].isCardLoaded;
+const getAreCommentsLoaded = (state: RootState): boolean => state[NameSpace.Data].areCommentsLoaded;
 
-
-export {getGuitars, getDataLoadingStatus, getGuitarsCount, getCommentsCount};
+export {getAreCommentsLoaded, getIsCardLoaded, getCommentsByGuitarId, getGuitars, getDataLoadingStatus, getGuitarsCount, getCommentsCount, getPriceRangeMin, getPriceRangeMax, getGuitarById};

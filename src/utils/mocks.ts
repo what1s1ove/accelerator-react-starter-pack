@@ -29,8 +29,8 @@ export const makeFakeGuitars = (): GuitarType[] => {
 export const makeFakeComment = (): CommentType => ({
   id: datatype.string(),
   userName: name.firstName(),
-  advantages: lorem.text(),
-  disadvantages: lorem.text(),
+  advantage: lorem.text(),
+  disadvantage: lorem.text(),
   comment: lorem.text(),
   rating: datatype.number(),
   createAt: date.past(),

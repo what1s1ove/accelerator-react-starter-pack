@@ -1,9 +1,9 @@
 import { toast } from 'react-toastify';
 import { APIRoute, FetchGuitarProperty, FilterByType, FilterPath, PRODUCTS_PER_PAGE, stringLabels } from '../const';
 import { ThunkActionResult } from '../types/action';
-import { CommentType } from '../types/comment';
+import { CommentType, NewCommentType } from '../types/comment';
 import { GuitarType } from '../types/guitar';
-import { loadComments, loadGuitars, setGuitarsCount, setPriceRangeMax, setPriceRangeMin } from './action';
+import { loadComments, loadCommentsByGuitarId, loadGuitarById, loadGuitars, setGuitarsCount, setAreCommentsLoaded, setIsProductCardLoaded, setPriceRangeMax, setPriceRangeMin } from './action';
 
 const fetchGuitarsAction = (fetchProperty: FetchGuitarProperty): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {
@@ -140,4 +140,44 @@ const fetchGuitarsOnPageAction = (fetchProperty: FetchGuitarProperty): ThunkActi
     }
   };
 
-export {fetchCommentsAction, fetchGuitarsAction, fetchGuitarsOnPageAction};
+const fetchGuitarByIdAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    dispatch(setIsProductCardLoaded(false));
+    try {
+      const { data } = await api.get<GuitarType>(`${APIRoute.Catalog}/${id}`);
+      dispatch(loadGuitarById(data));
+      dispatch(setIsProductCardLoaded(true));
+    } catch (error) {
+      dispatch(setIsProductCardLoaded(true));
+    }
+  };
+
+const fetchCommentsByGuitarIdAction = (id: number): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    dispatch(setAreCommentsLoaded(false));
+    try {
+      const { data } = await api.get<CommentType[]>(`${APIRoute.Catalog}/${id}/comments`);
+      dispatch(loadCommentsByGuitarId(data
+        .sort((prev, next) => new Date(next.createAt).getTime() - new Date(prev.createAt).getTime())));
+      dispatch(setAreCommentsLoaded(true));
+    } catch (error) {
+      dispatch(setAreCommentsLoaded(true));
+    }
+  };
+
+const postComments = (id: string, postComment: NewCommentType, onSuccessPost: () => void): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    await api.post(APIRoute.Comments, postComment);
+    onSuccessPost();
+    dispatch(setAreCommentsLoaded(false));
+    try {
+      const { data } = await api.get<CommentType[]>(`${APIRoute.Catalog}/${id}/comments`);
+      dispatch(loadCommentsByGuitarId(data
+        .sort((prev, next) => new Date(next.createAt).getTime() - new Date(prev.createAt).getTime())));
+      dispatch(setAreCommentsLoaded(true));
+    } catch (error) {
+      dispatch(setAreCommentsLoaded(true));
+    }
+  };
+
+export {postComments, fetchCommentsAction, fetchGuitarsAction, fetchGuitarsOnPageAction, fetchGuitarByIdAction, fetchCommentsByGuitarIdAction};

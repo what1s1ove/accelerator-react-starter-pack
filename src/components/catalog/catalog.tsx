@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FetchGuitarProperty, QueryParam } from '../../const';
+import { FetchGuitarProperty, QueryParams } from '../../const';
 import { useQueryParams } from '../../hooks/use-query-params';
 import { fetchGuitarsAction, fetchGuitarsOnPageAction } from '../../store/api-actions';
 import { getDataLoadingStatus, getGuitars } from '../../store/selectors';
@@ -14,18 +14,18 @@ function Catalog(): JSX.Element {
   const queryParams = useQueryParams();
   const isDataLoaded = useSelector(getDataLoadingStatus);
 
-  const querySortType = queryParams.has(QueryParam.Sort) ? queryParams.get(QueryParam.Sort) : '';
-  const queryOrderType = queryParams.has(QueryParam.Order) ? queryParams.get(QueryParam.Order) : '';
-  const queryUserPriceMin = queryParams.has(QueryParam.PriceGte) ? queryParams.get(QueryParam.PriceGte) : '';
-  const queryUserPriceMax = queryParams.has(QueryParam.PriceLte) ? queryParams.get(QueryParam.PriceLte) : '';
-  const queryFourString = queryParams.has(QueryParam.FourString) ? Boolean(Number(queryParams.get(QueryParam.FourString))) : false;
-  const querySixString = queryParams.has(QueryParam.SixString) ? Boolean(Number(queryParams.get(QueryParam.SixString))) : false;
-  const querySevenString = queryParams.has(QueryParam.SevenString) ? Boolean(Number(queryParams.get(QueryParam.SevenString))) : false;
-  const queryTwelveString = queryParams.has(QueryParam.TwelveString) ? Boolean(Number(queryParams.get(QueryParam.TwelveString))) : false;
-  const queryAcusticType = queryParams.has(QueryParam.AcousticType) ? Boolean(Number(queryParams.get(QueryParam.AcousticType))) : false;
-  const queryElectricType = queryParams.has(QueryParam.ElectricType) ? Boolean(Number(queryParams.get(QueryParam.ElectricType))) : false;
-  const queryUkuleleType = queryParams.has(QueryParam.UkuleleType) ? Boolean(Number(queryParams.get(QueryParam.UkuleleType))) : false;
-  const queryCurrentPage = queryParams.has(QueryParam.CurrentPageNumber) ? Number(queryParams.get(QueryParam.CurrentPageNumber)) : 0;
+  const querySortType = queryParams.has(QueryParams.Sort) ? queryParams.get(QueryParams.Sort) : '';
+  const queryOrderType = queryParams.has(QueryParams.Order) ? queryParams.get(QueryParams.Order) : '';
+  const queryUserPriceMin = queryParams.has(QueryParams.PriceGte) ? queryParams.get(QueryParams.PriceGte) : '';
+  const queryUserPriceMax = queryParams.has(QueryParams.PriceLte) ? queryParams.get(QueryParams.PriceLte) : '';
+  const queryFourString = queryParams.has(QueryParams.FourString) ? Boolean(Number(queryParams.get(QueryParams.FourString))) : false;
+  const querySixString = queryParams.has(QueryParams.SixString) ? Boolean(Number(queryParams.get(QueryParams.SixString))) : false;
+  const querySevenString = queryParams.has(QueryParams.SevenString) ? Boolean(Number(queryParams.get(QueryParams.SevenString))) : false;
+  const queryTwelveString = queryParams.has(QueryParams.TwelveString) ? Boolean(Number(queryParams.get(QueryParams.TwelveString))) : false;
+  const queryAcusticType = queryParams.has(QueryParams.AcousticType) ? Boolean(Number(queryParams.get(QueryParams.AcousticType))) : false;
+  const queryElectricType = queryParams.has(QueryParams.ElectricType) ? Boolean(Number(queryParams.get(QueryParams.ElectricType))) : false;
+  const queryUkuleleType = queryParams.has(QueryParams.UkuleleType) ? Boolean(Number(queryParams.get(QueryParams.UkuleleType))) : false;
+  const queryCurrentPage = queryParams.has(QueryParams.CurrentPageNumber) ? Number(queryParams.get(QueryParams.CurrentPageNumber)) : 0;
 
   useEffect(() => {
     const fetchParams: FetchGuitarProperty = {
@@ -50,7 +50,7 @@ function Catalog(): JSX.Element {
 
   if (!isDataLoaded) {
     return (
-      <div className="catalog">
+      <div className="catalog" data-testid="catalog">
         <CatalogFilters />
         <CatalogSort />
         Loading...
@@ -59,7 +59,7 @@ function Catalog(): JSX.Element {
   }
 
   return (
-    <div className="catalog">
+    <div className="catalog" data-testid="catalog">
       <CatalogFilters />
       <CatalogSort />
       <ProductCards productCards={catalogCards} />

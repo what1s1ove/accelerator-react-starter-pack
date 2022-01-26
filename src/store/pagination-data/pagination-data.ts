@@ -1,15 +1,15 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { setGuitarsCount } from '../action';
 
-type PagePagination = {
+type Pagination = {
   guitarsCount: number,
 };
 
-const initialState: PagePagination = {
+const initialState: Pagination = {
   guitarsCount: 0,
 };
 
-const pagePagination = createReducer(initialState, (builder) => {
+const paginationData = createReducer(initialState, (builder) => {
   builder
     .addCase(setGuitarsCount, (state, action) => {
       const { guitarsCount } = action.payload;
@@ -17,4 +17,4 @@ const pagePagination = createReducer(initialState, (builder) => {
     });
 });
 
-export { pagePagination };
+export { paginationData };

@@ -1,12 +1,21 @@
 type CommentType = {
     id: string,
     userName: string,
-    advantages: string,
-    disadvantages: string,
+    advantage: string,
+    disadvantage: string,
     comment: string,
     rating: number,
     createAt: Date,
     guitarId: number,
 }
 
-export type {CommentType};
+type NewCommentType = {
+  guitarId: number,
+  userName: string,
+  advantage: string,
+  disadvantage: string,
+  comment: string,
+  rating: number,
+};
+
+export type {CommentType, NewCommentType};

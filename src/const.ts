@@ -1,7 +1,7 @@
 const PRODUCTS_PER_PAGE = 9;
 const PAGES_COUNT = 3;
 const FIRST_PAGE = 1;
-const ENTER_KEY = 'Enter';
+const MIN_COMMENT_LENGTH = 3;
 
 enum AppRoute {
   Catalog = '/',
@@ -42,6 +42,12 @@ enum FilterByType {
   Acoustic = 'acoustic',
   Electric = 'electric',
   Ukulele = 'ukulele',
+}
+
+enum GuitarTypeToReadable {
+  Electric = 'Электрогитара',
+  Acoustic = 'Акустическая гитара',
+  Ukulele = 'Укулеле',
 }
 
 const filtersByStringAndType = [
@@ -97,7 +103,7 @@ enum FilterPath {
   PaginationEnd = '&_end=',
 }
 
-export type FetchGuitarProperty = {
+type FetchGuitarProperty = {
   sortType: SortType | string,
   orderType: SortOrder | string,
   userPriceMin: string,
@@ -112,7 +118,7 @@ export type FetchGuitarProperty = {
   currentPageNumber: number,
 };
 
-enum QueryParam {
+enum QueryParams {
   Sort = '_sort',
   Order = '_order',
   PriceGte = 'price_gte',
@@ -132,4 +138,5 @@ enum DefaultPriceRange {
   Max = 30000,
 }
 
-export {QueryParam, FilterPath, BooleanToString, StringCount, AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, ENTER_KEY, FilterByType, DefaultPriceRange};
+export {MIN_COMMENT_LENGTH, GuitarTypeToReadable, QueryParams, FilterPath, BooleanToString, StringCount, AppRoute, APIRoute, SortType, SortOrder, FilterParams, stringValues, filtersByStringAndType, PRODUCTS_PER_PAGE, PAGES_COUNT, FIRST_PAGE, stringLabels, FilterByType, DefaultPriceRange};
+export type {FetchGuitarProperty};

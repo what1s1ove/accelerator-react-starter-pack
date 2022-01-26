@@ -10,24 +10,22 @@ import CatalogSort from './catalog-sort';
 const history = createMemoryHistory();
 const mockStore = configureMockStore();
 
-const store = mockStore({
-  // SEARCH: {sortType: SortType.Unknown, sortOrder: SortOrder.Unknown},
-});
+const store = mockStore({});
 
 store.dispatch = jest.fn();
 
 describe('Component: CatalogSort', () => {
-  // it('should render correctly', () => {
-  //   render(
-  //     <Provider store={store}>
-  //       <Router history={history}>
-  //         <CatalogSort />
-  //       </Router>
-  //     </Provider>,
-  //   );
+  it('should render correctly', () => {
+    render(
+      <Provider store={store}>
+        <Router history={history}>
+          <CatalogSort />
+        </Router>
+      </Provider>,
+    );
 
-  //   expect(screen.getByText('Сортировать:')).toBeInTheDocument();
-  //   expect(screen.getByText('по цене')).toBeInTheDocument();
-  //   expect(screen.getByText('по популярности')).toBeInTheDocument();
-  // });
+    expect(screen.getByText('Сортировать:')).toBeInTheDocument();
+    expect(screen.getByText('по цене')).toBeInTheDocument();
+    expect(screen.getByText('по популярности')).toBeInTheDocument();
+  });
 });

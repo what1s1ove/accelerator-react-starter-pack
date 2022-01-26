@@ -2,6 +2,7 @@ import { Route, Switch } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import CatalogWrapper from '../catalog-wrapper/catalog-wrapper';
 import PageNotFound from '../page-not-found/page-not-found';
+import ProductDetailedCard from '../product-detailed-card/product-detailed-card';
 
 function App(): JSX.Element {
   return (
@@ -11,6 +12,9 @@ function App(): JSX.Element {
       </Route>
       <Route path={AppRoute.Pagination}>
         <CatalogWrapper />
+      </Route>
+      <Route exact path={AppRoute.Guitar}>
+        <ProductDetailedCard/>
       </Route>
       <Route path={AppRoute.PageNotFound}>
         <PageNotFound/>

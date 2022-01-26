@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { generatePath, Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { getGuitars } from '../../store/selectors';
 
@@ -34,7 +34,7 @@ function HeaderFormSearch(): JSX.Element {
             .filter((guitar) => guitar.name.toLowerCase().includes(searchValue.toLowerCase()))
             .map((guitar) => (
               <li className="form-search__select-item" tabIndex={0} key={guitar.id}>
-                <Link to={`${AppRoute.Catalog}product/${guitar.id}`} className="link">{guitar.name}</Link>
+                <Link to={generatePath(AppRoute.Guitar, {id: guitar.id})} className="link">{guitar.name}</Link>
               </li>))}
         </ul>
         : <ul className="form-search__select-list hidden"></ul> }
