@@ -1,22 +1,37 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { SortOrder, SortType } from '../../const';
+import { DefaultPriceRange } from '../../const';
+import { setPriceRangeMax, setPriceRangeMin } from '../action';
 import { filtersData } from './filters-data';
 
 describe('Reducer: filtersData', () => {
-  // it('without additional parameters should return initial state', () => {
-  //   expect(filtersData(void 0, {type: 'UNKNOWN_ACTION'}))
-  //     .toEqual({sortType: SortType.Unknown, sortOrder: SortOrder.Unknown});
-  // });
+  it('without additional parameters should return initial state', () => {
+    expect(filtersData(void 0, {type: 'UNKNOWN_ACTION'}))
+      .toEqual({
+        priceRangeMin: DefaultPriceRange.Min,
+        priceRangeMax: DefaultPriceRange.Max,
+      });
+  });
 
-  // it('should update sort by changing sort type', () => {
-  //   const state = {sortType: SortType.Unknown, sortOrder: SortOrder.Unknown};
-  //   expect(filtersData(state, setSortType(SortType.Rating)))
-  //     .toEqual({sortType: SortType.Rating, sortOrder: SortOrder.Unknown});
-  // });
+  it('should update priceRangeMin by change price range min', () => {
+    const state = {
+      priceRangeMin: DefaultPriceRange.Min,
+      priceRangeMax: DefaultPriceRange.Max,
+    };
+    expect(filtersData(state, setPriceRangeMin(1000)))
+      .toEqual({
+        priceRangeMin: 1000,
+        priceRangeMax: DefaultPriceRange.Max,
+      });
+  });
 
-  // it('should update order by changing sort order', () => {
-  //   const state = {sortType: SortType.Unknown, sortOrder: SortOrder.Unknown};
-  //   expect(filtersData(state, setSortOrder(SortOrder.Desc)))
-  //     .toEqual({sortType: SortType.Unknown, sortOrder: SortOrder.Desc});
-  // });
+  it('should update priceRangeMax by change price range max', () => {
+    const state = {
+      priceRangeMin: DefaultPriceRange.Min,
+      priceRangeMax: DefaultPriceRange.Max,
+    };
+    expect(filtersData(state, setPriceRangeMax(1000)))
+      .toEqual({
+        priceRangeMin: DefaultPriceRange.Min,
+        priceRangeMax: 1000,
+      });
+  });
 });

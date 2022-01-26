@@ -6,7 +6,6 @@ import { loadComments, loadCommentsByGuitarId, loadGuitarById, loadGuitars, load
 type CatalogType = {
   catalog: GuitarType[],
   isDataLoaded: boolean,
-  guitarsCount: number,
   comments: CommentType[],
   guitarsOnPage: GuitarType[],
   guitar: GuitarType | null,
@@ -30,7 +29,6 @@ const initialState: CatalogType = {
     },
   ],
   isDataLoaded: false,
-  guitarsCount: 0,
   comments: [],
   guitarsOnPage: [],
   guitar: null,

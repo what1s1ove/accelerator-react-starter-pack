@@ -32,11 +32,11 @@ function CatalogPagination(): JSX.Element {
   };
 
   if (guitarsCount <= PRODUCTS_PER_PAGE) {
-    return (<div className="pagination page-content__pagination"></div>);
+    return (<div className="pagination page-content__pagination" data-testid="pagination"></div>);
   }
 
   return (
-    <div className="pagination page-content__pagination">
+    <div className="pagination page-content__pagination" data-testid="pagination">
       <ul className="pagination__list">
         {Number(queryParams.get(QueryParams.CurrentPageNumber)) !== 0 &&
           <li className="pagination__page pagination__page--prev" id="prev">

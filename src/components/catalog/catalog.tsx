@@ -50,7 +50,7 @@ function Catalog(): JSX.Element {
 
   if (!isDataLoaded) {
     return (
-      <div className="catalog">
+      <div className="catalog" data-testid="catalog">
         <CatalogFilters />
         <CatalogSort />
         Loading...
@@ -59,7 +59,7 @@ function Catalog(): JSX.Element {
   }
 
   return (
-    <div className="catalog">
+    <div className="catalog" data-testid="catalog">
       <CatalogFilters />
       <CatalogSort />
       <ProductCards productCards={catalogCards} />

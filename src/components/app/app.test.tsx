@@ -1,19 +1,30 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
-import { AppRoute, SortOrder, SortType } from '../../const';
-import { makeFakeGuitars } from '../../utils/mocks';
+import { AppRoute } from '../../const';
+import { makeFakeComments, makeFakeGuitars } from '../../utils/mocks';
 import App from './app';
 
 const mockStore = configureMockStore();
 const guitars = makeFakeGuitars();
+const comments = makeFakeComments();
 
 const store = mockStore({
-  DATA: {catalog: guitars, guitarsCount: 0, isDataLoaded: true,  comments: []},
-  // SEARCH: {sortType: SortType.Unknown, sortOrder: SortOrder.Unknown},
+  DATA: {
+    catalog: guitars,
+    isDataLoaded: true,
+    comments: comments,
+    guitarsOnPage: guitars,
+    guitar: guitars[0],
+    commentsByGuitarId: comments,
+    isCardLoaded: true,
+    areCommentsLoaded: true,
+  },
+  PAGINATION: {
+    guitarsCount: 0,
+  },
 });
 
 store.dispatch = jest.fn();
@@ -28,26 +39,18 @@ const fakeApp = (
 );
 
 describe('Application Routing', () => {
-  // it('should render "Catalog" when user navigate to "/"', () => {
-  //   history.push(AppRoute.Catalog);
-  //   render(fakeApp);
+  it('should render "Catalog" when user navigates to "/"', () => {
+    history.push(AppRoute.Catalog);
+    render(fakeApp);
 
-  //   expect(screen.getByText(/Каталог гитар/i)).toBeInTheDocument();
-  //   expect(screen.getByText(/Главная/i)).toBeInTheDocument();
-  // });
+    expect(screen.getByText(/Каталог гитар/i)).toBeInTheDocument();
+    expect(screen.getByText(/Главная/i)).toBeInTheDocument();
+  });
 
-  // it('should render "Pagination" when user navigate to "/catalog/page_:pageNumber"', () => {
-  //   history.push(AppRoute.Pagination);
-  //   render(fakeApp);
+  it('should render "PageNotFound" when user navigates to non-existent route', () => {
+    history.push('/non-existent-route');
+    render(fakeApp);
 
-  //   expect(screen.getByText(/Каталог гитар/i)).toBeInTheDocument();
-  //   expect(screen.getByText(/Главная/i)).toBeInTheDocument();
-  // });
-
-  // it('should render "PageNotFound" when user navigates to non-existent route', () => {
-  //   history.push('/non-existent-route');
-  //   render(fakeApp);
-
-  //   expect(screen.getByText('Page not found')).toBeInTheDocument();
-  // });
+    expect(screen.getByText('Page not found')).toBeInTheDocument();
+  });
 });

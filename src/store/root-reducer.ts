@@ -1,18 +1,18 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import { guitarData } from './guitar-data/guitar-data';
 import { filtersData } from './filters-data/filters-data';
-import { pagePagination } from './filters-data/page-pagination';
+import { paginationData } from './pagination-data/pagination-data';
 
 enum NameSpace {
   Data = 'DATA',
   SearchParameters = 'SEARCH',
-  Pagination = 'Pagination',
+  Pagination = 'PAGINATION',
 }
 
 const rootReducer = combineReducers({
   [NameSpace.Data]: guitarData,
   [NameSpace.SearchParameters]: filtersData,
-  [NameSpace.Pagination]: pagePagination,
+  [NameSpace.Pagination]: paginationData,
 });
 
 export {NameSpace, rootReducer};

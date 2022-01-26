@@ -4,7 +4,6 @@ import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 import { makeFakeGuitars } from '../../utils/mocks';
 import Header from './header';
-// import { SortOrder, SortType } from '../../const';
 import { Provider } from 'react-redux';
 
 const history = createMemoryHistory();
@@ -13,7 +12,6 @@ const guitars = makeFakeGuitars();
 
 const store = mockStore({
   DATA: {catalog: guitars, guitarsCount: guitars.length, isDataLoaded: true},
-  // SEARCH: {sortType: SortType.Unknown, sortOrder: SortOrder.Unknown},
 });
 
 store.dispatch = jest.fn();
