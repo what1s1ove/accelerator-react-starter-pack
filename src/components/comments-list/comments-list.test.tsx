@@ -29,7 +29,6 @@ const store = mockStore({
 });
 
 describe('Component: CommentsList', () => {
-
   it('should render CommentsList', () => {
     render(
       <Provider store={store}>
