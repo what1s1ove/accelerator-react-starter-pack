@@ -34,7 +34,6 @@ function CatalogFilter() {
     else {
       setFilteredGuitars(guitars);
       dispatch(updateGuitars(guitars));
-      setGuitarsPriceRangeFilter([guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0], guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[guitars.length - 1]]);
     }
   }, [dispatch, guitars]);
 
@@ -49,6 +48,13 @@ function CatalogFilter() {
     }
     setFilteredGuitars(guitars);
   }, [guitarTypeFilters, guitars]);
+
+  useEffect(() => {
+    if (filteredGuitars.length) {
+      setGuitarsPriceRangeFilter([filteredGuitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0], filteredGuitars.map((guitar) => guitar.price).sort((a, b) => a - b)[filteredGuitars.length - 1]]);
+    }
+
+  }, [filteredGuitars]);
 
   useEffect(() => {
     dispatch(updateGuitars(filteredGuitars));
@@ -92,7 +98,7 @@ function CatalogFilter() {
 
   useEffect(() => {
     const searchParams = getObjectFromQueryString(location.search);
-    if (guitarTypeFilters.join(',') !== '') {
+    if (guitarTypeFilters.join(',') !== '' || guitarsPriceRangeFilter !== [1700, 35000]) {
       searchParams.type = guitarTypeFilters.join(',');
       searchParams.string = guitarStingCountFilter.join(',');
       searchParams.price = guitarsPriceRangeFilter.join(',');
