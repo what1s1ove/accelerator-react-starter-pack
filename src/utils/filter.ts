@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { FormEvent } from 'react';
 import { GuitarName } from '../components/consts/consts';
 import { Guitar } from '../types/shop-types';

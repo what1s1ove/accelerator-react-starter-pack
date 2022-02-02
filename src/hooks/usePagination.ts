@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 interface UsePaginationProps {
-  contentPerPage: number,
-  count: number,
+  contentPerPage: number;
+  count: number;
 }
 
 interface UsePaginationReturn {
@@ -10,11 +10,11 @@ interface UsePaginationReturn {
   totalPages: number;
   firstContentIndex: number;
   lastContentIndex: number;
-  nextPage: () => void;
-  prevPage: () => void;
+  onNextPageClick: () => void;
+  onPrevPageClick: () => void;
   setPage: (page: number) => void;
 }
-type UsePagination = (arg0: UsePaginationProps) => (UsePaginationReturn);
+type UsePagination = (arg0: UsePaginationProps) => UsePaginationReturn;
 
 const usePagination: UsePagination = ({ contentPerPage, count }) => {
   const [page, setPage] = useState(1);
@@ -38,7 +38,7 @@ const usePagination: UsePagination = ({ contentPerPage, count }) => {
     });
   };
 
-  const setPageSAFE = (num: number) => {
+  const setPageSafe = (num: number) => {
     if (num > pageCount) {
       setPage(pageCount);
     } else if (num < 1) {
@@ -49,9 +49,9 @@ const usePagination: UsePagination = ({ contentPerPage, count }) => {
   };
   return {
     totalPages: pageCount,
-    nextPage: () => changePage(true),
-    prevPage: () => changePage(false),
-    setPage: setPageSAFE,
+    onNextPageClick: () => changePage(true),
+    onPrevPageClick: () => changePage(false),
+    setPage: setPageSafe,
     firstContentIndex,
     lastContentIndex,
     page,

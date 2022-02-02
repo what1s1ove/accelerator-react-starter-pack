@@ -24,9 +24,12 @@ function CatalogFilter() {
   useEffect(() => {
     const searchParams = Object.values(getObjectFromQueryString(location.search));
     if (searchParams[0] && getObjectFromQueryString(location.search).type) {
-      setGuitarTypeFilters(searchParams[1].split(','));
-      setGuitarStringCountFilter(searchParams[2].split(',').map(parseFloat));
-      setGuitarsPriceRangeFilter(searchParams[3].split(',').map(parseFloat));
+      setGuitarTypeFilters(searchParams[0].split(','));
+      setGuitarStringCountFilter(searchParams[1].split(',').map(parseFloat));
+      if (searchParams[2]) {
+        setGuitarsPriceRangeFilter(searchParams[2].split(',').map(parseFloat));
+
+      }
     }
     else {
       setFilteredGuitars(guitars);
@@ -52,7 +55,7 @@ function CatalogFilter() {
   }, [dispatch, filteredGuitars]);
 
   useEffect(() => {
-    dispatch(updateGuitars(filteredGuitars.filter((guitar) => guitar.price > guitarsPriceRangeFilter[0] && guitar.price < guitarsPriceRangeFilter[1])));
+    dispatch(updateGuitars(filteredGuitars.filter((guitar) => guitar.price >= guitarsPriceRangeFilter[0] && guitarsPriceRangeFilter[1] >= guitar.price)));
   }, [dispatch, filteredGuitars, guitarsPriceRangeFilter]);
 
   const onMinPriceKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -89,13 +92,16 @@ function CatalogFilter() {
 
   useEffect(() => {
     const searchParams = getObjectFromQueryString(location.search);
-    searchParams.type = guitarTypeFilters.join(',');
-    searchParams.string = guitarStingCountFilter.join(',');
-    searchParams.price = guitarsPriceRangeFilter.join(',');
-    history.replace({
-      pathname: '/',
-      search: getQueryStringFromObject(searchParams),
-    });
+    if (guitarTypeFilters.join(',') !== '') {
+      searchParams.type = guitarTypeFilters.join(',');
+      searchParams.string = guitarStingCountFilter.join(',');
+      searchParams.price = guitarsPriceRangeFilter.join(',');
+      history.replace({
+        pathname: '/',
+        search: getQueryStringFromObject(searchParams),
+      });
+    }
+
 
   }, [guitarStingCountFilter, guitarTypeFilters, guitarsPriceRangeFilter, history, location.search]);
 

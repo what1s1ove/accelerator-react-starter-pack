@@ -44,8 +44,8 @@ function Main(): JSX.Element {
   }, [dispatch, isSortedByPrice, isSortedByRaiting, isSortedFromHighToLow, isSortedFromLowToHigh]);
 
   const {
-    nextPage,
-    prevPage,
+    onNextPageClick,
+    onPrevPageClick,
     page,
     setPage,
     totalPages,
@@ -72,12 +72,15 @@ function Main(): JSX.Element {
   }, [currentPage]);
 
   useEffect(() => {
-    searchParams.page = currentPage.toString();
-    history.replace({
-      pathname: '/',
-      search: getQueryStringFromObject(searchParams),
-    });
-  }, [currentPage, history, location.search]);
+    if (currentPage !== 1) {
+      searchParams.page = currentPage.toString();
+      history.replace({
+        pathname: '/',
+        search: getQueryStringFromObject(searchParams),
+      });
+    }
+
+  }, [currentPage]);
 
   return (
     <>
@@ -116,19 +119,19 @@ function Main(): JSX.Element {
               </div>
               <div className="catalog-sort__order">
                 <button
-                  className={`catalog-sort__order-button catalog-sort__order-button--up ${isSortedFromHighToLow ? 'catalog-sort__order-button--active' : ''}`}
+                  className={`catalog-sort__order-button catalog-sort__order-button--up ${ isSortedFromLowToHigh ? 'catalog-sort__order-button--active' : ''}`}
                   onClick={() => {
-                    setSortedFromLowToHigh(false); setSortedFromHighToLow(true); isSortedByRaiting ? setSortedByPrice(false) : setSortedByPrice(true);
+                    setSortedFromHighToLow(false); setSortedFromLowToHigh(true); isSortedByRaiting ? setSortedByPrice(false) : setSortedByPrice(true);
                   }}
                   aria-label="По возрастанию" tabIndex={-1}
                 >
                 </button>
                 <button
-                  className={`catalog-sort__order-button catalog-sort__order-button--down ${isSortedFromLowToHigh ? 'catalog-sort__order-button--active' : ''}`}
+                  className={`catalog-sort__order-button catalog-sort__order-button--down ${ isSortedFromHighToLow? 'catalog-sort__order-button--active' : ''}`}
                   aria-label="По убыванию"
                   tabIndex={-1}
                   onClick={() => {
-                    setSortedFromHighToLow(false); setSortedFromLowToHigh(true); isSortedByRaiting ? setSortedByPrice(false) : setSortedByPrice(true);
+                    setSortedFromLowToHigh(false); setSortedFromHighToLow(true); isSortedByRaiting ? setSortedByPrice(false) : setSortedByPrice(true);
                   }}
                 >
                 </button>
@@ -147,7 +150,7 @@ function Main(): JSX.Element {
                     className="link pagination__page-link"
 
                     style={{ display: currentPage === 1 ? 'none' : 'block' }}
-                    onClick={prevPage}
+                    onClick={onPrevPageClick}
                   >
                     Назад
                   </a>
@@ -158,20 +161,15 @@ function Main(): JSX.Element {
                       className={`link pagination__page-link ${currentPage}`}
 
                       onClick={() => setPage(el + 1)}
-                    // className={`page ${page === el + 1 ? "active" : ""}`}
+
                     >{el + 1}
                     </a>
                   </li>
                 ))}
-
-                {/* <li className="pagination__page"><a className="link pagination__page-link" href="2">2</a>
-                </li>
-                <li className="pagination__page"><a className="link pagination__page-link" href="3">3</a>
-                </li> */}
                 <li className="pagination__page pagination__page--next" id="next">
                   <a
                     className="link pagination__page-link"
-                    onClick={nextPage}
+                    onClick={onNextPageClick}
                     style={{ display: currentPage === totalPages ? 'none' : 'block' }}
                   >Далее
                   </a>
