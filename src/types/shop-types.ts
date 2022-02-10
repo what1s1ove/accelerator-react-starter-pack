@@ -10,6 +10,17 @@ type Guitar = {
   price: number,
 }
 
+type Comment = {
+  id: string,
+  userName: string,
+  advantage: string,
+  comment: string,
+  rating: number,
+  createAt: string,
+  guitarId: number,
+}
+
 export type {
-  Guitar
+  Guitar,
+  Comment
 };

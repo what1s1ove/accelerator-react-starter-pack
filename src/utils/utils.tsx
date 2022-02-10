@@ -1,5 +1,6 @@
 import { GuitarName } from '../components/consts/consts';
 import { Guitar } from '../types/shop-types';
+import { FilterState } from '../types/state';
 
 const translateNameOfGuitar = (type: string | undefined) => {
   switch (type) {
@@ -49,10 +50,43 @@ const getObjectFromQueryString = (search: string) => {
 
 const getQueryStringFromObject = (filter: any) => new URLSearchParams(filter).toString();
 
+const filterGuitarsByMinPrice = (guitars: Guitar[], price: number) => guitars.filter((guitar) => guitar.price >= price);
+
+const getGuitarsMinPrice = (guitars: Guitar[]) => guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0];
+const getGuitarsMaxPrice = (guitars: Guitar[]) => guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[guitars.length - 1];
+
+const getCurrentGuitarsMinPrice = (guitars: Guitar[], filter: FilterState) => {
+  if (filter.type.length !== 0) {
+    return guitars.filter((guitar) => filter.type.includes(guitar.type)).map((guitar) => guitar.price).sort((a, b) => a - b)[0];
+
+  }
+  return guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0];
+
+};
+
+const getCurrentGuitarsMaxPrice = (guitars: Guitar[], filter: FilterState) => {
+  if (filter.type.length !== 0) {
+    const filteredGuitars = guitars.filter((guitar) => filter.type.includes(guitar.type));
+    return filteredGuitars.map((guitar) => guitar.price).sort((a, b) => a - b)[filteredGuitars.length - 1];
+
+  }
+  return guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[guitars.length - 1];
+
+};
+
+
+const setPriceRange = (guitars: Guitar[]) => [guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0], guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[guitars.length - 1]];
+
 export {
   getQueryStringFromObject,
   getObjectFromQueryString,
   translateNameOfGuitar,
   sortByPrice,
-  sortByRating
+  sortByRating,
+  setPriceRange,
+  filterGuitarsByMinPrice,
+  getGuitarsMinPrice,
+  getGuitarsMaxPrice,
+  getCurrentGuitarsMinPrice,
+  getCurrentGuitarsMaxPrice
 };

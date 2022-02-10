@@ -7,8 +7,6 @@ import { useHistory } from 'react-router-dom';
 
 
 function Header(): JSX.Element {
-
-
   const history = useHistory();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -25,7 +23,7 @@ function Header(): JSX.Element {
   )), [guitars, history, searchTerm]);
 
   return (
-    <header className="header" id="header">
+    <header className="header" id="header" onClick={() => setSearchTerm('')}>
       <div className="container header__wrapper"><a className="header__logo logo" href='/'><img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип" /></a>
         <nav className="main-nav">
           <ul className="main-nav__list">
