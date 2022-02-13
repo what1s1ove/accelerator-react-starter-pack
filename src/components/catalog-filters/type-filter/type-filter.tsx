@@ -19,12 +19,17 @@ function TypeFilter() {
     const searchParams = getObjectFromQueryString(location.search);
     if (searchParams.type) {
       setGuitarTypeFilter(searchParams.type.slice(0, -1).split('%2C'));
+
     }
   }, []);
 
   useEffect(() => {
     const guitarStrings = guitars.filter((guitar) => guitarTypeFilter.includes(guitar.type));
     dispatch(updateFilter({ ...filterState, type: guitarTypeFilter, strings: [...new Set(guitarStrings.map((guitar) => guitar.stringCount))] }));
+
+    if (guitarTypeFilter.length === 0) {
+      dispatch(updateFilter({ ...filterState, type: guitarTypeFilter, strings: [...new Set(guitars.map((guitar) => guitar.stringCount))] }));
+    }
   }, [dispatch, guitarTypeFilter, guitars]);
 
 

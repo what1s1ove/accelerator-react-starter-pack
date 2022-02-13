@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Guitar } from '../../types/shop-types';
 import { State } from '../../types/state';
@@ -22,8 +22,25 @@ function Header(): JSX.Element {
     <li className="form-search__select-item" tabIndex={0} onClick={() => history.push(`/guitars/${guitar.id}`)} key={uniqid()}>{guitar.name}</li>
   )), [guitars, history, searchTerm]);
 
+  const headerRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: Event) {
+      if (event.currentTarget !== headerRef.current) {
+        setSearchTerm('');
+      }
+    }
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+
+  }, []);
+
+
   return (
-    <header className="header" id="header" onClick={() => setSearchTerm('')}>
+    <header className="header" id="header">
       <div className="container header__wrapper"><a className="header__logo logo" href='/'><img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип" /></a>
         <nav className="main-nav">
           <ul className="main-nav__list">
@@ -35,8 +52,8 @@ function Header(): JSX.Element {
             </li>
           </ul>
         </nav>
-        <div className="form-search">
-          <form className="form-search__form">
+        <div className="form-search" ref={headerRef}>
+          <form className="form-search__form" >
             <button className="form-search__submit" type="submit">
               <svg className="form-search__icon" width="14" height="15" aria-hidden="true">
                 <use xlinkHref="#icon-search"></use>

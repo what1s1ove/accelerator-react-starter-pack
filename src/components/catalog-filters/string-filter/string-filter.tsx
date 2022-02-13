@@ -14,6 +14,7 @@ function StringFilter() {
 
   const [checkedStrings, setCheckedStrings] = useState<number[]>([]);
 
+
   useEffect(() => {
     const searchParams = getObjectFromQueryString(location.search);
     if (searchParams.currentStrings) {

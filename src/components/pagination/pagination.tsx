@@ -95,7 +95,7 @@ function Pagination() {
           <a
             className="link pagination__page-link"
 
-            style={{ display: page === 1 ? 'none' : 'block' }}
+            style={{ display: page === 1 || sortedGuitars.length / contentPerPage === 0 ? 'none' : 'block' }}
             onClick={() => changePage(false)}
           >
             Назад
@@ -116,7 +116,7 @@ function Pagination() {
           <a
             className="link pagination__page-link"
             onClick={() => changePage(true)}
-            style={{ display: page === pageCount ? 'none' : 'block' }}
+            style={{ display: page === pageCount || sortedGuitars.length / contentPerPage === 0 ? 'none' : 'block' }}
           >Далее
           </a>
         </li>

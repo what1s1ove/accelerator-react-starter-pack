@@ -40,7 +40,7 @@ function Main(): JSX.Element {
   return (
     <>
       <Header />
-      <main className="page-content">
+      <main className="page-content" style={{ overflow: 'hidden' }} >
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <ul className="breadcrumbs page-content__breadcrumbs">

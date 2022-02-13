@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -14,12 +13,22 @@ function PriceFilter() {
 
   const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
   const filterState = useSelector<State, FilterState>((state) => state.filterState);
+  const searchParams = getObjectFromQueryString(location.search);
+
   const [minPrice, setMinPrice] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(0);
 
+
   useEffect(() => {
-    dispatch(updateFilter({ ...filterState, price: [minPrice, maxPrice] }));
-  }, [dispatch, maxPrice, minPrice]);
+
+    if (minPrice && maxPrice) {
+
+      dispatch(updateFilter({ ...filterState, price: [minPrice, maxPrice] }));
+
+    }
+
+  }, [minPrice, maxPrice]);
+
 
   const onMinPriceKeyDown = (evt: React.KeyboardEvent<HTMLInputElement>) => {
     const currentPrice = parseFloat(evt.currentTarget.value);
@@ -43,7 +52,17 @@ function PriceFilter() {
         search: getQueryStringFromObject(params),
       });
       setMinPrice(currentPrice);
+
+      if (currentPrice > maxPrice) {
+
+        evt.currentTarget.value = maxPrice.toString();
+      }
+
     } else {
+      if (currentPrice > maxPrice) {
+
+        evt.currentTarget.value = maxPrice.toString();
+      }
       const params = getObjectFromQueryString(location.search);
       if (maxPrice !== 0) {
         params.price = getQueryStringFromObject([getGuitarsMinPrice(getGuitarsToFilterByPrice()), maxPrice].join(','));
@@ -82,7 +101,12 @@ function PriceFilter() {
         search: getQueryStringFromObject(params),
       });
       setMaxPrice(currentPrice);
+      if (currentPrice < minPrice && currentPrice.toString().length >= minPrice.toString().length) {
+        evt.currentTarget.value = minPrice.toString();
+      }
     } else {
+
+
       const params = getObjectFromQueryString(location.search);
       if (minPrice !== 0) {
         params.price = getQueryStringFromObject([minPrice, getGuitarsMaxPrice(getGuitarsToFilterByPrice())].join(','));
@@ -109,6 +133,7 @@ function PriceFilter() {
           name="от"
           onKeyUp={onMinPriceKeyDown}
           placeholder={guitars.length !== 0 ? getCurrentGuitarsMinPrice(guitars, filterState).toString() : undefined}
+          defaultValue={searchParams.price ? searchParams.price.slice(0, -1).split('%2C').map(parseFloat)[0] : undefined}
         />
       </div>
       <div className="form-input">
@@ -119,7 +144,7 @@ function PriceFilter() {
           name="до"
           onKeyUp={onMaxPriceKeyDown}
           placeholder={guitars.length !== 0 ? getCurrentGuitarsMaxPrice(guitars, filterState).toString() : undefined}
-
+          defaultValue={searchParams.price ? searchParams.price.slice(0, -1).split('%2C').map(parseFloat)[1] : undefined}
         />
       </div>
     </div>
