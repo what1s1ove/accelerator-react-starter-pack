@@ -23,6 +23,7 @@ function TypeFilter() {
     }
   }, []);
 
+
   useEffect(() => {
     const guitarStrings = guitars.filter((guitar) => guitarTypeFilter.includes(guitar.type));
     dispatch(updateFilter({ ...filterState, type: guitarTypeFilter, strings: [...new Set(guitarStrings.map((guitar) => guitar.stringCount))] }));
@@ -30,6 +31,8 @@ function TypeFilter() {
     if (guitarTypeFilter.length === 0) {
       dispatch(updateFilter({ ...filterState, type: guitarTypeFilter, strings: [...new Set(guitars.map((guitar) => guitar.stringCount))] }));
     }
+
+
   }, [dispatch, guitarTypeFilter, guitars]);
 
 

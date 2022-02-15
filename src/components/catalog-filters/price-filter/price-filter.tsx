@@ -53,15 +53,30 @@ function PriceFilter() {
       });
       setMinPrice(currentPrice);
 
-      if (currentPrice > maxPrice) {
-
+      if (currentPrice > maxPrice && maxPrice !== 0) {
         evt.currentTarget.value = maxPrice.toString();
+        setMinPrice(parseFloat(evt.currentTarget.value));
+        if (maxPrice !== 0) {
+          params.price = getQueryStringFromObject([evt.currentTarget.value, maxPrice].join(','));
+        } else {
+          params.price = getQueryStringFromObject([evt.currentTarget.value, getGuitarsMaxPrice(getGuitarsToFilterByPrice())].join(','));
+          setMaxPrice(getGuitarsMaxPrice(getGuitarsToFilterByPrice()));
+        }
+        history.replace({
+          pathname: '/',
+          search: getQueryStringFromObject(params),
+        });
       }
 
     } else {
-      if (currentPrice > maxPrice) {
+
+      if (currentPrice > maxPrice && maxPrice !== 0) {
 
         evt.currentTarget.value = maxPrice.toString();
+      }
+      if (currentPrice.toString().length >= getGuitarsMinPrice(getGuitarsToFilterByPrice()).toString().length && currentPrice < getGuitarsMinPrice(getGuitarsToFilterByPrice())) {
+        evt.currentTarget.value = getGuitarsMinPrice(getGuitarsToFilterByPrice()).toString();
+
       }
       const params = getObjectFromQueryString(location.search);
       if (maxPrice !== 0) {
@@ -105,6 +120,40 @@ function PriceFilter() {
         evt.currentTarget.value = minPrice.toString();
       }
     } else {
+      if (currentPrice < getGuitarsMinPrice(getGuitarsToFilterByPrice()) && currentPrice.toString().length >= getGuitarsMinPrice(getGuitarsToFilterByPrice()).toString().length) {
+        evt.currentTarget.value = getGuitarsMinPrice(getGuitarsToFilterByPrice()).toString();
+        setMaxPrice(parseFloat(evt.currentTarget.value));
+        const params = getObjectFromQueryString(location.search);
+        if (minPrice !== 0) {
+          params.price = getQueryStringFromObject([minPrice, evt.currentTarget.value].join(','));
+        } else {
+          params.price = getQueryStringFromObject([getGuitarsMinPrice(getGuitarsToFilterByPrice()), evt.currentTarget.value].join(','));
+          setMinPrice(getGuitarsMinPrice(getGuitarsToFilterByPrice()));
+        }
+        history.replace({
+          pathname: '/',
+          search: getQueryStringFromObject(params),
+        });
+        return;
+      }
+
+      if (currentPrice > getGuitarsMaxPrice(getGuitarsToFilterByPrice())) {
+        evt.currentTarget.value = getGuitarsMaxPrice(getGuitarsToFilterByPrice()).toString();
+        setMaxPrice(parseFloat(evt.currentTarget.value));
+        const params = getObjectFromQueryString(location.search);
+        if (minPrice !== 0) {
+          params.price = getQueryStringFromObject([minPrice, evt.currentTarget.value].join(','));
+        } else {
+          params.price = getQueryStringFromObject([getGuitarsMinPrice(getGuitarsToFilterByPrice()), evt.currentTarget.value].join(','));
+          setMinPrice(getGuitarsMinPrice(getGuitarsToFilterByPrice()));
+        }
+        history.replace({
+          pathname: '/',
+          search: getQueryStringFromObject(params),
+        });
+        return;
+
+      }
 
 
       const params = getObjectFromQueryString(location.search);

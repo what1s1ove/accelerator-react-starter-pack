@@ -3,7 +3,6 @@ import { createReducer } from '@reduxjs/toolkit';
 import { State } from '../../types/state';
 import { updateFilter, updateGuitars, uploadComments, uploadGuitars } from '../actions';
 
-
 const initialState: State = {
   guitars: [],
   sortedGuitars: [],

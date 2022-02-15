@@ -5,11 +5,12 @@ import Footer from '../footer/footer';
 import Header from '../header/header';
 import ProductCard from '../product/product-card/product-card';
 import uniqid from 'uniqid';
-import { useEffect, useMemo, useState } from 'react';
+import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { sortByPrice, sortByRating } from '../../utils/utils';
-import CatalogFilter from '../catalog-filters/catalog-filter';
 import { updateGuitars } from '../../store/actions';
 import Pagination from '../pagination/pagination';
+
+const CataloFilterPage = React.lazy(() => import('../catalog-filters/catalog-filter'));
 
 function Main(): JSX.Element {
 
@@ -50,7 +51,10 @@ function Main(): JSX.Element {
             </li>
           </ul>
           <div className="catalog">
-            <CatalogFilter />
+            <Suspense fallback={'Data Loading...'}>
+              <CataloFilterPage />
+
+            </Suspense>
             <div className="catalog-sort">
               <h2 className="catalog-sort__title">Сортировать:</h2>
               <div className="catalog-sort__type">

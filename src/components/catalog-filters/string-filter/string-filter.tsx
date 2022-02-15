@@ -1,7 +1,9 @@
+/* eslint-disable no-console */
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
 import { updateFilter } from '../../../store/actions';
+import { Guitar } from '../../../types/shop-types';
 import { FilterState, State } from '../../../types/state';
 import { getObjectFromQueryString, getQueryStringFromObject } from '../../../utils/utils';
 
@@ -11,9 +13,25 @@ function StringFilter() {
   const history = useHistory();
 
   const filterState = useSelector<State, FilterState>((state) => state.filterState);
+  const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
 
   const [checkedStrings, setCheckedStrings] = useState<number[]>([]);
 
+
+  useEffect(() => {
+    const checkIfTypesEqualToCurrentStrings = () => {
+      const getGuitarsToFilterByPrice = () => {
+        if (filterState.type.length !== 0) {
+          return guitars.filter((guitar) => filterState.type.includes(guitar.type));
+
+        }
+        return guitars.filter((guitar) => ['acoustic', 'electric', 'ukulele'].includes(guitar.type));
+      };
+      return filterState.currentStrings.filter((currentString) => [...new Set(getGuitarsToFilterByPrice().map((guitar) => guitar.stringCount))].includes(currentString));
+    };
+    setCheckedStrings(checkIfTypesEqualToCurrentStrings());
+
+  }, [filterState.type, guitars]);
 
   useEffect(() => {
     const searchParams = getObjectFromQueryString(location.search);

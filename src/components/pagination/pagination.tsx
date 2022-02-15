@@ -50,6 +50,7 @@ function Pagination() {
 
   useEffect(() => {
     dispatch(updateFilter({ ...filterState, pagination: [firstContentIndex, lastContentIndex] }));
+
   }, [dispatch, firstContentIndex, lastContentIndex]);
 
 
