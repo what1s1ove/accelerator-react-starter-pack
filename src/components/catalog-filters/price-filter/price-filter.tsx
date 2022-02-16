@@ -74,10 +74,7 @@ function PriceFilter() {
 
         evt.currentTarget.value = maxPrice.toString();
       }
-      if (currentPrice.toString().length >= getGuitarsMinPrice(getGuitarsToFilterByPrice()).toString().length && currentPrice < getGuitarsMinPrice(getGuitarsToFilterByPrice())) {
-        evt.currentTarget.value = getGuitarsMinPrice(getGuitarsToFilterByPrice()).toString();
 
-      }
       const params = getObjectFromQueryString(location.search);
       if (maxPrice !== 0) {
         params.price = getQueryStringFromObject([getGuitarsMinPrice(getGuitarsToFilterByPrice()), maxPrice].join(','));
