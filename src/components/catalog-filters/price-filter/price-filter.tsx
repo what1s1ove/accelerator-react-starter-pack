@@ -117,22 +117,7 @@ function PriceFilter() {
         evt.currentTarget.value = minPrice.toString();
       }
     } else {
-      if (currentPrice < getGuitarsMinPrice(getGuitarsToFilterByPrice()) && currentPrice.toString().length >= getGuitarsMinPrice(getGuitarsToFilterByPrice()).toString().length) {
-        evt.currentTarget.value = getGuitarsMinPrice(getGuitarsToFilterByPrice()).toString();
-        setMaxPrice(parseFloat(evt.currentTarget.value));
-        const params = getObjectFromQueryString(location.search);
-        if (minPrice !== 0) {
-          params.price = getQueryStringFromObject([minPrice, evt.currentTarget.value].join(','));
-        } else {
-          params.price = getQueryStringFromObject([getGuitarsMinPrice(getGuitarsToFilterByPrice()), evt.currentTarget.value].join(','));
-          setMinPrice(getGuitarsMinPrice(getGuitarsToFilterByPrice()));
-        }
-        history.replace({
-          pathname: '/',
-          search: getQueryStringFromObject(params),
-        });
-        return;
-      }
+
 
       if (currentPrice > getGuitarsMaxPrice(getGuitarsToFilterByPrice())) {
         evt.currentTarget.value = getGuitarsMaxPrice(getGuitarsToFilterByPrice()).toString();
