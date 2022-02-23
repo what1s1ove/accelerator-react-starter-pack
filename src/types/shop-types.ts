@@ -18,9 +18,20 @@ type Comment = {
   rating: number,
   createAt: string,
   guitarId: number,
+  disadvantage: string,
+}
+
+type CommentPost = {
+  guitarId: number,
+  userName: string,
+  advantage: string,
+  disadvantage: string,
+  comment: string,
+  rating: number,
 }
 
 export type {
   Guitar,
-  Comment
+  Comment,
+  CommentPost
 };

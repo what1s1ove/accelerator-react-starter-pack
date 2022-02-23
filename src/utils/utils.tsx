@@ -50,7 +50,6 @@ const getObjectFromQueryString = (search: string) => {
 
 const getQueryStringFromObject = (filter: any) => new URLSearchParams(filter).toString();
 
-const filterGuitarsByMinPrice = (guitars: Guitar[], price: number) => guitars.filter((guitar) => guitar.price >= price);
 
 const getGuitarsMinPrice = (guitars: Guitar[]) => guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0];
 const getGuitarsMaxPrice = (guitars: Guitar[]) => guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[guitars.length - 1];
@@ -74,17 +73,12 @@ const getCurrentGuitarsMaxPrice = (guitars: Guitar[], filter: FilterState) => {
 
 };
 
-
-const setPriceRange = (guitars: Guitar[]) => [guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[0], guitars.map((guitar) => guitar.price).sort((a, b) => a - b)[guitars.length - 1]];
-
 export {
   getQueryStringFromObject,
   getObjectFromQueryString,
   translateNameOfGuitar,
   sortByPrice,
   sortByRating,
-  setPriceRange,
-  filterGuitarsByMinPrice,
   getGuitarsMinPrice,
   getGuitarsMaxPrice,
   getCurrentGuitarsMinPrice,

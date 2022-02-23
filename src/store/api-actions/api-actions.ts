@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { ApiRoute } from '../../components/consts/api';
 import { ThunkActionResult } from '../../types/actions';
-import { Comment, Guitar } from '../../types/shop-types';
+import { Comment, CommentPost, Guitar } from '../../types/shop-types';
 import { updateGuitars, uploadComments, uploadGuitars } from '../actions';
 
 const DATA_LOAD_FAIL_MESSAGE = 'Не удалось загрузить данные';
@@ -24,8 +24,15 @@ const fetchGuitarCommentsAction = (): ThunkActionResult =>
     dispatch(uploadComments(data));
   };
 
+const postComment = (props: CommentPost): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    await api.post<CommentPost>(ApiRoute.Comments, props);
+    dispatch(fetchGuitarCommentsAction());
+  };
+
 export {
   fetchGuitarsAction,
-  fetchGuitarCommentsAction
+  fetchGuitarCommentsAction,
+  postComment
 };
 
