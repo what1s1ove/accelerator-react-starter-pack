@@ -11,7 +11,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import NewReview from '../modals/new-review/new-review';
 import dayjs from 'dayjs';
 import CongratsModal from '../modals/congrats-modal/congrats-modal';
-import('dayjs/locale/ru');
+import ru from 'dayjs/locale/ru';
+import('dayjs/plugin/weekday');
+dayjs.locale('ru');
 
 const COMMENT_PER_UNIT = 3;
 
@@ -104,7 +106,11 @@ function Product(): JSX.Element {
                 currentComments.map((comment) => (
                   <div className="review" key={uniqid()}>
                     <div className="review__wrapper">
-                      <h4 className="review__title review__title--author title title--lesser">{comment.userName}</h4><span className="review__date">{dayjs(comment?.createAt, { locale: 'ru' }).format('DD MMMM')}</span>
+                      <h4 className="review__title review__title--author title title--lesser">{comment.userName}</h4>
+                      <span className="review__date">{
+                        dayjs(comment?.createAt).locale(ru).format('DD MMMM')
+                      }
+                      </span>
                     </div>
                     <div className="rate review__rating-panel" aria-hidden="true"><span className="visually-hidden">Рейтинг:</span>
                       {new Array(Math.floor(comment ? comment.rating : 0)).fill('').map(() => (

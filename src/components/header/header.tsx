@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Guitar } from '../../types/shop-types';
 import { State } from '../../types/state';
@@ -12,6 +12,12 @@ function Header(): JSX.Element {
 
   const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
 
+  const handleEnterKeyOnSearchSuggestion = (evt: KeyboardEvent<HTMLLIElement>, guitar: Guitar) => {
+    if (evt.code === 'Enter') {
+      history.push(`/guitars/${guitar.id}`);
+    }
+  };
+
   const memorizedSearchSuggestions = useMemo(() => guitars.filter((guitar) => {
     if (searchTerm !== '') {
       if (guitar.name.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -19,7 +25,7 @@ function Header(): JSX.Element {
       }
     } return null;
   }).map((guitar) => (
-    <li className="form-search__select-item" tabIndex={0} onClick={() => history.push(`/guitars/${guitar.id}`)} key={uniqid()}>{guitar.name}</li>
+    <li className="form-search__select-item" tabIndex={0} onKeyUp={(evt) => handleEnterKeyOnSearchSuggestion(evt, guitar)} onClick={() => history.push(`/guitars/${guitar.id}`)} key={uniqid()}>{guitar.name}</li>
   )), [guitars, history, searchTerm]);
 
   const headerRef = useRef(null);
@@ -64,7 +70,9 @@ function Header(): JSX.Element {
           </form>
           {memorizedSearchSuggestions.length !== 0 ?
             <ul className="form-search__select-list" style={{ zIndex: 10 }}>
-              {memorizedSearchSuggestions}
+              {
+                memorizedSearchSuggestions
+              }
             </ul>
             : ''}
         </div>
