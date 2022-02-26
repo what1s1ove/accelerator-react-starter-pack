@@ -9,6 +9,9 @@ import React, { Suspense, useEffect, useMemo, useState } from 'react';
 import { sortByPrice, sortByRating } from '../../utils/utils';
 import { updateGuitars } from '../../store/actions';
 import Pagination from '../pagination/pagination';
+import AddToCart from '../modals/add-to-cart/add-to-cart';
+import AddToCartSuccess from '../modals/add-to-cart-success/add-to-cart-success';
+import { EMPTY_GUITAR } from '../consts/consts';
 
 const CataloFilterPage = React.lazy(() => import('../catalog-filters/catalog-filter'));
 
@@ -20,12 +23,17 @@ function Main(): JSX.Element {
   const filterState = useSelector<State, FilterState>((state) => state.filterState);
   const comments = useSelector<State, Comment[]>((state) => state.comments);
 
-  const memorizedGuitars = useMemo(() => sortedGuitars.map((guitar) => <ProductCard key={uniqid()} guitar={guitar} />), [comments, sortedGuitars]);
-
   const [isSortedByPrice, setSortedByPrice] = useState(false);
   const [isSortedByRaiting, setSortedByRaiting] = useState(false);
   const [isSortedFromHighToLow, setSortedFromHighToLow] = useState(false);
   const [isSortedFromLowToHigh, setSortedFromLowToHigh] = useState(false);
+
+
+  const [isAddToCartModal, setIsAddToCartModal] = useState(false);
+  const [guitarToAddToCart, setGuitarToAddToCart] = useState<Guitar>(EMPTY_GUITAR);
+  const [isAddToCartSuccessModal, setIsAddToCartSuccessModal] = useState(false);
+
+  const memorizedGuitars = useMemo(() => sortedGuitars.map((guitar) => <ProductCard key={uniqid()} onSetGuitarToAddToCart={setGuitarToAddToCart} onSetIsAddToCartModal={setIsAddToCartModal} guitar={guitar} />), [comments, sortedGuitars]);
 
   useEffect(() => {
     if (isSortedByPrice) {
@@ -102,6 +110,8 @@ function Main(): JSX.Element {
               }
 
             </div>
+            {isAddToCartModal ? <AddToCart onSetIsAddToCartSuccessModal={setIsAddToCartSuccessModal} onSetIsAddToCartModal={setIsAddToCartModal} guitarToAddToCart={guitarToAddToCart} /> : ''}
+            {isAddToCartSuccessModal ? <AddToCartSuccess onSetIsAddToCartSuccessModal={setIsAddToCartSuccessModal} /> : ''}
             <Pagination />
           </div>
         </div>

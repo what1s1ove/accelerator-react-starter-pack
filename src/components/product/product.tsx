@@ -12,6 +12,9 @@ import NewReview from '../modals/new-review/new-review';
 import dayjs from 'dayjs';
 import CongratsModal from '../modals/congrats-modal/congrats-modal';
 import ru from 'dayjs/locale/ru';
+import AddToCart from '../modals/add-to-cart/add-to-cart';
+import AddToCartSuccess from '../modals/add-to-cart-success/add-to-cart-success';
+import { EMPTY_GUITAR } from '../consts/consts';
 import('dayjs/plugin/weekday');
 dayjs.locale('ru');
 
@@ -30,6 +33,9 @@ function Product(): JSX.Element {
   const [isShowReviewModal, setIsShowReviewModal] = useState<boolean>(false);
   const [isCongratsModal, setIsCongratsModal] = useState<boolean>(false);
 
+  const [isAddToCartModal, setIsAddToCartModal] = useState(false);
+  const [isAddToCartSuccessModal, setIsAddToCartSuccessModal] = useState(false);
+
   const handleShowMoreButton = () => {
     setCommentAmount(commentAmount + 1);
   };
@@ -37,7 +43,6 @@ function Product(): JSX.Element {
   useEffect(() => {
     setLastContentIndex(commentAmount * COMMENT_PER_UNIT);
   }, [commentAmount]);
-
 
   return (
     <>
@@ -96,7 +101,7 @@ function Product(): JSX.Element {
             </div>
             <div className="product-container__price-wrapper">
               <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-              <p className="product-container__price-info product-container__price-info--value">{product?.price.toLocaleString()} ₽</p><a className="button button--red button--big product-container__button" href='/'>Добавить в корзину</a>
+              <p className="product-container__price-info product-container__price-info--value">{product?.price.toLocaleString()} ₽</p><a className="button button--red button--big product-container__button" onClick={() => setIsAddToCartModal(true)}>Добавить в корзину</a>
             </div>
           </div>
           <section className="reviews" style={{ marginBottom: currentComments.length === 0 ? '100px' : '50px' }}>
@@ -141,6 +146,8 @@ function Product(): JSX.Element {
         </div>
         {isShowReviewModal ? <NewReview onSetIsReviewModal={setIsShowReviewModal} onSetIsCongratsModal={setIsCongratsModal} /> : ''}
         {isCongratsModal ? <CongratsModal onSetIsCongratsModal={setIsCongratsModal} /> : ''}
+        {isAddToCartModal ? <AddToCart onSetIsAddToCartSuccessModal={setIsAddToCartSuccessModal} onSetIsAddToCartModal={setIsAddToCartModal} guitarToAddToCart={product ? product : EMPTY_GUITAR} /> : ''}
+        {isAddToCartSuccessModal ? <AddToCartSuccess onSetIsAddToCartSuccessModal={setIsAddToCartSuccessModal} /> : ''}
       </main>
       <Footer />
     </>

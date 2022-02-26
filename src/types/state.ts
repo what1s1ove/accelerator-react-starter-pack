@@ -12,7 +12,8 @@ type State = {
   guitars: Guitar[],
   sortedGuitars: Guitar[],
   filterState: FilterState,
-  comments: Comment[]
+  comments: Comment[],
+  cart: Guitar[]
 }
 
 

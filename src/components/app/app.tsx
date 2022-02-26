@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import { lazy } from 'react';
 import { AppRoute } from '../consts/app';
 import NotFoundScreen from '../notfoundscreen/not-found-screen';
+import Cart from '../cart/cart';
 
 
 const MainPage = lazy(() => import('../main/main'));
@@ -21,6 +22,9 @@ function App(): JSX.Element {
           </Route>
           <Route exact path={AppRoute.Guitar}>
             <ProductMain />
+          </Route>
+          <Route exact path={AppRoute.Cart}>
+            <Cart />
           </Route>
           <Route>
             <NotFoundScreen />

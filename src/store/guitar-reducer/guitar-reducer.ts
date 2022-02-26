@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 import { State } from '../../types/state';
-import { updateFilter, updateGuitars, uploadComments, uploadGuitars } from '../actions';
+import { addGuitarToCart, deleteGuitarFromCart, updateFilter, updateGuitars, uploadComments, uploadGuitars } from '../actions';
 
 const initialState: State = {
   guitars: [],
@@ -14,6 +14,7 @@ const initialState: State = {
     pagination: [],
   },
   comments: [],
+  cart: [],
 };
 
 const guitarReducer = createReducer(initialState, (builder) => {
@@ -37,6 +38,16 @@ const guitarReducer = createReducer(initialState, (builder) => {
       const comments = action.payload;
 
       state.comments = comments;
+    })
+    .addCase(addGuitarToCart, (state, action) => {
+      const guitar = action.payload;
+
+      state.cart = [...state.cart, guitar];
+    })
+    .addCase(deleteGuitarFromCart, (state, action) => {
+      const guitar = action.payload;
+
+      state.cart = state.cart.filter((guitarInCart) => guitarInCart.id !== guitar.id);
     });
 });
 

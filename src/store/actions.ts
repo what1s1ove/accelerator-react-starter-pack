@@ -32,10 +32,25 @@ const uploadComments = createAction(
   }),
 );
 
+const addGuitarToCart = createAction(
+  ActionTypes.AddGuitarToCart,
+  (guitar: Guitar) => ({
+    payload: guitar,
+  }),
+);
+
+const deleteGuitarFromCart = createAction(
+  ActionTypes.DeleteGuitarFromCart,
+  (guitar: Guitar) => ({
+    payload: guitar,
+  }),
+);
 
 export {
   updateGuitars,
   uploadGuitars,
   updateFilter,
-  uploadComments
+  uploadComments,
+  addGuitarToCart,
+  deleteGuitarFromCart
 };
