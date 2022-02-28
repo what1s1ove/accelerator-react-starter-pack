@@ -63,15 +63,26 @@ function Cart() {
               <div className="cart__coupon coupon">
                 <h2 className="title title--little coupon__title">Промокод на скидку</h2>
                 <p className="coupon__info">Введите свой промокод, если он у вас есть.</p>
-                <form className="coupon__form" id="coupon-form" >
+                <form className="coupon__form" id="coupon-form" action='/' onKeyPress={(evt) => {
+                  if (evt.code === 'Enter') {
+                    evt.preventDefault();
+                  }
+                }}
+                >
                   <div className="form-input coupon__input">
                     <label className="visually-hidden">Промокод</label>
-                    <input type="text" placeholder="Введите промокод" id="coupon" name="coupon" value={couponName} onInput={(evt) => setCouponName(evt.currentTarget.value)} />
+                    <input type="text" placeholder="Введите промокод" id="coupon" name="coupon" onKeyPress={(evt) => {
+                      if (evt.code === 'Enter') {
+                        evt.preventDefault();
+                      }
+
+                    }} value={couponName} onInput={(evt) => setCouponName(evt.currentTarget.value)}
+                    />
                     {isCouponValid === 1 ? <p className="form-input__message form-input__message--success">Промокод принят</p> : ''}
                     {isCouponValid === 2 ? <p className="form-input__message form-input__message--error">неверный промокод</p> : ''}
                   </div>
-                  <button className="button button--big coupon__button" type='button' onClick={() => {
-
+                  <button className="button button--big coupon__button" type='button' onClick={(evt) => {
+                    evt.preventDefault();
                     handleCouponSubmit();
                   }}
                   >Применить
