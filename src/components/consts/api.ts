@@ -1,6 +1,8 @@
 enum ApiRoute {
   Guitars = '/guitars',
-  Comments = '/comments'
+  Comments = '/comments',
+  Coupons = '/coupons',
+  Orders = '/orders'
 }
 
 export {

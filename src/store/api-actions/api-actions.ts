@@ -1,7 +1,8 @@
+import { Dispatch, SetStateAction } from 'react';
 import { toast } from 'react-toastify';
 import { ApiRoute } from '../../components/consts/api';
 import { ThunkActionResult } from '../../types/actions';
-import { Comment, CommentPost, Guitar } from '../../types/shop-types';
+import { Comment, CommentPost, Coupon, Guitar, Order } from '../../types/shop-types';
 import { updateGuitars, uploadComments, uploadGuitars } from '../actions';
 
 const DATA_LOAD_FAIL_MESSAGE = 'Не удалось загрузить данные';
@@ -30,9 +31,26 @@ const postComment = (props: CommentPost): ThunkActionResult =>
     dispatch(fetchGuitarCommentsAction());
   };
 
+const postCoupon = ({ coupon }: Coupon, setCouponAmount: Dispatch<SetStateAction<number>>, setIsCouponValid: Dispatch<SetStateAction<number>>): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    await api.post<number>(ApiRoute.Coupons, { coupon })
+      .then((response) => {
+        setCouponAmount(response.data);
+        setIsCouponValid(1);
+      })
+      .catch((error) => setIsCouponValid(2));
+  };
+
+const postOrder = ({ coupon, guitarsIds }: Order): ThunkActionResult =>
+  async (dispatch, _getState, api): Promise<void> => {
+    await api.post(ApiRoute.Orders, { coupon, guitarsIds });
+  };
+
 export {
   fetchGuitarsAction,
   fetchGuitarCommentsAction,
-  postComment
+  postComment,
+  postCoupon,
+  postOrder
 };
 

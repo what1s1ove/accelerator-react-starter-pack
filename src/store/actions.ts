@@ -46,11 +46,27 @@ const deleteGuitarFromCart = createAction(
   }),
 );
 
+const deleteOneGuitarFromCart = createAction(
+  ActionTypes.DeleteOneGuitarFromCart,
+  (guitar: Guitar) => ({
+    payload: guitar,
+  }),
+);
+
+const addMultipleGuitarsToCart = createAction(
+  ActionTypes.AddMultipleGuitarsToCart,
+  (guitar: Guitar[]) => ({
+    payload: guitar,
+  }),
+);
+
 export {
   updateGuitars,
   uploadGuitars,
   updateFilter,
   uploadComments,
   addGuitarToCart,
-  deleteGuitarFromCart
+  deleteGuitarFromCart,
+  deleteOneGuitarFromCart,
+  addMultipleGuitarsToCart
 };

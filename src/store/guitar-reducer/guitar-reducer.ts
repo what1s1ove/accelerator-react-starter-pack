@@ -1,7 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 
 import { State } from '../../types/state';
-import { addGuitarToCart, deleteGuitarFromCart, updateFilter, updateGuitars, uploadComments, uploadGuitars } from '../actions';
+import { addGuitarToCart, addMultipleGuitarsToCart, deleteGuitarFromCart, deleteOneGuitarFromCart, updateFilter, updateGuitars, uploadComments, uploadGuitars } from '../actions';
 
 const initialState: State = {
   guitars: [],
@@ -48,6 +48,27 @@ const guitarReducer = createReducer(initialState, (builder) => {
       const guitar = action.payload;
 
       state.cart = state.cart.filter((guitarInCart) => guitarInCart.id !== guitar.id);
+    })
+    .addCase(deleteOneGuitarFromCart, (state, action) => {
+      const guitar = action.payload;
+
+      const lastIndexOfGuitar = state.cart.map((cartItem) => cartItem.id).lastIndexOf(guitar.id);
+      state.cart = state.cart.filter((cartItem, index) => index !== lastIndexOfGuitar);
+    })
+    .addCase(addMultipleGuitarsToCart, (state, action) => {
+      const guitars = action.payload;
+      const amountOfExistingGuitarsInCart = state.cart.filter((guitarInCart) => guitarInCart.id === guitars[0].id).length;
+
+
+      if (guitars.length > amountOfExistingGuitarsInCart) {
+        state.cart = state.cart.concat(guitars.slice(0, guitars.length - amountOfExistingGuitarsInCart));
+        return;
+      }
+
+      while (state.cart.filter((guitar) => guitar.id === guitars[0].id).length > guitars.length) {
+        const lastIndexOfGuitar = state.cart.map((cartItem) => cartItem.id).lastIndexOf(guitars[0].id);
+        state.cart = state.cart.filter((cartItem, index) => index !== lastIndexOfGuitar);
+      }
     });
 });
 

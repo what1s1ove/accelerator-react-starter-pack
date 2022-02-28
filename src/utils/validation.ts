@@ -8,6 +8,10 @@ const checkNameValidity = (event: FormEvent<HTMLInputElement>) => {
   }
   event.currentTarget.setCustomValidity('');
 };
+
+const validateCoupon = (coupon: string) => coupon.split(' ')[0];
+
 export {
-  checkNameValidity
+  checkNameValidity,
+  validateCoupon
 };

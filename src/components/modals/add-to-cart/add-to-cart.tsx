@@ -20,6 +20,13 @@ function AddToCart({ guitarToAddToCart, onSetIsAddToCartModal, onSetIsAddToCartS
   };
 
   useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  useEffect(() => {
 
     const handleCloseModalKeyDown = (evt: KeyboardEvent) => {
       if (evt.code === 'Escape') {
@@ -55,7 +62,7 @@ function AddToCart({ guitarToAddToCart, onSetIsAddToCartModal, onSetIsAddToCartS
             <div className="modal__overlay" data-close-modal ref={modalRef}></div>
             <div className="modal__content">
               <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
-              <div className="modal__info"><img className="modal__img" src={`http://localhost:3000/${guitarToAddToCart?.previewImg}`} width="67" height="137" alt="Честер bass" />
+              <div className="modal__info"><img className="modal__img" src={`/${guitarToAddToCart?.previewImg}`} width="67" height="137" alt="Честер bass" />
                 <div className="modal__info-wrapper">
                   <h3 className="modal__product-name title title--little title--uppercase">Гитара {guitarToAddToCart?.name}</h3>
                   <p className="modal__product-params modal__product-params--margin-11">Артикул: {guitarToAddToCart?.vendorCode}</p>

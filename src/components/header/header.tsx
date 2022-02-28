@@ -11,6 +11,7 @@ function Header(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState('');
 
   const guitars = useSelector<State, Guitar[]>((state) => state.guitars);
+  const cartItems = useSelector<State, Guitar[]>((state) => state.cart);
 
   const handleEnterKeyOnSearchSuggestion = (evt: KeyboardEvent<HTMLLIElement>, guitar: Guitar) => {
     if (evt.code === 'Enter') {
@@ -79,7 +80,14 @@ function Header(): JSX.Element {
         <a className="header__cart-link" aria-label="Корзина" style={{ cursor: 'pointer' }} onClick={() => history.push('/cart')}>
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
-          </svg><span className="visually-hidden">Перейти в корзину</span><span className="header__cart-count">2</span>
+          </svg><span className="visually-hidden">Перейти в корзину</span>
+          <span className="header__cart-count" style={{ display: cartItems.length !== 0 ? 'block' : 'none' }}>
+            {
+
+              cartItems.length
+
+            }
+          </span>
         </a>
       </div>
     </header>

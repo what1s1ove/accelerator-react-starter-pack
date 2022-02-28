@@ -13,6 +13,13 @@ function AddToCartSuccess({ onSetIsAddToCartSuccessModal }: AddToCartSuccessProp
   const modalRef = useRef(null);
 
   useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  useEffect(() => {
     const handleCloseModalKeyDown = (evt: KeyboardEvent) => {
       if (evt.code === 'Escape') {
         onSetIsAddToCartSuccessModal(false);

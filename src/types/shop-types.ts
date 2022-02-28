@@ -30,8 +30,20 @@ type CommentPost = {
   rating: number,
 }
 
+type Coupon = {
+  coupon: string,
+}
+
+type Order = {
+  coupon: string | null,
+  guitarsIds: number[],
+
+}
+
 export type {
   Guitar,
   Comment,
-  CommentPost
+  CommentPost,
+  Coupon,
+  Order
 };
