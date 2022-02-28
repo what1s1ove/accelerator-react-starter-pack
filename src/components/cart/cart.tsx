@@ -74,6 +74,7 @@ function Cart() {
                     <input type="text" placeholder="Введите промокод" id="coupon" name="coupon" onKeyPress={(evt) => {
                       if (evt.code === 'Enter') {
                         evt.preventDefault();
+                        handleCouponSubmit();
                       }
 
                     }} value={couponName} onInput={(evt) => setCouponName(evt.currentTarget.value)}
