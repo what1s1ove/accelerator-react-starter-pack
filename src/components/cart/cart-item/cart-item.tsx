@@ -40,7 +40,7 @@ function CartItem({ guitar }: CartItemProps) {
     dispatch(deleteOneGuitarFromCart(guitar));
   };
 
-  const getData = useCallback(_.debounce((amountOfGuitars: string) => {
+  const handleAmountOfGuitar = useCallback(_.debounce((amountOfGuitars: string) => {
     if (parseFloat(amountOfGuitars) > MAX_GUITAR_AMOUNT) {
       amountOfGuitars = MAX_GUITAR_AMOUNT.toString();
       dispatch(addMultipleGuitarsToCart(new Array(MAX_GUITAR_AMOUNT).fill('').map(() => guitar)));
@@ -76,8 +76,8 @@ function CartItem({ guitar }: CartItemProps) {
               <use xlinkHref="#icon-minus"></use>
             </svg>
           </button>
-          <input className="quantity__input" type="number" onChange={(evt) => getData(evt.currentTarget.value)} placeholder={cartItems.filter((cartItem) => cartItem.id === guitar.id).length.toString()} id="2-count" name="2-count" max="99" />
-          <button className="quantity__button" aria-label="Увеличить количество" onClick={() => handleAddToCart()}>
+          <input className="quantity__input" type="number" onChange={(evt) => handleAmountOfGuitar(evt.currentTarget.value)} placeholder={cartItems.filter((cartItem) => cartItem.id === guitar.id).length.toString()} id="2-count" name="2-count" max="99" />
+          <button className="quantity__button" aria-label="Увеличить количество" disabled={cartItems.filter((cartItem) => cartItem.id === guitar.id).length >= 99} onClick={() => handleAddToCart()}>
             <svg width="8" height="8" aria-hidden="true">
               <use xlinkHref="#icon-plus"></use>
             </svg>
