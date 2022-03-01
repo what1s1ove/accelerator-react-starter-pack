@@ -60,6 +60,13 @@ const addMultipleGuitarsToCart = createAction(
   }),
 );
 
+const addDiscount = createAction(
+  ActionTypes.AddDiscount,
+  (discount: number) => ({
+    payload: discount,
+  }),
+);
+
 export {
   updateGuitars,
   uploadGuitars,
@@ -68,5 +75,6 @@ export {
   addGuitarToCart,
   deleteGuitarFromCart,
   deleteOneGuitarFromCart,
-  addMultipleGuitarsToCart
+  addMultipleGuitarsToCart,
+  addDiscount
 };

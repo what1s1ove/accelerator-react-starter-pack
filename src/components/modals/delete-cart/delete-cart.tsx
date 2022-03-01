@@ -1,7 +1,7 @@
 import FocusTrap from 'focus-trap-react';
 import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { deleteOneGuitarFromCart } from '../../../store/actions';
+import { deleteGuitarFromCart } from '../../../store/actions';
 import { Guitar } from '../../../types/shop-types';
 import { translateNameOfGuitar } from '../../../utils/utils';
 
@@ -16,7 +16,7 @@ function DeleteCart({ guitar, onSetIsDeleteCartItem }: DeleteCartProps) {
   const modalRef = useRef(null);
 
   const handleDeleteFromCart = () => {
-    dispatch(deleteOneGuitarFromCart(guitar));
+    dispatch(deleteGuitarFromCart(guitar));
   };
 
   useEffect(() => {

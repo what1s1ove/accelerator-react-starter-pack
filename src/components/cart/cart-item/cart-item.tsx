@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addGuitarToCart, addMultipleGuitarsToCart, deleteGuitarFromCart, deleteOneGuitarFromCart } from '../../../store/actions';
+import { addGuitarToCart, addMultipleGuitarsToCart, deleteOneGuitarFromCart } from '../../../store/actions';
 import { Guitar } from '../../../types/shop-types';
 import { State } from '../../../types/state';
 import { translateNameOfGuitar } from '../../../utils/utils';
@@ -24,7 +24,7 @@ function CartItem({ guitar }: CartItemProps) {
   const cartItems = useSelector<State, Guitar[]>((state) => state.cart);
 
   const handleDeleteItemFromCart = () => {
-    dispatch(deleteGuitarFromCart(guitar));
+    setIsDeleteCartItem(true);
   };
 
   const handleAddToCart = () => {

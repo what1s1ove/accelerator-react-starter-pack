@@ -51,11 +51,11 @@ function Header(): JSX.Element {
       <div className="container header__wrapper" ><a className="header__logo logo" style={{ cursor: 'pointer' }} onClick={() => history.push('/')}><img className="logo__img" width="70" height="70" src="/img/svg/logo.svg" alt="Логотип" /></a>
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li><a className="link main-nav__link link--current" href='/'>Каталог</a>
+            <li><a className="link main-nav__link" onClick={() => history.push('/')}>Каталог</a>
             </li>
-            <li><a className="link main-nav__link" href='/'>Где купить?</a>
+            <li><a className="link main-nav__link" onClick={() => history.push('/')}>Где купить?</a>
             </li>
-            <li><a className="link main-nav__link" href='/'>О компании</a>
+            <li><a className="link main-nav__link" onClick={() => history.push('/')}>О компании</a>
             </li>
           </ul>
         </nav>

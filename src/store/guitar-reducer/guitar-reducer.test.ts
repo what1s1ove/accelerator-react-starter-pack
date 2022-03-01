@@ -17,6 +17,7 @@ describe('Reducer: guitarReducer', () => {
     },
     comments: [],
     cart: [],
+    discount: 0,
   };
   it('should update guitars', () => {
 

@@ -17,16 +17,16 @@ function Cart() {
   const dispatch = useDispatch();
 
   const cartItems = useSelector<State, Guitar[]>((state) => state.cart);
+  const couponAmount = useSelector<State, number>((state) => state.discount);
 
   const [couponName, setCouponName] = useState<string>('');
-  const [couponAmount, setCouponAmount] = useState<number>(0);
   const [isCouponValid, setIsCouponValid] = useState<number>(0);
 
 
   const handleCouponSubmit = () => {
     const validatedCoupon = validateCoupon(couponName).trim();
     setCouponName(validatedCoupon);
-    dispatch(postCoupon({ coupon: validatedCoupon }, setCouponAmount, setIsCouponValid));
+    dispatch(postCoupon({ coupon: validatedCoupon }, setIsCouponValid));
   };
 
   const handleOrderSubmit = () => {
@@ -94,7 +94,7 @@ function Cart() {
                 <p className="cart__total-item"><span className="cart__total-value-name">Всего:</span><span className="cart__total-value">{getTotalValue(cartItems).toLocaleString()} ₽</span></p>
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">Скидка:</span>
-                  <span className={`cart__total-value ${couponAmount !== 0 ? 'cart__total-value--bonus' : ''}`}>- {couponAmount !== 0 ? getCouponDiscount(cartItems, couponAmount).toLocaleString() : 0} ₽</span>
+                  <span className={`cart__total-value ${couponAmount !== 0 ? 'cart__total-value--bonus' : ''}`}>{couponAmount !== 0 ? getCouponDiscount(cartItems, couponAmount).toLocaleString() : 0} ₽</span>
                 </p>
                 <p className="cart__total-item"><span className="cart__total-value-name">К оплате:</span><span className="cart__total-value cart__total-value--payment">{getTotalValueMinusDiscount(cartItems, couponAmount).toLocaleString()} ₽</span></p>
                 <button className="button button--red button--big cart__order-button" onClick={() => handleOrderSubmit()}>Оформить заказ</button>

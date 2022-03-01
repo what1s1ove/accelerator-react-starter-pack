@@ -14,6 +14,7 @@ type State = {
   filterState: FilterState,
   comments: Comment[],
   cart: Guitar[]
+  discount: number,
 }
 
 

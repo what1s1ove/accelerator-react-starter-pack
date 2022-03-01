@@ -1,6 +1,6 @@
 import { ThunkAction, ThunkDispatch } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { addGuitarToCart, deleteGuitarFromCart, deleteOneGuitarFromCart, updateFilter, updateGuitars, uploadComments, uploadGuitars } from '../store/actions';
+import { addDiscount, addGuitarToCart, deleteGuitarFromCart, deleteOneGuitarFromCart, updateFilter, updateGuitars, uploadComments, uploadGuitars } from '../store/actions';
 import { State } from './state';
 
 enum ActionTypes {
@@ -11,7 +11,8 @@ enum ActionTypes {
   AddGuitarToCart = 'cart/addGuitarToCart',
   DeleteGuitarFromCart = 'cart/deleteGuitarFromCart',
   DeleteOneGuitarFromCart = 'cart/deleteOneGuitarFromCart',
-  AddMultipleGuitarsToCart = 'cart/addMultipleGuitarsToCart'
+  AddMultipleGuitarsToCart = 'cart/addMultipleGuitarsToCart',
+  AddDiscount = 'cart/addDiscount'
 
 }
 
@@ -23,6 +24,7 @@ type Actions =
   | ReturnType<typeof addGuitarToCart>
   | ReturnType<typeof deleteGuitarFromCart>
   | ReturnType<typeof deleteOneGuitarFromCart>
+  | ReturnType<typeof addDiscount>
 
 
 type ThunkActionResult<R = Promise<void>> = ThunkAction<R, State, AxiosInstance, Actions>;
