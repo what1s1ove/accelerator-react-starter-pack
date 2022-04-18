@@ -1,7 +1,6 @@
 .header {
     padding-top: 22px;
     padding-bottom: 12px;
-    
     color: #ffffff;
     background-color: #131212;
 }
@@ -16,6 +15,7 @@
     max-width: 1020px;
     margin: 0 auto;
     padding: 0 40px;
+    box-sizing: border-box;
 }
 
 .header__list {

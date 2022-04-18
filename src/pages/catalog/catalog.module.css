@@ -1,0 +1,46 @@
+.content {
+    position: relative;
+    padding: 215px 0 139px;
+}
+
+.content::before,
+.content::after {
+    position: absolute;
+    width: 100%;
+    content: "";
+}
+
+.content::before {
+    top: 0;
+    height: 251px;
+    background-image: url("../../../public/img/guitar.png");
+    background-repeat: no-repeat;
+    background-position: top -38px right;
+}
+
+.content::after {
+    bottom: 0;
+    left: 0;
+    height: 139px;
+    background-image: url("../../../public/img/guitar.png");
+    background-repeat: no-repeat;
+    background-position: right 0 bottom 50px;
+    transform: rotate(180deg);
+}
+
+.content__container {
+    width: 100%;
+    min-width: 1020px;
+    max-width: 1020px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.content__title {
+    font-size: 22px;
+    line-height: 30px;
+}
+
+.breadcrumbs {
+    margin-top: 15px;
+}
