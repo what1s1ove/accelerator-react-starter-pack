@@ -1,0 +1,19 @@
+.form-input input {
+    padding-left: 9px;
+    font-size: 14px;
+    line-height: 28px;
+    color: #000000;
+    border: 0.7px solid #585757;
+    border-radius: 2px;
+    transition: border-color 0.3s ease;
+    letter-spacing: 0.05em;
+    background-color: #FEFAFA;
+    width: 85px;
+    box-sizing: border-box;
+}
+
+
+.form-input input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+}

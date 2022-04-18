@@ -1,0 +1,16 @@
+.filters {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+
+.filters::after {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 15px;
+    height: 1px;
+    background-color: #585757;
+    content: "";
+    transform: translateX(-50%);
+}

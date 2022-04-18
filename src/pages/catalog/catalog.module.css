@@ -34,6 +34,7 @@
     max-width: 1020px;
     margin: 0 auto;
     padding: 0 40px;
+    box-sizing: border-box;
 }
 
 .content__title {
@@ -43,4 +44,33 @@
 
 .breadcrumbs {
     margin-top: 15px;
+    margin-bottom: 40px;
+}
+
+.catalog {
+    display: grid;
+    align-content: start;
+    align-items: start;
+    justify-content: start;
+    width: 100%;
+    gap: 0 25px;
+    grid-template-areas: 
+        "filters sorter"
+        "filters catalog"
+        "filters pagination";
+    grid-template-columns: 215px 1fr;
+    grid-template-rows: -webkit-min-content 1fr -webkit-min-content;
+    grid-template-rows: min-content 1fr min-content;
+    justify-items: start;
+}
+
+.catalog__filter {
+    margin-bottom: 20px;
+}
+
+.catalog-filter {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    grid-area: filters;
 }
