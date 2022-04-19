@@ -4,6 +4,7 @@ import { Breadcrumbs } from '../../components/breadcrumbs/breadcrumbs';
 import { PriceFilter } from '../../components/price-filter/price-filter';
 import { GuitarFilter } from '../../components/guitar-filter/guitar-filter';
 import { StringFilter } from '../../components/string-filter/string-filter';
+import { SortingFilter } from '../../components/sorting-filter/sorting-filter';
 import styles from './catalog.module.css';
 
 const breadcrumbsItems = ['Главная', 'Каталог'];
@@ -24,6 +25,8 @@ export function Catalog(props: {
             <GuitarFilter />
             <StringFilter />
           </form>
+
+          <SortingFilter />
         </div>
       </div>
     </main>
