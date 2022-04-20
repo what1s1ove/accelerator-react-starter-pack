@@ -5,6 +5,8 @@ import { PriceFilter } from '../../components/price-filter/price-filter';
 import { GuitarFilter } from '../../components/guitar-filter/guitar-filter';
 import { StringFilter } from '../../components/string-filter/string-filter';
 import { SortingFilter } from '../../components/sorting-filter/sorting-filter';
+import { ProductItem } from '../../components/product-item/product-item';
+import { Pagination } from '../../components/pagination/pagination';
 import styles from './catalog.module.css';
 
 const breadcrumbsItems = ['Главная', 'Каталог'];
@@ -27,6 +29,20 @@ export function Catalog(props: {
           </form>
 
           <SortingFilter />
+
+          <div className={cn(styles['catalog__cards'], styles['cards'])}>
+            <ProductItem />
+            <ProductItem />
+            <ProductItem />
+            <ProductItem />
+            <ProductItem />
+            <ProductItem />
+            <ProductItem />
+            <ProductItem />
+            <ProductItem />
+          </div>
+
+          <Pagination className={cn(styles['page-content__pagination'], styles['pagination'])} />
         </div>
       </div>
     </main>

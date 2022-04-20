@@ -1,0 +1,14 @@
+.list {
+    display: grid;
+    grid-auto-flow: column;
+    column-gap: 10px;
+}
+
+.list__next-button {
+    height: 25px;
+    padding: 2px 15px 2px 15px;
+    background-color: #ffffff;
+    cursor: pointer;
+    border: 0.7px solid #585757;
+    border-radius: 2px;
+}
