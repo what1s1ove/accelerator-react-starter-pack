@@ -12,4 +12,5 @@ export interface IGuitar {
 
 export interface IGuitarsState {
   guitars: Array<IGuitar>
+  guitarsByName: Array<IGuitar>
 }

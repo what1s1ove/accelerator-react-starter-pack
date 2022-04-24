@@ -4,6 +4,7 @@ import { IGuitarsState } from '../../types/IGuitars';
 
 const initialState: IGuitarsState = {
   guitars: [],
+  guitarsByName: [],
 };
 
 export const guitarsReducer = createReducer(initialState, (builder) => {
