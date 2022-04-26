@@ -1,16 +1,21 @@
 import React from 'react';
+import {Guitar} from '../../types/guitar';
 import RatingStar from '../rating-star/rating-star';
 
-function ProductCard():JSX.Element {
+type GuitarCardProps = {
+  guitar: Guitar,
+}
+
+function GuitarCard({guitar}:GuitarCardProps):JSX.Element {
   return (
     <div className="product-card">
-      <img src="img/content/guitar-2.jpg" width="75" height="190" alt="СURT Z30 Plus" />
+      <img src={guitar.previewImg} width="75" height="190" alt={guitar.name} />
       <div className="product-card__info">
         <div className="rate product-card__rate" aria-hidden="true">
           <RatingStar />
         </div>
-        <p className="product-card__title">СURT Z30 Plus</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>9 700 ₽</p>
+        <p className="product-card__title">{guitar.name}</p>
+        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{guitar.price} ₽</p>
       </div>
       <div className="product-card__buttons">
         <a className="button button--mini" href="#">Подробнее</a>
@@ -20,4 +25,4 @@ function ProductCard():JSX.Element {
   );
 }
 
-export default ProductCard;
+export default GuitarCard;

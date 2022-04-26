@@ -3,7 +3,7 @@ import RatingStar from '../rating-star/rating-star';
 import ReviewList from '../review-list/review-list';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 
-function ProductCardFull():JSX.Element {
+function GuitarCardFull():JSX.Element {
   return (
     <>
       <h1 className="page-content__title title title--bigger">Товар</h1>
@@ -36,7 +36,8 @@ function ProductCardFull():JSX.Element {
               <p className="tabs__product-description hidden">Гитара подходит как для старта обучения, так и для домашних
                 занятий или использования в полевых условиях, например, в походах или для проведения уличных выступлений.
                 Доступная стоимость, качество и надежная конструкция, а также приятный внешний вид, который сделает вас
-                звездой вечеринки.</p>
+                звездой вечеринки.
+              </p>
             </div>
           </div>
         </div>
@@ -50,3 +51,5 @@ function ProductCardFull():JSX.Element {
     </>
   );
 }
+
+export default GuitarCardFull;

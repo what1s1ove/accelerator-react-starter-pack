@@ -1,6 +1,6 @@
 enum AppRoute {
   Main = '/',
-  Film = '/guitars/:id',
+  Guitar = '/guitars/:id',
   AddComments = '/guitars/:id/comments',
 }
 
@@ -17,8 +17,14 @@ enum Coupons {
   height = 'height-555',
 }
 
+enum Sorts {
+  byPrice = 'по цене',
+  byPopular = 'по популярности',
+}
+
 export {
   AppRoute,
   APIRoute,
-  Coupons
+  Coupons,
+  Sorts
 };
