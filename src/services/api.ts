@@ -1,6 +1,6 @@
 import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
 
-const BACKEND_URL = 'https://jsonplaceholder.typicode.com';
+const BACKEND_URL = 'https://guitar-shop.accelerator.pages.academy/';
 const REQUEST_TIMEOUT = 5000;
 
 enum HttpCode {

@@ -13,7 +13,7 @@ const initialState = {
   guitar: undefined,
   guitars: [],
   isDataLoaded: false,
-  activeSort: Sorts.byPopular,
+  activeSort: Sorts.byPrice,
 };
 
 function reducer(state: State = initialState, action: Actions): State {

@@ -17,7 +17,7 @@ const mapStateToProps = ({guitars, activeSort}: State) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
-  onChangeSort(sort: Sorts) {
+  onChangeSortType(sort: Sorts) {
     dispatch(changeSort(sort));
   },
 });
@@ -28,18 +28,18 @@ type PropsFromRedux = ConnectedProps<typeof connector>;
 
 type ConnectedComponentProps = PropsFromRedux;
 
-function CatalogScreen({guitars, activeSort, onChangeSort}:ConnectedComponentProps): JSX.Element {
+function CatalogScreen({guitars, activeSort, onChangeSortType}:ConnectedComponentProps): JSX.Element {
 
   const sorts = Object.values(Sorts) as Sorts[];
 
   const changeSortCallBack = useCallback((sortActive) => {
-    onChangeSort(sortActive);
-  }, [onChangeSort]);
+    onChangeSortType(sortActive);
+  }, [onChangeSortType]);
 
   return (
     <div className="catalog">
       <CatalogFilter />
-      <CatalogSort />
+      <CatalogSort sorts={sorts} activeSort={activeSort} onChangeSortType={changeSortCallBack}/>
       <GuitarList guitars={guitars}/>
       <Pagination />
     </div>

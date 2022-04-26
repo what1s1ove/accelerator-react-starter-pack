@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import {Guitar} from '../../types/guitar';
 import RatingStar from '../rating-star/rating-star';
 
@@ -18,7 +19,7 @@ function GuitarCard({guitar}:GuitarCardProps):JSX.Element {
         <p className="product-card__price"><span className="visually-hidden">Цена:</span>{guitar.price} ₽</p>
       </div>
       <div className="product-card__buttons">
-        <a className="button button--mini" href="#">Подробнее</a>
+        <Link className="button button--mini" to={`/guitars/${guitar.id}`}>Подробнее</Link>
         <a className="button button--red button--mini button--add-to-cart" href="#">Купить</a>
       </div>
     </div>
