@@ -10,6 +10,7 @@ import { ProductItem } from '../../components/product-item/product-item';
 import { Pagination } from '../../components/pagination/pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGuitars } from '../../store/guitars/selectors';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { fetchGuitarsList, fetchFilteredGuitarsList } from '../../store/guitars/api-actions';
 import { QueryParams } from '../../constants/query-params';
 import { SortingOrder, SortingType } from '../../constants/sorting';
@@ -27,14 +28,6 @@ export function Catalog(props: {
   const sortingType = useSelector(getSortingType);
   const sortingOrder = useSelector(getSortingOrder);
   const dispatch = useDispatch();
-
-  // eslint-disable-next-line no-console
-  console.log(sortingType);
-
-
-  useEffect(() => {
-    dispatch(fetchGuitarsList());
-  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchFilteredGuitarsList({

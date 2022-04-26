@@ -10,8 +10,8 @@ export function InputSearch(props: {
     attributes?: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 }) {
   const [isSearchListOpened, setIsSearchListOpened] = useState<boolean>(false);
-  const dispatch = useDispatch();
   const guitarsByName = useSelector(getGuitarsByName);
+  const dispatch = useDispatch();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.value) {

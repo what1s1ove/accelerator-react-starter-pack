@@ -7,8 +7,17 @@ import {
   Route
 } from 'react-router-dom';
 import styles from './app.module.css';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchGuitarsList } from '../../store/guitars/api-actions';
 
 function App(): JSX.Element {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchGuitarsList());
+  }, [dispatch]);
+
   return (
     <Router>
       <div className={styles.container}>

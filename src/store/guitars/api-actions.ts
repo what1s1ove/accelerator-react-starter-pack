@@ -26,5 +26,8 @@ export const fetchGuitarsListByName = (name: string): ThunkAction<Promise<void>,
       'name_like': name,
     },
   });
+
+  // eslint-disable-next-line no-console
+  console.log('response.data: ', response.data);
   dispatch(loadGuitarsByName(response.data));
 };
