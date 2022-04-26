@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { BaseSyntheticEvent, useCallback, useEffect } from 'react';
 import { H2 } from '../../components/h2/h2';
 import { Breadcrumbs } from '../../components/breadcrumbs/breadcrumbs';
 import { PriceFilter } from '../../components/price-filter/price-filter';
@@ -7,9 +8,15 @@ import { StringFilter } from '../../components/string-filter/string-filter';
 import { SortingFilter } from '../../components/sorting-filter/sorting-filter';
 import { ProductItem } from '../../components/product-item/product-item';
 import { Pagination } from '../../components/pagination/pagination';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getGuitars } from '../../store/guitars/selectors';
+import { fetchGuitarsList, fetchFilteredGuitarsList } from '../../store/guitars/api-actions';
+import { QueryParams } from '../../constants/query-params';
+import { SortingOrder, SortingType } from '../../constants/sorting';
 import styles from './catalog.module.css';
+import { IGuitar } from '../../types/IGuitars';
+import { getSortingOrder, getSortingType } from '../../store/filters/selectors';
+import { loadSortingOrder, loadSortingType } from '../../store/filters/action';
 
 const breadcrumbsItems = ['Главная', 'Каталог'];
 
@@ -17,6 +24,37 @@ export function Catalog(props: {
     className?: string
 }) {
   const guitars = useSelector(getGuitars);
+  const sortingType = useSelector(getSortingType);
+  const sortingOrder = useSelector(getSortingOrder);
+  const dispatch = useDispatch();
+
+  // eslint-disable-next-line no-console
+  console.log(sortingType);
+
+
+  useEffect(() => {
+    dispatch(fetchGuitarsList());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchFilteredGuitarsList({
+      [QueryParams.Sort]: sortingType,
+      [QueryParams.Order]: SortingOrder.Asc,
+    }));
+
+    dispatch(fetchFilteredGuitarsList({
+      [QueryParams.Sort]: sortingType || SortingType.Price,
+      [QueryParams.Order]: sortingOrder,
+    }));
+  }, [dispatch, sortingType, sortingOrder]);
+
+  const handleSortingTypeButtonClick = useCallback((evt: BaseSyntheticEvent) => {
+    dispatch(loadSortingType(evt.target.dataset.sort));
+  }, [dispatch]);
+
+  const handleSortingOrderButtonClick = useCallback((evt: BaseSyntheticEvent) => {
+    dispatch(loadSortingOrder(evt.target.dataset.order));
+  }, [dispatch]);
 
   return (
     <main className={cn(styles.content, props.className)}>
@@ -32,12 +70,19 @@ export function Catalog(props: {
             <StringFilter />
           </form>
 
-          <SortingFilter />
+          <SortingFilter
+            handleSortingButtonClick={handleSortingTypeButtonClick}
+            handleOrderButtonClick={handleSortingOrderButtonClick}
+            isButtonDownActive={sortingOrder === SortingOrder.Desc}
+            isButtonUpActive={sortingOrder === SortingOrder.Asc}
+            isButtonSortingPrice={sortingType === SortingType.Price}
+            isButtonSortingRating={sortingType === SortingType.Rating}
+          />
 
           <div className={cn(styles['catalog__cards'], styles['cards'])}>
             {
               guitars.length > 0 &&
-              guitars.map((guitar) => (
+              guitars.map((guitar: IGuitar) => (
                 <ProductItem
                   key={guitar.id}
                   name={guitar.name}

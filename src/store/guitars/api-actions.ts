@@ -4,9 +4,19 @@ import { RootState } from '../store';
 import { ThunkAction } from '@reduxjs/toolkit';
 import { Action } from 'redux';
 import { AxiosInstance } from 'axios';
+import { QueryParametersType } from '../../types/query-params';
 
 export const fetchGuitarsList = (): ThunkAction<Promise<void>, RootState, AxiosInstance, Action> => async (dispatch, _getState, api) => {
   const response = await api.get(`${process.env.REACT_APP_SERVER_URL}${ApiRoutes.Guitars}`);
+  dispatch(loadGuitars(response.data));
+};
+
+export const fetchFilteredGuitarsList = (params?: QueryParametersType): ThunkAction<Promise<void>, RootState, AxiosInstance, Action> => async (dispatch, _getState, api) => {
+  const response = await api.get(`${process.env.REACT_APP_SERVER_URL}${ApiRoutes.Guitars}`, {
+    params: {
+      ...params,
+    },
+  });
   dispatch(loadGuitars(response.data));
 };
 

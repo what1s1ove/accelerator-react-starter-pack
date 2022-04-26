@@ -1,9 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { axiosInstance } from '../api/api';
-import { rootReducer } from './root-reducer';
+import { filtersReducer } from './filters/reducer';
+import { guitarsReducer } from './guitars/reducer';
 
 export const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    guitars: guitarsReducer,
+    filters: filtersReducer,
+  },
 
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

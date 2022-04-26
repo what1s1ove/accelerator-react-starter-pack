@@ -1,4 +1,4 @@
-import { IGuitarsState } from '../../types/IGuitars';
+import { RootState } from '../store';
 
-export const getGuitars = (state: IGuitarsState) => state.guitars;
-export const getGuitarsByName = (state: IGuitarsState) => state.guitarsByName;
+export const getGuitars = (state: RootState) => state.guitars.guitars;
+export const getGuitarsByName = (state: RootState) => state.guitars.guitarsByName;

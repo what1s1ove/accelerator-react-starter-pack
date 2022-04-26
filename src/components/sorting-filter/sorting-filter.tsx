@@ -1,41 +1,74 @@
+import { BaseSyntheticEvent } from 'react';
 import cn from 'classnames';
-import styles from './sorting-filter.module.css';
+import { SortingOrder, SortingType } from '../../constants/sorting';
 
 export function SortingFilter(props: {
-    isButtonUpActive?: boolean
-    isButtonDownActive?: boolean
+    handleSortingButtonClick: (evt: BaseSyntheticEvent) => void
+    handleOrderButtonClick: (evt: BaseSyntheticEvent) => void
+    isButtonUpActive: boolean
+    isButtonDownActive: boolean
+    isButtonSortingPrice: boolean
+    isButtonSortingRating: boolean
 }) {
   return (
-    <div className={styles['catalog-sort']}>
-      <h4 className={styles['catalog-sort__title']}>Сортировать:</h4>
-      <div className={styles['catalog-sort__type']}>
-        <button className={styles['catalog-sort__type-button']} aria-label="по цене" tabIndex={-1}>по цене</button>
-        <button className={styles['catalog-sort__type-button']} aria-label="по популярности">по популярности</button>
-      </div>
-      <div className={styles['catalog-sort__order']}>
+    <div className='catalog-sort'>
+      <h4 className='catalog-sort__title'>Сортировать:</h4>
+      <div className='catalog-sort__type'>
         <button
           className={
-            cn(
-              styles['catalog-sort__order-button'],
-              styles['catalog-sort__order-button--up'],
+            cn('catalog-sort__type-button',
               {
-                [styles['catalog-sort__order-button--active']]: props.isButtonUpActive,
+                'catalog-sort__type-button--active': props.isButtonSortingPrice,
+              },
+            )
+          }
+          aria-label="по цене"
+          tabIndex={-1}
+          data-sort={SortingType.Price}
+          onClick={props.handleSortingButtonClick}
+        >
+          по цене
+        </button>
+        <button
+          className={
+            cn('catalog-sort__type-button',
+              {
+                'catalog-sort__type-button--active': props.isButtonSortingRating,
+              },
+            )
+          }
+          aria-label="по популярности"
+          data-sort={SortingType.Rating}
+          onClick={props.handleSortingButtonClick}
+        >
+          по популярности
+        </button>
+      </div>
+      <div className='catalog-sort__order'>
+        <button
+          className={
+            cn('catalog-sort__order-button catalog-sort__order-button--up',
+              {
+                'catalog-sort__order-button--active': props.isButtonUpActive,
               },
             )
           }
           aria-label="По возрастанию"
+          data-order={SortingOrder.Asc}
+          onClick={props.handleOrderButtonClick}
         />
         <button
           className={
             cn(
-              styles['catalog-sort__order-button'],
-              styles['catalog-sort__order-button--down'],
+              'catalog-sort__order-button catalog-sort__order-button--down',
               {
-                [styles['catalog-sort__order-button--active']]: props.isButtonDownActive,
+                'catalog-sort__order-button--active': props.isButtonDownActive,
               },
             )
           }
           aria-label="По убыванию"
+          data-order={SortingOrder.Desc}
+          onClick={props.handleOrderButtonClick}
         />
       </div>
     </div>
