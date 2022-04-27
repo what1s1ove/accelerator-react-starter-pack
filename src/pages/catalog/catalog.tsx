@@ -3,21 +3,20 @@ import { BaseSyntheticEvent, useCallback, useEffect } from 'react';
 import { H2 } from '../../components/h2/h2';
 import { Breadcrumbs } from '../../components/breadcrumbs/breadcrumbs';
 import { PriceFilter } from '../../components/price-filter/price-filter';
-import { GuitarFilter } from '../../components/guitar-filter/guitar-filter';
+import { GuitarTypeFilter } from '../../components/guitar-type-filter/guitar-type-filter';
 import { StringFilter } from '../../components/string-filter/string-filter';
 import { SortingFilter } from '../../components/sorting-filter/sorting-filter';
 import { ProductItem } from '../../components/product-item/product-item';
 import { Pagination } from '../../components/pagination/pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGuitars } from '../../store/guitars/selectors';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { fetchGuitarsList, fetchFilteredGuitarsList } from '../../store/guitars/api-actions';
+import { fetchFilteredGuitarsList } from '../../store/guitars/api-actions';
 import { QueryParams } from '../../constants/query-params';
 import { SortingOrder, SortingType } from '../../constants/sorting';
 import styles from './catalog.module.css';
 import { IGuitar } from '../../types/IGuitars';
-import { getSortingOrder, getSortingType } from '../../store/filters/selectors';
-import { loadSortingOrder, loadSortingType } from '../../store/filters/action';
+import { getGuitarType, getQuantityOfStrings, getSortingOrder, getSortingType } from '../../store/filters/selectors';
+import { loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from '../../store/filters/action';
 
 const breadcrumbsItems = ['Главная', 'Каталог'];
 
@@ -27,19 +26,16 @@ export function Catalog(props: {
   const guitars = useSelector(getGuitars);
   const sortingType = useSelector(getSortingType);
   const sortingOrder = useSelector(getSortingOrder);
+  const quantityOfStrings = useSelector(getQuantityOfStrings);
+  const guitarType = useSelector(getGuitarType);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchFilteredGuitarsList({
-      [QueryParams.Sort]: sortingType,
-      [QueryParams.Order]: SortingOrder.Asc,
-    }));
-
-    dispatch(fetchFilteredGuitarsList({
       [QueryParams.Sort]: sortingType || SortingType.Price,
-      [QueryParams.Order]: sortingOrder,
+      [QueryParams.Order]: sortingOrder || SortingOrder.Asc,
     }));
-  }, [dispatch, sortingType, sortingOrder]);
+  }, [dispatch, sortingType, sortingOrder, quantityOfStrings, guitarType]);
 
   const handleSortingTypeButtonClick = useCallback((evt: BaseSyntheticEvent) => {
     dispatch(loadSortingType(evt.target.dataset.sort));
@@ -47,6 +43,22 @@ export function Catalog(props: {
 
   const handleSortingOrderButtonClick = useCallback((evt: BaseSyntheticEvent) => {
     dispatch(loadSortingOrder(evt.target.dataset.order));
+  }, [dispatch]);
+
+  const handleGuitarTypeChange = useCallback((evt: BaseSyntheticEvent) => {
+    if (evt.target.checked) {
+      dispatch(loadGuitarType(evt.target.dataset.type));
+    } else {
+      dispatch(removeGuitarType(evt.target.dataset.type));
+    }
+  }, [dispatch]);
+
+  const handleStringQuantityChange = useCallback((evt: BaseSyntheticEvent) => {
+    if (evt.target.checked) {
+      dispatch(loadQuantityOfStrings(evt.target.dataset.strings));
+    } else {
+      dispatch(removeQuantityOfStrings(evt.target.dataset.strings));
+    }
   }, [dispatch]);
 
   return (
@@ -59,8 +71,8 @@ export function Catalog(props: {
           <form className={styles['catalog-filter']}>
             <H2 className={styles['catalog__filter']} title="Фильтр" />
             <PriceFilter />
-            <GuitarFilter />
-            <StringFilter />
+            <GuitarTypeFilter onChange={handleGuitarTypeChange} />
+            <StringFilter onChange={handleStringQuantityChange} />
           </form>
 
           <SortingFilter

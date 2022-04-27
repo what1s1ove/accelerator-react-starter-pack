@@ -14,6 +14,8 @@ export const fetchGuitarsList = (): ThunkAction<Promise<void>, RootState, AxiosI
 export const fetchFilteredGuitarsList = (params?: QueryParametersType): ThunkAction<Promise<void>, RootState, AxiosInstance, Action> => async (dispatch, _getState, api) => {
   const response = await api.get(`${process.env.REACT_APP_SERVER_URL}${ApiRoutes.Guitars}`, {
     params: {
+      'stringCount': _getState().filters.quantityOfStrings,
+      'type': _getState().filters.guitarType,
       ...params,
     },
   });
@@ -27,7 +29,5 @@ export const fetchGuitarsListByName = (name: string): ThunkAction<Promise<void>,
     },
   });
 
-  // eslint-disable-next-line no-console
-  console.log('response.data: ', response.data);
   dispatch(loadGuitarsByName(response.data));
 };
