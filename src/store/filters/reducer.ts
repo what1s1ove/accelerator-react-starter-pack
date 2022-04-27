@@ -1,13 +1,13 @@
-/* eslint-disable no-console */
 import { createReducer } from '@reduxjs/toolkit';
 import { IFilters } from '../../types/IFilters';
-import { loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from './action';
+import { loadGuitarsPriceRange, loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from './action';
 
 const initialState: IFilters = {
   sortingOrder: '',
   sortingType: '',
   quantityOfStrings: [],
   guitarType: [],
+  priceRange: {min: 0, max: 0},
 };
 
 export const filtersReducer = createReducer(initialState, (builer) => {
@@ -29,5 +29,8 @@ export const filtersReducer = createReducer(initialState, (builer) => {
     })
     .addCase(removeGuitarType, (state, action) => {
       state.guitarType = state.guitarType.filter((item) => item !== action.payload);
+    })
+    .addCase(loadGuitarsPriceRange, (state, action) => {
+      state.priceRange = {...action.payload};
     });
 });

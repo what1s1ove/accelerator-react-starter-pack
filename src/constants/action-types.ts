@@ -7,4 +7,5 @@ export const ActionTypes = {
   REMOVE_QUANTITY_OF_STRINGS: 'Remove quantity of strings',
   LOAD_GUITAR_TYPE: 'Load guitar type',
   REMOVE_GUITAR_TYPE: 'Remove guitar type',
+  LOAD_PRICE_RANGE: 'Load price range',
 };

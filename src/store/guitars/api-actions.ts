@@ -16,6 +16,8 @@ export const fetchFilteredGuitarsList = (params?: QueryParametersType): ThunkAct
     params: {
       'stringCount': _getState().filters.quantityOfStrings,
       'type': _getState().filters.guitarType,
+      'price_gte': _getState().filters.priceRange.min || null,
+      'price_lte': _getState().filters.priceRange.max || null,
       ...params,
     },
   });

@@ -15,27 +15,28 @@ import { QueryParams } from '../../constants/query-params';
 import { SortingOrder, SortingType } from '../../constants/sorting';
 import styles from './catalog.module.css';
 import { IGuitar } from '../../types/IGuitars';
-import { getGuitarType, getQuantityOfStrings, getSortingOrder, getSortingType } from '../../store/filters/selectors';
-import { loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from '../../store/filters/action';
+import { getGuitarType, getPriceRange, getQuantityOfStrings, getSortingOrder, getSortingType } from '../../store/filters/selectors';
+import { loadGuitarsPriceRange, loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from '../../store/filters/action';
 
 const breadcrumbsItems = ['Главная', 'Каталог'];
 
 export function Catalog(props: {
     className?: string
 }) {
+  const dispatch = useDispatch();
   const guitars = useSelector(getGuitars);
   const sortingType = useSelector(getSortingType);
   const sortingOrder = useSelector(getSortingOrder);
   const quantityOfStrings = useSelector(getQuantityOfStrings);
   const guitarType = useSelector(getGuitarType);
-  const dispatch = useDispatch();
+  const guitarsPriceRange = useSelector(getPriceRange);
 
   useEffect(() => {
     dispatch(fetchFilteredGuitarsList({
       [QueryParams.Sort]: sortingType || SortingType.Price,
       [QueryParams.Order]: sortingOrder || SortingOrder.Asc,
     }));
-  }, [dispatch, sortingType, sortingOrder, quantityOfStrings, guitarType]);
+  }, [dispatch, sortingType, sortingOrder, quantityOfStrings, guitarType, guitarsPriceRange]);
 
   const handleSortingTypeButtonClick = useCallback((evt: BaseSyntheticEvent) => {
     dispatch(loadSortingType(evt.target.dataset.sort));
@@ -61,6 +62,22 @@ export function Catalog(props: {
     }
   }, [dispatch]);
 
+  const handleMinPriceChange = useCallback((evt: BaseSyntheticEvent) => {
+    const value = evt.target.value;
+
+    dispatch(loadGuitarsPriceRange({
+      min: +value,
+    }));
+  }, [dispatch]);
+
+  const handleMaxPriceChange = useCallback((evt: BaseSyntheticEvent) => {
+    const value = evt.target.value;
+
+    dispatch(loadGuitarsPriceRange({
+      max: +value,
+    }));
+  }, [dispatch]);
+
   return (
     <main className={cn(styles.content, props.className)}>
       <div className={styles['content__container']}>
@@ -70,7 +87,7 @@ export function Catalog(props: {
         <div className={styles.catalog}>
           <form className={styles['catalog-filter']}>
             <H2 className={styles['catalog__filter']} title="Фильтр" />
-            <PriceFilter />
+            <PriceFilter handleMinPriceChange={handleMinPriceChange} handleMaxPriceChange={handleMaxPriceChange} />
             <GuitarTypeFilter onChange={handleGuitarTypeChange} />
             <StringFilter onChange={handleStringQuantityChange} />
           </form>

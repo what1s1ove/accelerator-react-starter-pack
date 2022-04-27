@@ -1,5 +1,6 @@
 import { createAction } from '@reduxjs/toolkit';
 import { ActionTypes } from '../../constants/action-types';
+import { IPriceRange } from '../../types/IFilters';
 
 export const loadSortingType = createAction(ActionTypes.LOAD_SORTING_TYPE, (sortingType: string) => ({
   payload: sortingType,
@@ -23,4 +24,8 @@ export const loadGuitarType = createAction(ActionTypes.LOAD_GUITAR_TYPE, (guitar
 
 export const removeGuitarType = createAction(ActionTypes.REMOVE_GUITAR_TYPE, (guitarType: string) => ({
   payload: guitarType,
+}));
+
+export const loadGuitarsPriceRange = createAction(ActionTypes.LOAD_PRICE_RANGE, (priceRange: IPriceRange) => ({
+  payload: priceRange,
 }));
