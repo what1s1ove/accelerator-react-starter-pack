@@ -4,19 +4,20 @@ import { Logo } from '../logo/logo';
 import { Basket } from '../basket/basket';
 import { Link } from 'react-router-dom';
 import styles from './header.module.css';
+import { AppRoutes } from '../../constants/app-routes';
 
 const LINKS = [
   {
     title: 'Каталог',
-    link: '/catalog',
+    link: AppRoutes.getCatalog('1'),
   },
   {
     title: 'Где купить?',
-    link: '/address',
+    link: AppRoutes.Address,
   },
   {
     title: 'О компании',
-    link: '/about',
+    link: AppRoutes.About,
   },
 ];
 
