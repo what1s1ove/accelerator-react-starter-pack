@@ -7,34 +7,19 @@ import {
   Route
 } from 'react-router-dom';
 import styles from './app.module.css';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { fetchGuitarsList } from '../../store/guitars/api-actions';
+import { AppRoutes } from '../../constants/app-routes';
+import {NotImplemented} from '../../components/not-implemented/not-implemented';
 
 function App(): JSX.Element {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchGuitarsList());
-  }, [dispatch]);
-
   return (
     <Router>
       <div className={styles.container}>
         <Header />
         <Switch>
-          <Route path="/catalog">
-            <Catalog />
-          </Route>
-          <Route path="/address">
-            <div className="not-implemented">Address page is not implemented</div>
-          </Route>
-          <Route path="/about">
-            <div className="not-implemented">About page is not implemented</div>
-          </Route>
-          <Route path="/">
-            <div className="not-implemented">Main page is not implemented</div>
-          </Route>
+          <Route path={`${AppRoutes.getCatalog()}`} component={Catalog} />
+          <Route path={AppRoutes.Address} component={NotImplemented} />
+          <Route path={AppRoutes.About} component={NotImplemented} />
+          <Route path={AppRoutes.Home} component={NotImplemented} />
         </Switch>
         <Footer />
       </div>
