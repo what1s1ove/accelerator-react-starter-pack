@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import cn from 'classnames';
 import { BaseSyntheticEvent, useCallback, useEffect } from 'react';
 import { H2 } from '../../components/h2/h2';
@@ -9,7 +10,7 @@ import { SortingFilter } from '../../components/sorting-filter/sorting-filter';
 import { ProductItem } from '../../components/product-item/product-item';
 import { Pagination } from '../../components/pagination/pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { getGuitars } from '../../store/guitars/selectors';
+import { getFilteredGuitars } from '../../store/guitars/selectors';
 import { fetchFilteredGuitarsList } from '../../store/guitars/api-actions';
 import { QueryParams } from '../../constants/query-params';
 import { SortingOrder, SortingType } from '../../constants/sorting';
@@ -17,26 +18,36 @@ import styles from './catalog.module.css';
 import { IGuitar } from '../../types/IGuitars';
 import { getGuitarType, getPriceRange, getQuantityOfStrings, getSortingOrder, getSortingType } from '../../store/filters/selectors';
 import { loadGuitarsPriceRange, loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from '../../store/filters/action';
+import { getCurrentPage } from '../../store/pagination/selectors';
+import { useParams } from 'react-router-dom';
+import { loadCurrentPage } from '../../store/pagination/action';
 
 const breadcrumbsItems = ['Главная', 'Каталог'];
+type PageNumber = {page: string}
 
 export function Catalog(props: {
     className?: string
 }) {
   const dispatch = useDispatch();
-  const guitars = useSelector(getGuitars);
+  const guitars = useSelector(getFilteredGuitars);
   const sortingType = useSelector(getSortingType);
   const sortingOrder = useSelector(getSortingOrder);
   const quantityOfStrings = useSelector(getQuantityOfStrings);
   const guitarType = useSelector(getGuitarType);
   const guitarsPriceRange = useSelector(getPriceRange);
+  const currentPage = useSelector(getCurrentPage);
+  const {page} = useParams<PageNumber>();
 
   useEffect(() => {
     dispatch(fetchFilteredGuitarsList({
       [QueryParams.Sort]: sortingType || SortingType.Price,
       [QueryParams.Order]: sortingOrder || SortingOrder.Asc,
     }));
-  }, [dispatch, sortingType, sortingOrder, quantityOfStrings, guitarType, guitarsPriceRange]);
+  }, [dispatch, sortingType, sortingOrder, quantityOfStrings, guitarType, guitarsPriceRange, currentPage]);
+
+  useEffect(() => {
+    dispatch(loadCurrentPage(Number(page)));
+  }, [dispatch, page]);
 
   const handleSortingTypeButtonClick = useCallback((evt: BaseSyntheticEvent) => {
     dispatch(loadSortingType(evt.target.dataset.sort));
@@ -108,14 +119,14 @@ export function Catalog(props: {
                 <ProductItem
                   key={guitar.id}
                   name={guitar.name}
-                  previewImg={guitar.previewImg}
+                  previewImg={`/${guitar.previewImg}`}
                   price={guitar.price}
                   rating={guitar.rating}
                 />))
             }
           </div>
 
-          <Pagination className={cn(styles['page-content__pagination'], styles['pagination'])} />
+          <Pagination />
         </div>
       </div>
     </main>
