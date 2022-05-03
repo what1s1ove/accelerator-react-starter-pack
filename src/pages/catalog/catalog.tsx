@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { BaseSyntheticEvent, useCallback, useEffect } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
 import { H2 } from '../../components/h2/h2';
 import { Breadcrumbs } from '../../components/breadcrumbs/breadcrumbs';
 import { PriceFilter } from '../../components/price-filter/price-filter';
@@ -18,7 +18,7 @@ import { IGuitar } from '../../types/IGuitars';
 import { getGuitarType, getPriceRange, getQuantityOfStrings, getSortingOrder, getSortingType } from '../../store/filters/selectors';
 import { loadGuitarsPriceRange, loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from '../../store/filters/action';
 import { getCurrentPage } from '../../store/pagination/selectors';
-import { useParams } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { loadCurrentPage } from '../../store/pagination/action';
 
 const breadcrumbsItems = ['Главная', 'Каталог'];
@@ -36,6 +36,9 @@ export function Catalog(props: {
   const guitarsPriceRange = useSelector(getPriceRange);
   const currentPage = useSelector(getCurrentPage);
   const {page} = useParams<PageNumber>();
+  const {search, pathname} = useLocation();
+  const history = useHistory();
+  const urlSearchParams = useMemo(() => new URLSearchParams(search), [search]);
 
   useEffect(() => {
     dispatch(fetchFilteredGuitarsList({
@@ -47,6 +50,28 @@ export function Catalog(props: {
   useEffect(() => {
     dispatch(loadCurrentPage(Number(page)));
   }, [dispatch, page]);
+
+  useEffect(() => {
+    urlSearchParams.delete(QueryParams.Type);
+    guitarType.forEach((type) => urlSearchParams.append(QueryParams.Type, type));
+
+    urlSearchParams.delete(QueryParams.StringCount);
+    quantityOfStrings.forEach((stringCount) => urlSearchParams.append(QueryParams.StringCount, stringCount));
+
+    if (guitarsPriceRange.min === 0) {
+      urlSearchParams.delete(QueryParams.Price_Gte);
+    } else {
+      guitarsPriceRange.min && urlSearchParams.set(QueryParams.Price_Gte, guitarsPriceRange.min.toString());
+    }
+
+    if (guitarsPriceRange.max === 0) {
+      urlSearchParams.delete(QueryParams.Price_Lte);
+    } else {
+      guitarsPriceRange.max && urlSearchParams.set(QueryParams.Price_Lte, guitarsPriceRange.max.toString());
+    }
+
+    history.push(`${pathname}?${urlSearchParams}`);
+  }, [guitarsPriceRange, guitarType, quantityOfStrings, history, pathname, search, urlSearchParams]);
 
   const handleSortingTypeButtonClick = useCallback((evt: BaseSyntheticEvent) => {
     dispatch(loadSortingType(evt.target.dataset.sort));
@@ -113,8 +138,7 @@ export function Catalog(props: {
 
           <div className={cn(styles['catalog__cards'], styles['cards'])}>
             {
-              guitars.length > 0 &&
-              guitars.map((guitar: IGuitar) => (
+              guitars && guitars.map((guitar: IGuitar) => (
                 <ProductItem
                   key={guitar.id}
                   name={guitar.name}
@@ -124,6 +148,9 @@ export function Catalog(props: {
                   alt={guitar.name}
                   comments={guitar.comments}
                 />))
+            }
+            {
+              guitars.length === 0 && <div>No guitars found</div>
             }
           </div>
 

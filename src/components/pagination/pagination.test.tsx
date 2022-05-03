@@ -19,6 +19,7 @@ describe('Pagination component', () => {
         </BrowserRouter>
       </Provider>,
     );
-    expect(screen.getByTestId('pagination')).toBeEmptyDOMElement();
+
+    expect(screen.getByText('1')).toBeInTheDocument();
   });
 });

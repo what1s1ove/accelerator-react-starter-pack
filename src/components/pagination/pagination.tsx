@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -11,9 +12,13 @@ export function Pagination(props: {
   const totalPageCount = useSelector(getTotalPageCount);
   const pageNumbersArray = Array.from({length: totalPageCount as number}, (_, index: number) => index + 1);
 
+  // console.log('currentPage: ', currentPage);
+  // console.log('totalPageCount: ', totalPageCount);
+  // console.log('pageNumbersArray: ', pageNumbersArray);
+
   return (
     <div className={cn('pagination page-content__pagination', props.className)} data-testid="pagination">
-      {Boolean(totalPageCount - currentPage) &&
+      {
         <ul className='pagination__list'>
           {currentPage !== 1 &&
             <li className='pagination__page pagination__page--prev'>
@@ -27,11 +32,12 @@ export function Pagination(props: {
               </Link>
             </li>))}
 
-          {currentPage !== totalPageCount &&
+          {currentPage !== totalPageCount && pageNumbersArray.length !== 0 &&
             <li className='pagination__page pagination__page--next'>
               <Link className='link pagination__page-link' to={`${AppRoutes.getCatalog((currentPage + 1).toString())}`}>Далее</Link>
             </li>}
-        </ul>}
+        </ul>
+      }
     </div>
   );
 }
