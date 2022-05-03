@@ -1,17 +1,18 @@
-import { Link } from 'react-router-dom';
+import cn from 'classnames';
 import { Button } from '../button/button';
 import { Rating } from '../rating/rating';
-import styles from './product-item.module.css';
 
 export function ProductItem(props: {
+  className?: string,
   price: number,
   name: string,
   previewImg: string,
   rating: number,
+  alt: string
 }) {
   return (
-    <div className={styles['product-card']}>
-      <img src={props.previewImg} width="75" height="190" alt="СURT Z30 Plus Acoustics" />
+    <div className={cn('product-card', props.className)}>
+      <img src={props.previewImg} width="75" height="190" alt={props.alt} />
       <div className="product-card__info">
         <div className="rate product-card__rate">
           <Rating rating={props.rating} />
@@ -20,13 +21,9 @@ export function ProductItem(props: {
         <p className="product-card__title">{props.name}</p>
         <p className="product-card__price">{props.price} ₽</p>
       </div>
-      <div className={styles['product-card__buttons']}>
-        <Link to="/">
-          <Button isSmallButton title="Подробнее" type="more" />
-        </Link>
-        <Link to="/">
-          <Button isSmallButton title="Купить" type="buy" />
-        </Link>
+      <div className="product-card__buttons">
+        <Button isMiniButton title="Подробнее" type="more" />
+        <Button isMiniButton title="Купить" type="buy" />
       </div>
     </div>
   );

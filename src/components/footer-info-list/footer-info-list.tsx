@@ -1,5 +1,3 @@
-import styles from './footer-info-list.module.css';
-
 const items = [
   {title: 'Где купить?'},
   {title: 'Блог'},
@@ -10,10 +8,10 @@ const items = [
 
 export function FooterInfoList() {
   return (
-    <ul className={styles.container}>
+    <ul className="footer__nav-list">
       {items.map((item) => (
-        <li className={styles['list__item']} key={item.title}>
-          <a className={styles.link} href="/">
+        <li className="footer__nav-list-item" key={item.title}>
+          <a className="link" href="/">
             {item.title}
           </a>
         </li>

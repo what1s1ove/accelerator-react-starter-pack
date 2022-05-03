@@ -3,7 +3,7 @@ import { IPagination } from '../../types/IPagination';
 import { loadFilteredGuitars } from '../guitars/action';
 import { loadTotalPageCount, loadCurrentPage } from './action';
 
-const initialState: IPagination = {
+export const initialState: IPagination = {
   currentPage: 1,
   totalPageCount: 1,
 };

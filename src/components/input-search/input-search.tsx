@@ -34,6 +34,7 @@ export function InputSearch(props: {
           className="form-search__input"
           onChange={handleInputChange}
           placeholder="что вы ищите?"
+          data-testid="search-guitars"
 
           {...props.attributes}
         />

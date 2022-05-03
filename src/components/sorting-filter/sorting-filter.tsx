@@ -17,6 +17,7 @@ export function SortingFilter(props: {
         <button
           className={
             cn('catalog-sort__type-button',
+              'class',
               {
                 'catalog-sort__type-button--active': props.isButtonSortingPrice,
               },
@@ -26,6 +27,7 @@ export function SortingFilter(props: {
           tabIndex={-1}
           data-sort={SortingType.Price}
           onClick={props.handleSortingButtonClick}
+          data-testid="price-sorting"
         >
           по цене
         </button>

@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { loadFilteredGuitars, loadGuitars, loadGuitarsByName } from './action';
 import { IGuitarsState } from '../../types/IGuitars';
 
-const initialState: IGuitarsState = {
+export const initialState: IGuitarsState = {
   guitars: [],
   filteredGuitars: [],
   guitarsByName: [],

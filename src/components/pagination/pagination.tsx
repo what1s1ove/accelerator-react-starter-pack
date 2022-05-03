@@ -12,7 +12,7 @@ export function Pagination(props: {
   const pageNumbersArray = Array.from({length: totalPageCount as number}, (_, index: number) => index + 1);
 
   return (
-    <div className={cn('pagination page-content__pagination', props.className)}>
+    <div className={cn('pagination page-content__pagination', props.className)} data-testid="pagination">
       {Boolean(totalPageCount - currentPage) &&
         <ul className='pagination__list'>
           {currentPage !== 1 &&

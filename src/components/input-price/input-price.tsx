@@ -1,15 +1,23 @@
 import { ChangeEventHandler } from 'react';
-import styles from './input-price.module.css';
 
 export function InputPrice(props: {
     id: string
     name: string
     placeholder: string
     onChange: ChangeEventHandler<HTMLInputElement>
+    label: string
 }) {
   return (
-    <div className={styles['form-input']}>
-      <input type="number" placeholder={props.placeholder} id={props.id} name={props.name} onChange={props.onChange} />
+    <div className="form-input">
+      <label className="visually-hidden">{props.label}</label>
+      <input
+        type="number"
+        placeholder={props.placeholder}
+        id={props.id}
+        name={props.name}
+        onChange={props.onChange}
+        data-testid="price-input"
+      />
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { IFilters } from '../../types/IFilters';
 import { loadGuitarsPriceRange, loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from './action';
 
-const initialState: IFilters = {
+export const initialState: IFilters = {
   sortingOrder: '',
   sortingType: '',
   quantityOfStrings: [],
@@ -10,8 +10,8 @@ const initialState: IFilters = {
   priceRange: {min: 0, max: 0},
 };
 
-export const filtersReducer = createReducer(initialState, (builer) => {
-  builer
+export const filtersReducer = createReducer(initialState, (builder) => {
+  builder
     .addCase(loadSortingType, (state, action) => {
       state.sortingType = action.payload;
     })

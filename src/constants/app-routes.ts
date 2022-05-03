@@ -3,4 +3,5 @@ export const AppRoutes = {
   Address: '/address',
   getCatalog: (pageNumber = ':page') => `/catalog/page_${pageNumber}`,
   Home: '/',
+  Basket: '/basket',
 };

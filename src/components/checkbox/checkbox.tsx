@@ -1,6 +1,5 @@
 import cn from 'classnames';
 import { ChangeEventHandler, DetailedHTMLProps, InputHTMLAttributes } from 'react';
-import styles from './checkbox.module.css';
 
 export function Checkbox(props: {
     className?: string
@@ -9,10 +8,20 @@ export function Checkbox(props: {
     onChange: ChangeEventHandler<HTMLInputElement>
     strings?: number
     type?: string
+    // testId?: string
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>) {
   return (
-    <div className={cn(styles['form-checkbox'], props.className)}>
-      <input className={styles['visually-hidden']} onChange={props.onChange} type="checkbox" id={props.id} name={props.id} data-strings={props.strings} data-type={props.type} />
+    <div className={cn('form-checkbox', props.className)}>
+      <input
+        className="visually-hidden"
+        onChange={props.onChange}
+        type="checkbox"
+        id={props.id}
+        name={props.id}
+        data-strings={props.strings}
+        data-type={props.type}
+        data-testid="checkbox-test"
+      />
       <label htmlFor={props.id}>{props.label}</label>
     </div>
   );

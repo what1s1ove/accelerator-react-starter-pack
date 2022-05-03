@@ -1,9 +1,0 @@
-.socials__list {
-    display: flex;
-    flex-wrap: wrap;
-    margin-left: -20px;
-}
-
-.socials__item {
-    margin-left: 20px;
-}

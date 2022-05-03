@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import cn from 'classnames';
 import { BaseSyntheticEvent, useCallback, useEffect } from 'react';
 import { H2 } from '../../components/h2/h2';
@@ -90,8 +89,8 @@ export function Catalog(props: {
   }, [dispatch]);
 
   return (
-    <main className={cn(styles.content, props.className)}>
-      <div className={styles['content__container']}>
+    <main className={cn('page-content', props.className)}>
+      <div className="container">
         <H2 title="Каталог гитар" />
         <Breadcrumbs className={styles.breadcrumbs} items={breadcrumbsItems} />
 
@@ -122,6 +121,7 @@ export function Catalog(props: {
                   previewImg={`/${guitar.previewImg}`}
                   price={guitar.price}
                   rating={guitar.rating}
+                  alt={guitar.name}
                 />))
             }
           </div>
