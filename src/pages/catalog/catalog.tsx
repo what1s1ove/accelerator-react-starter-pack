@@ -138,7 +138,7 @@ export function Catalog(props: {
 
           <div className={cn(styles['catalog__cards'], styles['cards'])}>
             {
-              guitars && guitars.map((guitar: IGuitar) => (
+              guitars.length > 0 && guitars.map((guitar: IGuitar) => (
                 <ProductItem
                   key={guitar.id}
                   name={guitar.name}
