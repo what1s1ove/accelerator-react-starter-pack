@@ -1,0 +1,6 @@
+.container {
+  display: grid;
+  margin: 0 auto;
+  justify-content: center;
+  align-content: center;
+}
