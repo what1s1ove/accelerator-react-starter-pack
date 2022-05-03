@@ -9,6 +9,7 @@ import { QueryParams } from '../../constants/query-params';
 
 const GUITARS_PER_PAGE = 9;
 const TotalCountHeader = 'x-total-count';
+const EmbedComments = 'comments';
 
 export const fetchGuitarsList = (): ThunkAction<Promise<void>, RootState, AxiosInstance, Action> => async (dispatch, _getState, api) => {
   const response = await api.get(`${process.env.REACT_APP_SERVER_URL}${ApiRoutes.Guitars}`);
@@ -24,6 +25,7 @@ export const fetchFilteredGuitarsList = (params?: QueryParametersType): ThunkAct
       [QueryParams.Price_Lte]: _getState().filters.priceRange.max || null,
       [QueryParams.Limit]: GUITARS_PER_PAGE,
       [QueryParams.Start]: GUITARS_PER_PAGE * (_getState().pagination.currentPage - 1),
+      [QueryParams.Embed]: EmbedComments,
       ...params,
     },
   });

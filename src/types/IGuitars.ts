@@ -1,3 +1,5 @@
+import { IComment } from './IComment';
+
 export interface IGuitar {
   id: number
   name: string
@@ -8,6 +10,7 @@ export interface IGuitar {
   stringCount: number
   rating: number
   price: number
+  comments?: Array<IComment>
 }
 
 export interface IGuitarsState {

@@ -1,4 +1,5 @@
 import cn from 'classnames';
+import { IComment } from '../../types/IComment';
 import { Button } from '../button/button';
 import { Rating } from '../rating/rating';
 
@@ -9,6 +10,7 @@ export function ProductItem(props: {
   previewImg: string,
   rating: number,
   alt: string
+  comments?: Array<IComment>
 }) {
   return (
     <div className={cn('product-card', props.className)}>
@@ -16,7 +18,7 @@ export function ProductItem(props: {
       <div className="product-card__info">
         <div className="rate product-card__rate">
           <Rating rating={props.rating} />
-          <span className="rate__count">9</span><span className="rate__message"></span>
+          <span className="rate__count">{props.comments?.length}</span><span className="rate__message"></span>
         </div>
         <p className="product-card__title">{props.name}</p>
         <p className="product-card__price">{props.price} ₽</p>

@@ -8,4 +8,5 @@ export enum QueryParams {
   Limit = '_limit',
   Start = '_start',
   NameLike = 'name_like',
+  Embed = '_embed'
 }

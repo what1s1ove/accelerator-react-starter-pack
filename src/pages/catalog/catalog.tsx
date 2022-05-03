@@ -122,6 +122,7 @@ export function Catalog(props: {
                   price={guitar.price}
                   rating={guitar.rating}
                   alt={guitar.name}
+                  comments={guitar.comments}
                 />))
             }
           </div>
