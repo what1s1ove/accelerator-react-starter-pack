@@ -1,7 +1,7 @@
 import { IComment } from './IComment';
 
 export interface IGuitar {
-  id: number
+  id: string
   name: string
   vendorCode: string
   type: string

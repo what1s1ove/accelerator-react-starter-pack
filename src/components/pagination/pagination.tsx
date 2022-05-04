@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import cn from 'classnames';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -11,10 +10,6 @@ export function Pagination(props: {
   const currentPage = useSelector(getCurrentPage);
   const totalPageCount = useSelector(getTotalPageCount);
   const pageNumbersArray = Array.from({length: totalPageCount as number}, (_, index: number) => index + 1);
-
-  // console.log('currentPage: ', currentPage);
-  // console.log('totalPageCount: ', totalPageCount);
-  // console.log('pageNumbersArray: ', pageNumbersArray);
 
   return (
     <div className={cn('pagination page-content__pagination', props.className)} data-testid="pagination">
