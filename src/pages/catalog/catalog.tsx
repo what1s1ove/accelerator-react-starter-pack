@@ -22,7 +22,7 @@ import {
 } from '../../store/filters/slice';
 import { getCurrentPage } from '../../store/pagination/selectors';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
-import { loadCurrentPage } from '../../store/pagination/action';
+import { loadCurrentPage } from '../../store/pagination/slice';
 
 const breadcrumbsItems = ['Главная', 'Каталог'];
 type PageNumber = {page: string}

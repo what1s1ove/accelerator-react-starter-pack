@@ -1,5 +1,4 @@
-import { loadCurrentPage, loadTotalPageCount } from './action';
-import { initialState, paginationReducer } from './reducer';
+import paginationReducer,{ initialState, loadCurrentPage, loadTotalPageCount } from './slice';
 
 const CURRENT_PAGE = 1;
 const TOTAL_PAGE_COUNT = 10;
