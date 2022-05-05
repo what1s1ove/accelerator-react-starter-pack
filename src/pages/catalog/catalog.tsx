@@ -16,7 +16,10 @@ import { SortingOrder, SortingType } from '../../constants/sorting';
 import styles from './catalog.module.css';
 import { IGuitar } from '../../types/IGuitars';
 import { getGuitarType, getPriceRange, getQuantityOfStrings, getSortingOrder, getSortingType } from '../../store/filters/selectors';
-import { loadGuitarsPriceRange, loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from '../../store/filters/action';
+import {
+  loadGuitarsPriceRange, loadGuitarType, loadQuantityOfStrings,
+  loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings
+} from '../../store/filters/slice';
 import { getCurrentPage } from '../../store/pagination/selectors';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { loadCurrentPage } from '../../store/pagination/action';

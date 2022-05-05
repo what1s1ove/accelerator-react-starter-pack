@@ -1,7 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { axiosInstance } from '../api/api';
-import { filtersReducer } from './filters/reducer';
+// import { filtersReducer } from './filters/reducer';
 import { guitarsReducer } from './guitars/reducer';
+// import { pagination } from './pagination/slice';
+import filtersReducer from './filters/slice';
 import { paginationReducer } from './pagination/reducer';
 
 export const store = configureStore({

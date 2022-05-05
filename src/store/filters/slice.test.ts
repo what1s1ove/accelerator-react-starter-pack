@@ -1,5 +1,7 @@
-import { loadGuitarsPriceRange, loadGuitarType, loadQuantityOfStrings, loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings } from './action';
-import { filtersReducer, initialState } from './reducer';
+import filtersReducer, {
+  initialState, loadGuitarsPriceRange, loadGuitarType, loadQuantityOfStrings,
+  loadSortingOrder, loadSortingType, removeGuitarType, removeQuantityOfStrings
+} from './slice';
 import {SortingOrder, SortingType} from '../../constants/sorting';
 
 describe('Filter reducer', () => {
