@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { axiosInstance } from '../api/api';
-// import guitarsReducer from './guitars/slice';
-import { guitarsReducer } from './guitars/reducer';
+import guitarsReducer from './guitars/slice';
 import paginationReducer from './pagination/slice';
 import filtersReducer from './filters/slice';
 

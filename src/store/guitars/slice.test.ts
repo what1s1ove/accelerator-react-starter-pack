@@ -1,6 +1,5 @@
 import { getMockGuitars } from '../../helpers/get-mock-guitars';
-import { loadGuitars } from './action';
-import { guitarsReducer, initialState } from './reducer';
+import guitarsReducer, { initialState, loadGuitars } from './slice';
 
 describe('Guitars reducer', () => {
   test('Load guitars', () => {
