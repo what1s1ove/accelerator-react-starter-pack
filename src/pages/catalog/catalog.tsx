@@ -128,8 +128,8 @@ export function Catalog(props: {
           </form>
 
           <SortingFilter
-            handleSortingButtonClick={handleSortingTypeButtonClick}
-            handleOrderButtonClick={handleSortingOrderButtonClick}
+            onSortingButtonClickHandler={handleSortingTypeButtonClick}
+            onOrderButtonClickHandler={handleSortingOrderButtonClick}
             isButtonDownActive={sortingOrder === SortingOrder.Desc}
             isButtonUpActive={sortingOrder === SortingOrder.Asc}
             isButtonSortingPrice={sortingType === SortingType.Price}

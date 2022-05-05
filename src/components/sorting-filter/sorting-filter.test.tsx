@@ -5,8 +5,8 @@ describe('SortingFilter component', () => {
   test('should be rendered correctly', () => {
     render(
       <SortingFilter
-        handleSortingButtonClick={jest.fn()}
-        handleOrderButtonClick={jest.fn()}
+        onSortingButtonClickHandler={jest.fn()}
+        onOrderButtonClickHandler={jest.fn()}
         isButtonUpActive
         isButtonDownActive={false}
         isButtonSortingPrice

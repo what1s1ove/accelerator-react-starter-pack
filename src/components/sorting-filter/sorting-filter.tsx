@@ -3,8 +3,8 @@ import cn from 'classnames';
 import { SortingOrder, SortingType } from '../../constants/sorting';
 
 export function SortingFilter(props: {
-    handleSortingButtonClick: (evt: BaseSyntheticEvent) => void
-    handleOrderButtonClick: (evt: BaseSyntheticEvent) => void
+    onSortingButtonClickHandler: (evt: BaseSyntheticEvent) => void
+    onOrderButtonClickHandler: (evt: BaseSyntheticEvent) => void
     isButtonUpActive: boolean
     isButtonDownActive: boolean
     isButtonSortingPrice: boolean
@@ -26,7 +26,7 @@ export function SortingFilter(props: {
           aria-label="по цене"
           tabIndex={-1}
           data-sort={SortingType.Price}
-          onClick={props.handleSortingButtonClick}
+          onClick={props.onSortingButtonClickHandler}
           data-testid="price-sorting"
         >
           по цене
@@ -41,7 +41,7 @@ export function SortingFilter(props: {
           }
           aria-label="по популярности"
           data-sort={SortingType.Rating}
-          onClick={props.handleSortingButtonClick}
+          onClick={props.onSortingButtonClickHandler}
         >
           по популярности
         </button>
@@ -57,7 +57,7 @@ export function SortingFilter(props: {
           }
           aria-label="По возрастанию"
           data-order={SortingOrder.Asc}
-          onClick={props.handleOrderButtonClick}
+          onClick={props.onOrderButtonClickHandler}
         />
         <button
           className={
@@ -70,7 +70,7 @@ export function SortingFilter(props: {
           }
           aria-label="По убыванию"
           data-order={SortingOrder.Desc}
-          onClick={props.handleOrderButtonClick}
+          onClick={props.onOrderButtonClickHandler}
         />
       </div>
     </div>
