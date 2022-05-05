@@ -3,23 +3,23 @@ import { InputSearch } from '../input-search/input-search';
 import { Logo } from '../logo/logo';
 import { Basket } from '../basket/basket';
 import { Link, useLocation } from 'react-router-dom';
-import { AppRoutes } from '../../constants/app-routes';
+import { AppRoute } from '../../constants/app-route';
 
 const LINKS = [
   {
     id: 'catalog',
     title: 'Каталог',
-    link: AppRoutes.getCatalog('1'),
+    link: AppRoute.getCatalog('1'),
   },
   {
     id: 'address',
     title: 'Где купить?',
-    link: AppRoutes.Address,
+    link: AppRoute.Address,
   },
   {
     id: 'about',
     title: 'О компании',
-    link: AppRoutes.About,
+    link: AppRoute.About,
   },
 ];
 

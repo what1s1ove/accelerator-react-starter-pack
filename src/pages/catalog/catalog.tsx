@@ -11,7 +11,7 @@ import { Pagination } from '../../components/pagination/pagination';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFilteredGuitars } from '../../store/guitars/selectors';
 import { fetchFilteredGuitarsList } from '../../store/guitars/api-actions';
-import { QueryParams } from '../../constants/query-params';
+import { QueryParam } from '../../constants/query-param';
 import { SortingOrder, SortingType } from '../../constants/sorting';
 import styles from './catalog.module.css';
 import { IGuitar } from '../../types/IGuitars';
@@ -42,8 +42,8 @@ export function Catalog(props: {
 
   useEffect(() => {
     dispatch(fetchFilteredGuitarsList({
-      [QueryParams.Sort]: sortingType || SortingType.Price,
-      [QueryParams.Order]: sortingOrder || SortingOrder.Asc,
+      [QueryParam.Sort]: sortingType || SortingType.Price,
+      [QueryParam.Order]: sortingOrder || SortingOrder.Asc,
     }));
   }, [dispatch, sortingType, sortingOrder, quantityOfStrings, guitarType, guitarsPriceRange, currentPage]);
 
@@ -52,22 +52,22 @@ export function Catalog(props: {
   }, [dispatch, page]);
 
   useEffect(() => {
-    urlSearchParams.delete(QueryParams.Type);
-    guitarType.forEach((type) => urlSearchParams.append(QueryParams.Type, type));
+    urlSearchParams.delete(QueryParam.Type);
+    guitarType.forEach((type) => urlSearchParams.append(QueryParam.Type, type));
 
-    urlSearchParams.delete(QueryParams.StringCount);
-    quantityOfStrings.forEach((stringCount) => urlSearchParams.append(QueryParams.StringCount, stringCount));
+    urlSearchParams.delete(QueryParam.StringCount);
+    quantityOfStrings.forEach((stringCount) => urlSearchParams.append(QueryParam.StringCount, stringCount));
 
     if (guitarsPriceRange.min === 0) {
-      urlSearchParams.delete(QueryParams.Price_Gte);
+      urlSearchParams.delete(QueryParam.PriceGte);
     } else {
-      guitarsPriceRange.min && urlSearchParams.set(QueryParams.Price_Gte, guitarsPriceRange.min.toString());
+      guitarsPriceRange.min && urlSearchParams.set(QueryParam.PriceGte, guitarsPriceRange.min.toString());
     }
 
     if (guitarsPriceRange.max === 0) {
-      urlSearchParams.delete(QueryParams.Price_Lte);
+      urlSearchParams.delete(QueryParam.PriceLte);
     } else {
-      guitarsPriceRange.max && urlSearchParams.set(QueryParams.Price_Lte, guitarsPriceRange.max.toString());
+      guitarsPriceRange.max && urlSearchParams.set(QueryParam.PriceLte, guitarsPriceRange.max.toString());
     }
 
     history.push(`${pathname}?${urlSearchParams}`);

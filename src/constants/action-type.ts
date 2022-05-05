@@ -1,4 +1,4 @@
-export const ActionTypes = {
+export const ActionType = {
   LOAD_GUITARS: 'Load guitars',
   LOAD_GUITARS_BY_NAME: 'Load guitars by name',
   LOAD_FILTERED_GUITARS: 'Load filtered guitars',
@@ -11,4 +11,4 @@ export const ActionTypes = {
   LOAD_PRICE_RANGE: 'Load price range',
   LOAD_CURRENT_PAGE: 'Load current page',
   LOAD_ALL_PAGES: 'Load all pages',
-};
+} as const;

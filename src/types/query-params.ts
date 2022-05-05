@@ -1,7 +1,7 @@
-import { QueryParams } from '../constants/query-params';
+import { QueryParam } from '../constants/query-param';
 import { SortingType, SortingOrder } from '../constants/sorting';
 
 export type QueryParametersType = {
-  [QueryParams.Sort]?: typeof SortingType.Price | typeof SortingType.Rating,
-  [QueryParams.Order]?: typeof SortingOrder.Asc | typeof SortingOrder.Desc,
+  [QueryParam.Sort]?: typeof SortingType.Price | typeof SortingType.Rating,
+  [QueryParam.Order]?: typeof SortingOrder.Asc | typeof SortingOrder.Desc,
 }

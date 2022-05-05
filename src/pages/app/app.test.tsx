@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { mockStore, getMockStore } from '../../helpers/get-mock-store';
 import { Provider } from 'react-redux';
-import { AppRoutes } from '../../constants/app-routes';
+import { AppRoute } from '../../constants/app-route';
 
 describe('App pages:', () => {
   let store: ReturnType<typeof mockStore>;
@@ -15,7 +15,7 @@ describe('App pages:', () => {
   test('Main page route works correctly', () => {
     render(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[AppRoutes.Home]}>
+        <MemoryRouter initialEntries={[AppRoute.Home]}>
           <App />
         </MemoryRouter>
       </Provider>,
@@ -27,7 +27,7 @@ describe('App pages:', () => {
   test('About page route works correctly', () => {
     render(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[AppRoutes.About]}>
+        <MemoryRouter initialEntries={[AppRoute.About]}>
           <App />
         </MemoryRouter>
       </Provider>,

@@ -3,7 +3,7 @@ import { Footer } from '../../components/footer/footer';
 import { Catalog } from '../catalog/catalog';
 import { Switch, Route } from 'react-router-dom';
 import styles from './app.module.css';
-import { AppRoutes } from '../../constants/app-routes';
+import { AppRoute } from '../../constants/app-route';
 import {NotImplemented} from '../../components/not-implemented/not-implemented';
 
 function App(): JSX.Element {
@@ -11,14 +11,14 @@ function App(): JSX.Element {
     <div className={styles.container}>
       <Header />
       <Switch>
-        <Route path={`${AppRoutes.getCatalog()}`} component={Catalog} />
-        <Route path={AppRoutes.Address}>
+        <Route path={`${AppRoute.getCatalog()}`} component={Catalog} />
+        <Route path={AppRoute.Address}>
           <NotImplemented text='Address' />
         </Route>
-        <Route path={AppRoutes.About}>
+        <Route path={AppRoute.About}>
           <NotImplemented text='About' />
         </Route>
-        <Route path={AppRoutes.Home}>
+        <Route path={AppRoute.Home}>
           <NotImplemented text='Main' />
         </Route>
       </Switch>

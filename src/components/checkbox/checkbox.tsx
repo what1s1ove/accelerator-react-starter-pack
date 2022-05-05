@@ -8,7 +8,6 @@ export function Checkbox(props: {
     onChange: ChangeEventHandler<HTMLInputElement>
     strings?: number
     type?: string
-    // testId?: string
 } & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>) {
   return (
     <div className={cn('form-checkbox', props.className)}>
