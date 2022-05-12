@@ -23,6 +23,7 @@ import {
 import { getCurrentPage } from '../../store/pagination/selectors';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { loadCurrentPage } from '../../store/pagination/slice';
+import { Loader } from '../../components/loader/loader';
 
 const breadcrumbsItems = ['Главная', 'Каталог'];
 type PageNumber = {page: string}
@@ -120,11 +121,11 @@ export function Catalog(props: {
     <main className={cn('page-content', props.className)}>
       <div className="container">
         <H2 title="Каталог гитар" />
-        <Breadcrumbs className={styles.breadcrumbs} items={breadcrumbsItems} />
+        <Breadcrumbs className="breadcrumbs" items={breadcrumbsItems} />
 
-        <div className={styles.catalog}>
-          <form className={styles['catalog-filter']}>
-            <H2 className={styles['catalog__filter']} title="Фильтр" />
+        <div className="catalog">
+          <form className="catalog-filter">
+            <H2 className="catalog__filter" title="Фильтр" />
             <PriceFilter handleMinPriceChange={handleMinPriceChange} handleMaxPriceChange={handleMaxPriceChange} />
             <GuitarTypeFilter onChange={handleGuitarTypeChange} />
             <StringFilter onChange={handleStringQuantityChange} />
@@ -139,7 +140,13 @@ export function Catalog(props: {
             isButtonSortingRating={sortingType === SortingType.Rating}
           />
 
-          <div className={cn(styles['catalog__cards'], styles['cards'])}>
+          <div className={cn(
+            {
+              'catalog__cards cards': guitars.length > 0,
+              [styles['empty-catalog']]: guitars.length === 0,
+            },
+          )}
+          >
             {
               guitars.length > 0 && guitars.map((guitar: IGuitar) => (
                 <ProductItem
@@ -153,7 +160,7 @@ export function Catalog(props: {
                 />))
             }
             {
-              guitars.length === 0 && <div>No guitars found</div>
+              guitars.length === 0 && <Loader />
             }
           </div>
 
