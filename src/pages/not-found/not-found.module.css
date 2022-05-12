@@ -1,0 +1,14 @@
+.container {
+  margin: 0 auto;
+  display: grid;
+  place-content: center;
+  text-align: center;
+}
+
+.link {
+  color: #000000;
+}
+
+.link:hover {
+  opacity: 0.7;
+}

@@ -5,6 +5,7 @@ import { Switch, Route } from 'react-router-dom';
 import styles from './app.module.css';
 import { AppRoute } from '../../constants/app-route';
 import {NotImplemented} from '../../components/not-implemented/not-implemented';
+import { NotFound } from '../not-found/not-found';
 
 function App(): JSX.Element {
   return (
@@ -18,8 +19,11 @@ function App(): JSX.Element {
         <Route path={AppRoute.About}>
           <NotImplemented text='About' />
         </Route>
-        <Route path={AppRoute.Home}>
+        <Route exact path={AppRoute.Home}>
           <NotImplemented text='Main' />
+        </Route>
+        <Route path="*">
+          <NotFound />
         </Route>
       </Switch>
       <Footer />
