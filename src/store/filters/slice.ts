@@ -32,7 +32,7 @@ const filters = createSlice({
       state.guitarType = state.guitarType.filter((item) => item !== action.payload);
     },
     loadGuitarsPriceRange: (state, action) => {
-      state.priceRange = {...action.payload};
+      state.priceRange = {...state.priceRange, ...action.payload};
     },
   },
 });

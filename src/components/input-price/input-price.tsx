@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, DetailedHTMLProps, InputHTMLAttributes } from 'react';
 
 export function InputPrice(props: {
     id: string
@@ -6,7 +6,7 @@ export function InputPrice(props: {
     placeholder: string
     onChange: ChangeEventHandler<HTMLInputElement>
     label: string
-}) {
+} & DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>)  {
   return (
     <div className="form-input">
       <label className="visually-hidden">{props.label}</label>
@@ -16,7 +16,11 @@ export function InputPrice(props: {
         id={props.id}
         name={props.name}
         onChange={props.onChange}
+        onBlur={props.onBlur}
         data-testid="price-input"
+        min={props.min}
+        max={props.max}
+        value={props.value}
       />
     </div>
   );

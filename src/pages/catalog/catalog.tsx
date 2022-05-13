@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 import cn from 'classnames';
-import { BaseSyntheticEvent, useCallback, useEffect, useMemo } from 'react';
+import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { H2 } from '../../components/h2/h2';
 import { Breadcrumbs } from '../../components/breadcrumbs/breadcrumbs';
 import { PriceFilter } from '../../components/price-filter/price-filter';
@@ -9,8 +11,8 @@ import { SortingFilter } from '../../components/sorting-filter/sorting-filter';
 import { ProductItem } from '../../components/product-item/product-item';
 import { Pagination } from '../../components/pagination/pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilteredGuitars } from '../../store/guitars/selectors';
-import { fetchFilteredGuitarsList } from '../../store/guitars/api-actions';
+import { getFilteredGuitars, getMinAndMaxGuitarsPrice } from '../../store/guitars/selectors';
+import { fetchFilteredGuitarsList, fetchGuitarsList } from '../../store/guitars/api-actions';
 import { QueryParam } from '../../constants/query-param';
 import { SortingOrder, SortingType } from '../../constants/sorting';
 import styles from './catalog.module.css';
@@ -39,10 +41,17 @@ export function Catalog(props: {
   const guitarType = useSelector(getGuitarType);
   const guitarsPriceRange = useSelector(getPriceRange);
   const currentPage = useSelector(getCurrentPage);
+  const guitarsPrice = useSelector(getMinAndMaxGuitarsPrice);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
   const {page} = useParams<PageNumber>();
   const {search, pathname} = useLocation();
   const history = useHistory();
   const urlSearchParams = useMemo(() => new URLSearchParams(search), [search]);
+
+  useEffect(() => {
+    dispatch(fetchGuitarsList());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchFilteredGuitarsList({
@@ -65,17 +74,17 @@ export function Catalog(props: {
     if (guitarsPriceRange.min === 0) {
       urlSearchParams.delete(QueryParam.PriceGte);
     } else {
-      guitarsPriceRange.min && urlSearchParams.set(QueryParam.PriceGte, guitarsPriceRange.min.toString());
+      guitarsPriceRange.min && urlSearchParams.set(QueryParam.PriceGte, minPrice.toString());
     }
 
     if (guitarsPriceRange.max === 0) {
       urlSearchParams.delete(QueryParam.PriceLte);
     } else {
-      guitarsPriceRange.max && urlSearchParams.set(QueryParam.PriceLte, guitarsPriceRange.max.toString());
+      guitarsPriceRange.max && urlSearchParams.set(QueryParam.PriceLte, maxPrice.toString());
     }
 
     history.push(`${pathname}?${urlSearchParams}`);
-  }, [guitarsPriceRange, guitarType, quantityOfStrings, history, pathname, search, urlSearchParams]);
+  }, [guitarsPriceRange, guitarType, quantityOfStrings, history, pathname, search, urlSearchParams, minPrice, maxPrice]);
 
   const handleSortingTypeButtonClick = useCallback((evt: BaseSyntheticEvent) => {
     dispatch(loadSortingType(evt.target.dataset.sort));
@@ -104,18 +113,59 @@ export function Catalog(props: {
   const handleMinPriceChange = useCallback((evt: BaseSyntheticEvent) => {
     const value = evt.target.value;
 
+    setMinPrice(value);
+
     dispatch(loadGuitarsPriceRange({
       min: +value,
     }));
   }, [dispatch]);
 
+  const handleMinPriceBlur = useCallback((evt: BaseSyntheticEvent) => {
+    let value = evt.target.value;
+
+    if (Number(value) < guitarsPrice.min) {
+      value = guitarsPrice.min;
+    }
+
+    if (Number(value) > guitarsPrice.max) {
+      value = guitarsPrice.max;
+    }
+
+    if (minPrice && maxPrice && Number(minPrice) > Number(maxPrice)) {
+      value = maxPrice;
+    }
+
+    setMinPrice(value);
+  }, [guitarsPrice.min, guitarsPrice.max, maxPrice, minPrice]);
+
+
   const handleMaxPriceChange = useCallback((evt: BaseSyntheticEvent) => {
     const value = evt.target.value;
+
+    setMaxPrice(value);
 
     dispatch(loadGuitarsPriceRange({
       max: +value,
     }));
   }, [dispatch]);
+
+  const handleMaxPriceBlur = useCallback((evt: BaseSyntheticEvent) => {
+    let value = evt.target.value;
+
+    if (Number(value) > guitarsPrice.max) {
+      value = guitarsPrice.max;
+    }
+
+    if (Number(value) < guitarsPrice.min) {
+      value = guitarsPrice.min;
+    }
+
+    if (minPrice && maxPrice && Number(maxPrice) < Number(minPrice)) {
+      value = minPrice;
+    }
+
+    setMaxPrice(value);
+  }, [guitarsPrice.max, guitarsPrice.min, minPrice, maxPrice]);
 
   return (
     <main className={cn('page-content', props.className)}>
@@ -126,7 +176,16 @@ export function Catalog(props: {
         <div className="catalog">
           <form className="catalog-filter">
             <H2 className="catalog__filter" title="Фильтр" />
-            <PriceFilter handleMinPriceChange={handleMinPriceChange} handleMaxPriceChange={handleMaxPriceChange} />
+            <PriceFilter
+              handleMinPriceChange={handleMinPriceChange}
+              handleMaxPriceChange={handleMaxPriceChange}
+              handleMinPriceBlur={handleMinPriceBlur}
+              handleMaxPriceBlur={handleMaxPriceBlur}
+              minPrice={guitarsPrice.min}
+              maxPrice={guitarsPrice.max}
+              valueMinPrice={minPrice}
+              valueMaxPrice={maxPrice}
+            />
             <GuitarTypeFilter onChange={handleGuitarTypeChange} />
             <StringFilter onChange={handleStringQuantityChange} />
           </form>
