@@ -20,6 +20,7 @@ export function Checkbox(props: {
         data-strings={props.strings}
         data-type={props.type}
         data-testid="checkbox-test"
+        disabled={props.disabled}
       />
       <label htmlFor={props.id}>{props.label}</label>
     </div>

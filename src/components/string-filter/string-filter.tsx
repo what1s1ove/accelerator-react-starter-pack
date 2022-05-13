@@ -12,20 +12,24 @@ const strings = [
 
 export function StringFilter(props: {
   onChange: ChangeEventHandler<HTMLInputElement>
+  stringsForChosenGuitars: Array<number>
 }) {
   return (
     <FilterType title="Количество струн">
       <ul className={styles.list}>
-        {strings.map((item) => (
-          <li key={item.id}>
-            <Checkbox
-              onChange={props.onChange}
-              id={item.id}
-              label={item.quantity}
-              strings={item.quantity}
-            />
-          </li>
-        ))}
+        {strings.map((item) => {
+          const isDisabled = props.stringsForChosenGuitars.length > 0 ? !props.stringsForChosenGuitars.includes(item.quantity) : false;
+          return (
+            <li key={item.id}>
+              <Checkbox
+                onChange={props.onChange}
+                id={item.id}
+                label={item.quantity}
+                strings={item.quantity}
+                disabled={isDisabled}
+              />
+            </li>);
+        })}
       </ul>
     </FilterType>
   );

@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-console */
 import cn from 'classnames';
 import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { H2 } from '../../components/h2/h2';
@@ -11,7 +9,7 @@ import { SortingFilter } from '../../components/sorting-filter/sorting-filter';
 import { ProductItem } from '../../components/product-item/product-item';
 import { Pagination } from '../../components/pagination/pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilteredGuitars, getMinAndMaxGuitarsPrice } from '../../store/guitars/selectors';
+import { getFilteredGuitars, getMinAndMaxGuitarsPrice, getStringsForChosenGuitars } from '../../store/guitars/selectors';
 import { fetchFilteredGuitarsList, fetchGuitarsList } from '../../store/guitars/api-actions';
 import { QueryParam } from '../../constants/query-param';
 import { SortingOrder, SortingType } from '../../constants/sorting';
@@ -42,6 +40,7 @@ export function Catalog(props: {
   const guitarsPriceRange = useSelector(getPriceRange);
   const currentPage = useSelector(getCurrentPage);
   const guitarsPrice = useSelector(getMinAndMaxGuitarsPrice);
+  const stringsForChosenGuitars = useSelector(getStringsForChosenGuitars);
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const {page} = useParams<PageNumber>();
@@ -187,7 +186,10 @@ export function Catalog(props: {
               valueMaxPrice={maxPrice}
             />
             <GuitarTypeFilter onChange={handleGuitarTypeChange} />
-            <StringFilter onChange={handleStringQuantityChange} />
+            <StringFilter
+              onChange={handleStringQuantityChange}
+              stringsForChosenGuitars={stringsForChosenGuitars}
+            />
           </form>
 
           <SortingFilter
