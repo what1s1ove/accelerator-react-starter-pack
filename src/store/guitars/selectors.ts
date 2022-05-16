@@ -14,3 +14,9 @@ export const getStringsForChosenGuitars = (state: RootState) => {
   const stringsForChosenGuitars = [...new Set(filteredGuitars.map((guitar) => guitar.stringCount))];
   return stringsForChosenGuitars;
 };
+
+export const getGuitarsForChosenStrings = (state: RootState) => {
+  const filteredGuitars = state.guitars.guitars.filter((guitar) => state.filters.quantityOfStrings.includes(guitar.stringCount.toString()));
+  const guitarsForChosenStrings = [...new Set(filteredGuitars.map((guitar) => guitar.type))];
+  return guitarsForChosenStrings;
+};

@@ -11,20 +11,26 @@ const guitars = [
 
 export function GuitarTypeFilter(props: {
   onChange: ChangeEventHandler<HTMLInputElement>
+  guitarsForChosenStrings: Array<string>
 }) {
   return (
     <FilterType title="Тип гитар">
       <ul className={styles.list}>
-        {guitars.map((item) => (
-          <li key={item.id}>
-            <Checkbox
-              onChange={props.onChange}
-              id={item.id}
-              label={item.name}
-              type={item.id}
-            />
-          </li>
-        ))}
+        {guitars.map((item) => {
+          const isDisabled = props.guitarsForChosenStrings.length > 0 ? !props.guitarsForChosenStrings.includes(item.id) : false;
+
+          return (
+            <li key={item.id}>
+              <Checkbox
+                onChange={props.onChange}
+                id={item.id}
+                label={item.name}
+                type={item.id}
+                disabled={isDisabled}
+              />
+            </li>
+          );
+        })}
       </ul>
     </FilterType>
   );

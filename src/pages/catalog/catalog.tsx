@@ -9,7 +9,7 @@ import { SortingFilter } from '../../components/sorting-filter/sorting-filter';
 import { ProductItem } from '../../components/product-item/product-item';
 import { Pagination } from '../../components/pagination/pagination';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFilteredGuitars, getMinAndMaxGuitarsPrice, getStringsForChosenGuitars } from '../../store/guitars/selectors';
+import { getFilteredGuitars, getGuitarsForChosenStrings, getMinAndMaxGuitarsPrice, getStringsForChosenGuitars } from '../../store/guitars/selectors';
 import { fetchFilteredGuitarsList, fetchGuitarsList } from '../../store/guitars/api-actions';
 import { QueryParam } from '../../constants/query-param';
 import { SortingOrder, SortingType } from '../../constants/sorting';
@@ -41,6 +41,7 @@ export function Catalog(props: {
   const currentPage = useSelector(getCurrentPage);
   const guitarsPrice = useSelector(getMinAndMaxGuitarsPrice);
   const stringsForChosenGuitars = useSelector(getStringsForChosenGuitars);
+  const guitarsForChosenStrings = useSelector(getGuitarsForChosenStrings);
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const {page} = useParams<PageNumber>();
@@ -185,7 +186,10 @@ export function Catalog(props: {
               valueMinPrice={minPrice}
               valueMaxPrice={maxPrice}
             />
-            <GuitarTypeFilter onChange={handleGuitarTypeChange} />
+            <GuitarTypeFilter
+              onChange={handleGuitarTypeChange}
+              guitarsForChosenStrings={guitarsForChosenStrings}
+            />
             <StringFilter
               onChange={handleStringQuantityChange}
               stringsForChosenGuitars={stringsForChosenGuitars}

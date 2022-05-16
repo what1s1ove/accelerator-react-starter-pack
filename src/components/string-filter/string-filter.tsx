@@ -19,6 +19,7 @@ export function StringFilter(props: {
       <ul className={styles.list}>
         {strings.map((item) => {
           const isDisabled = props.stringsForChosenGuitars.length > 0 ? !props.stringsForChosenGuitars.includes(item.quantity) : false;
+
           return (
             <li key={item.id}>
               <Checkbox

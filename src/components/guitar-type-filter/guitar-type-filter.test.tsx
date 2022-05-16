@@ -5,12 +5,12 @@ const handleCheckboxChange = jest.fn();
 
 describe('GuitarTypeFilter component', () => {
   test('should be rendered correctly', () => {
-    render(<GuitarTypeFilter onChange={handleCheckboxChange} />);
+    render(<GuitarTypeFilter onChange={handleCheckboxChange} guitarsForChosenStrings={['one', 'two']} />);
     expect(screen.getByText('Акустические гитары')).toBeInTheDocument();
   });
 
   test('checkbox should be clicked once', () => {
-    render(<GuitarTypeFilter onChange={handleCheckboxChange} />);
+    render(<GuitarTypeFilter onChange={handleCheckboxChange} guitarsForChosenStrings={['one', 'two']} />);
     const checkbox = screen.getAllByTestId('checkbox-test');
     fireEvent.click(checkbox[0]);
     expect(handleCheckboxChange).toHaveBeenCalledTimes(1);
