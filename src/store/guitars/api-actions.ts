@@ -1,4 +1,6 @@
-import { loadFilteredGuitars, loadGuitars, loadGuitarsByName } from './slice';
+/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { loadGuitars, loadGuitarsByName } from './slice';
 import { ApiRoute } from '../../constants/api-route';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { QueryParametersType } from '../../types/query-params';
@@ -8,6 +10,7 @@ import { axiosInstance } from '../../api/api';
 import { IFilters } from '../../types/IFilters';
 import { IPagination } from '../../types/IPagination';
 import { ActionType } from '../../constants/action-type';
+import { IGuitarsState } from '../../types/IGuitars';
 
 const GUITARS_PER_PAGE = 9;
 const TotalCountHeader = 'x-total-count';
@@ -21,9 +24,14 @@ export const fetchGuitarsList = createAsyncThunk(
   },
 );
 
-export const fetchFilteredGuitarsList = createAsyncThunk<Promise<void>, QueryParametersType, {state: {filters: IFilters, pagination: IPagination}}>(
+export const fetchFilteredGuitarsList = createAsyncThunk<Promise<void>, QueryParametersType, {state: {filters: IFilters, pagination: IPagination, guitars: IGuitarsState}}>(
   ActionType.FETCH_FILTERED_GUITARS,
   async (params: QueryParametersType, thunkApi) => {
+    const {loading} = thunkApi.getState().guitars.filteredGuitars;
+    if (loading !== 'pending') {
+      return;
+    }
+
     const response = await axiosInstance.get(`${process.env.REACT_APP_SERVER_URL}${ApiRoute.Guitars}`, {
       params: {
         [QueryParam.StringCount]: thunkApi.getState().filters.quantityOfStrings,
@@ -37,10 +45,14 @@ export const fetchFilteredGuitarsList = createAsyncThunk<Promise<void>, QueryPar
       },
     });
 
-
     const allPages = Math.ceil(response.headers[TotalCountHeader] / GUITARS_PER_PAGE);
-    thunkApi.dispatch(loadTotalPageCount(allPages));
-    thunkApi.dispatch(loadFilteredGuitars(response.data));
+
+    console.log('response.data: ', response.data);
+
+    return response.data;
+
+    // thunkApi.dispatch(loadTotalPageCount(allPages));
+    // thunkApi.dispatch(loadFilteredGuitars(response.data));
   },
 );
 

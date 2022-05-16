@@ -15,6 +15,10 @@ export interface IGuitar {
 
 export interface IGuitarsState {
   guitars: Array<IGuitar>
-  filteredGuitars: Array<IGuitar>
+  filteredGuitars: {
+    data: Array<IGuitar>
+    loading: string
+    currentRequestId: string
+  }
   guitarsByName: Array<IGuitar>
 }

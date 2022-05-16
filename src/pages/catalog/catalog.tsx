@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-console */
 import cn from 'classnames';
 import { BaseSyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { H2 } from '../../components/h2/h2';
@@ -48,6 +50,9 @@ export function Catalog(props: {
   const {search, pathname} = useLocation();
   const history = useHistory();
   const urlSearchParams = useMemo(() => new URLSearchParams(search), [search]);
+
+  console.log('guitars: ', guitars);
+
 
   useEffect(() => {
     dispatch(fetchGuitarsList());
@@ -207,13 +212,13 @@ export function Catalog(props: {
 
           <div className={cn(
             {
-              'catalog__cards cards': guitars.length > 0,
-              [styles['empty-catalog']]: guitars.length === 0,
+              'catalog__cards cards': guitars.data.length > 0,
+              [styles['empty-catalog']]: guitars.data.length === 0,
             },
           )}
           >
             {
-              guitars.length > 0 && guitars.map((guitar: IGuitar) => (
+              guitars.data.length > 0 && guitars.data.map((guitar: IGuitar) => (
                 <ProductItem
                   key={guitar.id}
                   name={guitar.name}
@@ -225,7 +230,7 @@ export function Catalog(props: {
                 />))
             }
             {
-              guitars.length === 0 && <Loader />
+              guitars.data.length === 0 && <Loader />
             }
           </div>
 
