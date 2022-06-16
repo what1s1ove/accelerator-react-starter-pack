@@ -1,4 +1,4 @@
-import { loadFilteredGuitars, loadGuitars, loadGuitarsByName } from './slice';
+import { loadGuitars, loadGuitarsByName } from './slice';
 import { ApiRoute } from '../../constants/api-route';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { QueryParametersType } from '../../types/query-params';
@@ -8,6 +8,7 @@ import { axiosInstance } from '../../api/api';
 import { IFilters } from '../../types/IFilters';
 import { IPagination } from '../../types/IPagination';
 import { ActionType } from '../../constants/action-type';
+import { IGuitarsState } from '../../types/IGuitars';
 
 const GUITARS_PER_PAGE = 9;
 const TotalCountHeader = 'x-total-count';
@@ -21,26 +22,34 @@ export const fetchGuitarsList = createAsyncThunk(
   },
 );
 
-export const fetchFilteredGuitarsList = createAsyncThunk<Promise<void>, QueryParametersType, {state: {filters: IFilters, pagination: IPagination}}>(
+export const fetchFilteredGuitarsList = createAsyncThunk<Promise<void>, QueryParametersType, {state: {filters: IFilters, pagination: IPagination, guitars: IGuitarsState}}>(
   ActionType.FETCH_FILTERED_GUITARS,
-  async (params: QueryParametersType, thunkApi) => {
+  async (params: QueryParametersType, {getState, dispatch}) => {
+    const {loading} = getState().guitars.filteredGuitars;
+    if (loading !== 'pending') {
+      return;
+    }
+
     const response = await axiosInstance.get(`${process.env.REACT_APP_SERVER_URL}${ApiRoute.Guitars}`, {
       params: {
-        [QueryParam.StringCount]: thunkApi.getState().filters.quantityOfStrings,
-        [QueryParam.Type]: thunkApi.getState().filters.guitarType,
-        [QueryParam.PriceGte]: thunkApi.getState().filters.priceRange.min || null,
-        [QueryParam.PriceLte]: thunkApi.getState().filters.priceRange.max || null,
+        [QueryParam.StringCount]: getState().filters.quantityOfStrings,
+        [QueryParam.Type]: getState().filters.guitarType,
+        [QueryParam.PriceGte]: getState().filters.priceRange.min || null,
+        [QueryParam.PriceLte]: getState().filters.priceRange.max || null,
         [QueryParam.Limit]: GUITARS_PER_PAGE,
-        [QueryParam.Start]: GUITARS_PER_PAGE * (thunkApi.getState().pagination.currentPage - 1),
+        [QueryParam.Start]: GUITARS_PER_PAGE * (getState().pagination.currentPage - 1),
         [QueryParam.Embed]: EmbedComments,
         ...params,
       },
     });
 
-
     const allPages = Math.ceil(response.headers[TotalCountHeader] / GUITARS_PER_PAGE);
-    thunkApi.dispatch(loadTotalPageCount(allPages));
-    thunkApi.dispatch(loadFilteredGuitars(response.data));
+    dispatch(loadTotalPageCount(allPages));
+
+    return response.data;
+
+    // thunkApi.dispatch(loadTotalPageCount(allPages));
+    // thunkApi.dispatch(loadFilteredGuitars(response.data));
   },
 );
 
