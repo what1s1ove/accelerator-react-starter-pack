@@ -124,6 +124,10 @@ export function Catalog(props: {
   const handleMinPriceBlur = useCallback((evt: BaseSyntheticEvent) => {
     let value = evt.target.value;
 
+    if (value === '') {
+      return;
+    }
+
     if (Number(value) < guitarsPrice.min) {
       value = guitarsPrice.min;
     }
@@ -152,6 +156,10 @@ export function Catalog(props: {
 
   const handleMaxPriceBlur = useCallback((evt: BaseSyntheticEvent) => {
     let value = evt.target.value;
+
+    if (value === '') {
+      return;
+    }
 
     if (Number(value) > guitarsPrice.max) {
       value = guitarsPrice.max;
