@@ -24,7 +24,6 @@ export function SortingFilter(props: {
             )
           }
           aria-label="по цене"
-          tabIndex={-1}
           data-sort={SortingType.Price}
           onClick={props.onSortingButtonClickHandler}
           data-testid="price-sorting"
