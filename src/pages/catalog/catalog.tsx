@@ -25,8 +25,12 @@ import { getCurrentPage } from '../../store/pagination/selectors';
 import { useHistory, useLocation, useParams } from 'react-router-dom';
 import { loadCurrentPage } from '../../store/pagination/slice';
 import { Loader } from '../../components/loader/loader';
+import { AppRoute } from '../../constants/app-route';
 
-const breadcrumbsItems = ['Главная', 'Каталог'];
+const breadcrumbsItems = [
+  {title: 'Главная', link: AppRoute.Home},
+  {title: 'Каталог', link: ''},
+];
 type PageNumber = {page: string}
 
 export function Catalog(props: {

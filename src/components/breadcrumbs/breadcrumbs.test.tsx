@@ -2,12 +2,15 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { Breadcrumbs } from './breadcrumbs';
 
-const items = ['Main', 'Catalog'];
+const breadcrumbsItems = [
+  {title: 'Товар', link: ''},
+];
+
 describe('Breadcrumbs component', () => {
   it('renders correctly', () => {
     render(
       <BrowserRouter>
-        <Breadcrumbs items={items} />
+        <Breadcrumbs items={breadcrumbsItems} />
       </BrowserRouter>,
     );
     expect(screen.getByText('Main')).toBeInTheDocument();
