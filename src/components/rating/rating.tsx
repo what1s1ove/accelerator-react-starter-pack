@@ -5,6 +5,7 @@ import sprite from '../../assets/sprite.svg';
 
 export function Rating(props: {
   rating: number
+  commentsCount?: number
 }) {
   const rating = Math.ceil(props.rating);
   const maxRating = 5;
@@ -37,6 +38,7 @@ export function Rating(props: {
   return (
     <div>
       {ratingArray.map((item) => <span key={nanoid()}>{item}</span>)}
+      {props.commentsCount && <span className="rate__count">{props.commentsCount}</span>}
     </div>
   );
 }
