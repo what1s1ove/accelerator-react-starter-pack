@@ -6,6 +6,7 @@ import styles from './app.module.css';
 import { AppRoute } from '../../constants/app-route';
 import {NotImplemented} from '../../components/not-implemented/not-implemented';
 import { NotFound } from '../not-found/not-found';
+import { Guitar } from '../guitar';
 
 function App(): JSX.Element {
   return (
@@ -13,15 +14,21 @@ function App(): JSX.Element {
       <Header />
       <Switch>
         <Route path={`${AppRoute.getCatalog()}`} component={Catalog} />
+
+        <Route path={'/guitars'} component={Guitar} />
+
         <Route path={AppRoute.Address}>
           <NotImplemented text='Address' />
         </Route>
+
         <Route path={AppRoute.About}>
           <NotImplemented text='About' />
         </Route>
+
         <Route exact path={AppRoute.Home}>
           <NotImplemented text='Main' />
         </Route>
+
         <Route path="*">
           <NotFound />
         </Route>

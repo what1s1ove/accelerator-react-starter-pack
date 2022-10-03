@@ -4,14 +4,18 @@ import sprite from '../../assets/sprite.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGuitarsByName } from '../../store/guitars/selectors';
 import { fetchGuitarsListByName } from '../../store/guitars/api-actions';
+import { useHistory } from 'react-router-dom';
+import { AppRoute } from '../../constants/app-route';
 
 export function InputSearch(props: {
     className?: string
     attributes?: DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 }) {
   const [isSearchListOpened, setIsSearchListOpened] = useState<boolean>(false);
+  const [searchGuitarName, setSearchGuitarName] = useState<string>('');
   const guitarsByName = useSelector(getGuitarsByName);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.value) {
@@ -19,8 +23,15 @@ export function InputSearch(props: {
       return;
     }
 
-    dispatch(fetchGuitarsListByName(event.target.value));
+    setSearchGuitarName(event.target.value);
+    dispatch(fetchGuitarsListByName(searchGuitarName));
     setIsSearchListOpened(true);
+  };
+
+  const handleGuitarClick = (id: string) => {
+    setSearchGuitarName('');
+    setIsSearchListOpened(false);
+    history.push(AppRoute.getGuitar(id));
   };
 
   return (
@@ -32,6 +43,7 @@ export function InputSearch(props: {
         </button>
         <input
           className="form-search__input"
+          value={searchGuitarName}
           onChange={handleInputChange}
           placeholder="что вы ищите?"
           data-testid="search-guitars"
@@ -43,7 +55,10 @@ export function InputSearch(props: {
 
       {isSearchListOpened &&
         <ul className="form-search__select-list" style={{ background: '#131212', zIndex: 5 }}>
-          {guitarsByName.map((guitar) => <li key={guitar.id} className="form-search__select-item" tabIndex={0}>{guitar.name}</li>)}
+          {guitarsByName.map((guitar) => (
+            <li key={guitar.id} className="form-search__select-item" onClick={() => handleGuitarClick(guitar.id)} tabIndex={0}>
+              {guitar.name}
+            </li>))}
         </ul>}
     </div>
   );

@@ -5,6 +5,7 @@ describe('ProductItem component', () => {
   test('should be rendered correctly', () => {
     render(
       <ProductItem
+        id="2"
         price={1000}
         name="Test name"
         previewImg="/public/img/guitar-1.jpg"

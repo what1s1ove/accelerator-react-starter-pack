@@ -2,9 +2,12 @@ import cn from 'classnames';
 import { IComment } from '../../types/IComment';
 import { Button } from '../button/button';
 import { Rating } from '../rating/rating';
+import { Link } from 'react-router-dom';
+import { AppRoute } from '../../constants/app-route';
 
 export function ProductItem(props: {
   className?: string,
+  id: string
   price: number,
   name: string,
   previewImg: string,
@@ -24,7 +27,10 @@ export function ProductItem(props: {
         <p className="product-card__price">{props.price} ₽</p>
       </div>
       <div className="product-card__buttons">
-        <Button isMiniButton title="Подробнее" type="more" />
+        <Link className="button button--mini" to={`${AppRoute.getGuitar(props.id)}`}>
+          Подробнее
+        </Link>
+
         <Button isMiniButton title="Купить" type="buy" />
       </div>
     </div>
