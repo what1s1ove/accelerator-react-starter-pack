@@ -177,74 +177,72 @@ export function Catalog(props: {
   }, [guitarsPrice.max, guitarsPrice.min, minPrice, maxPrice]);
 
   return (
-    <main className={cn('page-content', props.className)}>
-      <div className="container">
-        <H2 title="Каталог гитар" />
-        <Breadcrumbs className="breadcrumbs" items={breadcrumbsItems} />
+    <div className={cn('container', props.className)}>
+      <H2 title="Каталог гитар" />
+      <Breadcrumbs className="breadcrumbs" items={breadcrumbsItems} />
 
-        <div className="catalog">
-          <form className="catalog-filter">
-            <H2 className="catalog__filter" title="Фильтр" />
-            <PriceFilter
-              handleMinPriceChange={handleMinPriceChange}
-              handleMaxPriceChange={handleMaxPriceChange}
-              handleMinPriceBlur={handleMinPriceBlur}
-              handleMaxPriceBlur={handleMaxPriceBlur}
-              minPrice={guitarsPrice.min}
-              maxPrice={guitarsPrice.max}
-              valueMinPrice={minPrice}
-              valueMaxPrice={maxPrice}
-            />
-            <GuitarTypeFilter
-              onChange={handleGuitarTypeChange}
-              guitarsForChosenStrings={guitarsForChosenStrings}
-            />
-            <StringFilter
-              onChange={handleStringQuantityChange}
-              stringsForChosenGuitars={stringsForChosenGuitars}
-            />
-          </form>
-
-          <SortingFilter
-            onSortingButtonClickHandler={handleSortingTypeButtonClick}
-            onOrderButtonClickHandler={handleSortingOrderButtonClick}
-            isButtonDownActive={sortingOrder === SortingOrder.Desc}
-            isButtonUpActive={sortingOrder === SortingOrder.Asc}
-            isButtonSortingPrice={sortingType === SortingType.Price}
-            isButtonSortingRating={sortingType === SortingType.Rating}
+      <div className="catalog">
+        <form className="catalog-filter">
+          <H2 className="catalog__filter" title="Фильтр" />
+          <PriceFilter
+            handleMinPriceChange={handleMinPriceChange}
+            handleMaxPriceChange={handleMaxPriceChange}
+            handleMinPriceBlur={handleMinPriceBlur}
+            handleMaxPriceBlur={handleMaxPriceBlur}
+            minPrice={guitarsPrice.min}
+            maxPrice={guitarsPrice.max}
+            valueMinPrice={minPrice}
+            valueMaxPrice={maxPrice}
           />
+          <GuitarTypeFilter
+            onChange={handleGuitarTypeChange}
+            guitarsForChosenStrings={guitarsForChosenStrings}
+          />
+          <StringFilter
+            onChange={handleStringQuantityChange}
+            stringsForChosenGuitars={stringsForChosenGuitars}
+          />
+        </form>
 
-          <div className={cn(
-            {
-              'catalog__cards cards': guitars.length > 0 && loading === 'idle',
-              [styles['empty-catalog']]: loading === 'pending' || guitars.length === 0,
-            },
-          )}
-          >
-            {
-              loading === 'idle' && guitars.map((guitar: IGuitar) => (
-                <ProductItem
-                  key={guitar.id}
-                  id={guitar.id}
-                  name={guitar.name}
-                  previewImg={`/${guitar.previewImg}`}
-                  price={guitar.price}
-                  rating={guitar.rating}
-                  alt={guitar.name}
-                  comments={guitar.comments}
-                />))
-            }
-            {
-              loading === 'pending' && <Loader />
-            }
-            {
-              guitars.length === 0 && loading !== 'pending' && <p> No guitars found</p>
-            }
-          </div>
+        <SortingFilter
+          onSortingButtonClickHandler={handleSortingTypeButtonClick}
+          onOrderButtonClickHandler={handleSortingOrderButtonClick}
+          isButtonDownActive={sortingOrder === SortingOrder.Desc}
+          isButtonUpActive={sortingOrder === SortingOrder.Asc}
+          isButtonSortingPrice={sortingType === SortingType.Price}
+          isButtonSortingRating={sortingType === SortingType.Rating}
+        />
 
-          <Pagination />
+        <div className={cn(
+          {
+            'catalog__cards cards': guitars.length > 0 && loading === 'idle',
+            [styles['empty-catalog']]: loading === 'pending' || guitars.length === 0,
+          },
+        )}
+        >
+          {
+            loading === 'idle' && guitars.map((guitar: IGuitar) => (
+              <ProductItem
+                key={guitar.id}
+                id={guitar.id}
+                name={guitar.name}
+                previewImg={`/${guitar.previewImg}`}
+                price={guitar.price}
+                rating={guitar.rating}
+                alt={guitar.name}
+                comments={guitar.comments}
+              />))
+          }
+          {
+            loading === 'pending' && <Loader />
+          }
+          {
+            guitars.length === 0 && loading !== 'pending' && <p> No guitars found</p>
+          }
         </div>
+
+        <Pagination />
       </div>
-    </main>
+    </div>
   );
 }
