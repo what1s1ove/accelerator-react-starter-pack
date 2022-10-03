@@ -20,5 +20,10 @@ export interface IGuitarsState {
     loading: string
     currentRequestId: string
   }
+  guitarById: {
+    data: IGuitar
+    loading: string
+    currentRequestId: string
+  }
   guitarsByName: Array<IGuitar>
 }

@@ -4,11 +4,10 @@ import { ActionType } from '../../constants/action-type';
 import { ApiRoute } from '../../constants/api-route';
 import { QueryParam } from '../../constants/query-param';
 import { IFilters } from '../../types/IFilters';
-import { IGuitarsState } from '../../types/IGuitars';
+import { IGuitar, IGuitarsState } from '../../types/IGuitars';
 import { IPagination } from '../../types/IPagination';
 import { QueryParametersType } from '../../types/query-params';
 import { loadTotalPageCount } from '../pagination/slice';
-// import { fetchFilteredGuitarsList } from './api-actions';
 
 const GUITARS_PER_PAGE = 9;
 const TotalCountHeader = 'x-total-count';
@@ -39,7 +38,25 @@ export const fetchFilteredGuitarsList = createAsyncThunk<Promise<void>, QueryPar
     dispatch(loadTotalPageCount(allPages));
 
     return response.data;
-    // thunkApi.dispatch(loadFilteredGuitars(response.data));
+  },
+);
+
+export const fetchGuitarById = createAsyncThunk<Promise<void>, string, {state: {guitars: IGuitarsState}}>(
+  ActionType.FETCH_GUITAR_BY_ID,
+  async (id: string, {getState}) => {
+    const {loading} = getState().guitars.guitarById;
+
+    if (loading !== 'pending') {
+      return;
+    }
+
+    const response = await axiosInstance.get(`${process.env.REACT_APP_SERVER_URL}${ApiRoute.getGuitarById(id)}`, {
+      params: {
+        [QueryParam.Embed]: EmbedComments,
+      },
+    });
+
+    return response.data;
   },
 );
 
@@ -47,6 +64,11 @@ export const initialState: IGuitarsState = {
   guitars: [],
   filteredGuitars: {
     data: [],
+    currentRequestId: '',
+    loading: 'idle',
+  },
+  guitarById: {
+    data: {} as IGuitar,
     currentRequestId: '',
     loading: 'idle',
   },
@@ -83,6 +105,24 @@ const guitars = createSlice({
           state.filteredGuitars.loading = 'idle';
           state.filteredGuitars.data = [...action.payload];
           state.filteredGuitars.currentRequestId = '';
+        }
+      })
+      .addCase(fetchGuitarById.pending, (state, action) => {
+        if (state.guitarById.loading === 'idle') {
+          state.guitarById.loading = 'pending';
+          state.guitarById.currentRequestId = action.meta.requestId;
+        }
+      })
+      .addCase(fetchGuitarById.fulfilled, (state, action: any) => {
+        const { requestId } = action.meta;
+
+        if (
+          state.guitarById.loading === 'pending' &&
+          state.guitarById.currentRequestId === requestId
+        ) {
+          state.guitarById.loading = 'idle';
+          state.guitarById.data = {...action.payload};
+          state.guitarById.currentRequestId = '';
         }
       });
   },
