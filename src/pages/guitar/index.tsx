@@ -60,7 +60,7 @@ export function Guitar() {
           <Review
             key={item.id}
             authorName={item.userName}
-            date={item.createAt}
+            date={new Date(item.createAt)}
             rating={item.rating}
             advantages={item.advantage}
             disadvantages={item.disadvantage}

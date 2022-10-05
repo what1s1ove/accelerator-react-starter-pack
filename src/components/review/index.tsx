@@ -1,10 +1,11 @@
 import cn from 'classnames';
+import { formatDate } from '../../helpers/format-date';
 import { Rating } from '../rating/rating';
 
 export function Review(props: {
   className?: string
   authorName: string
-  date: string
+  date: Date
   rating: number
   advantages: string
   disadvantages: string
@@ -18,7 +19,7 @@ export function Review(props: {
         </h4>
 
         <span className="review__date">
-          {props.date}
+          {formatDate(props.date)}
         </span>
       </div>
 
