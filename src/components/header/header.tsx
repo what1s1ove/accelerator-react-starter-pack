@@ -29,7 +29,7 @@ export function Header(props: {
   const location = useLocation();
 
   return (
-    <header className={cn('header', props.className)}>
+    <header className={cn('header', props.className)} id="header">
       <div className="container header__wrapper">
         <Logo />
 
