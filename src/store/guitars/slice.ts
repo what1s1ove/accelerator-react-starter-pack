@@ -1,8 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, Dispatch } from '@reduxjs/toolkit';
 import { axiosInstance } from '../../api/api';
 import { ActionType } from '../../constants/action-type';
 import { ApiRoute } from '../../constants/api-route';
 import { QueryParam } from '../../constants/query-param';
+import { ICommentPost } from '../../types/IComment';
 import { IFilters } from '../../types/IFilters';
 import { IGuitar, IGuitarsState } from '../../types/IGuitars';
 import { IPagination } from '../../types/IPagination';
@@ -21,7 +22,7 @@ export const fetchFilteredGuitarsList = createAsyncThunk<Promise<void>, QueryPar
       return;
     }
 
-    const response = await axiosInstance.get(`${process.env.REACT_APP_SERVER_URL}${ApiRoute.Guitars}`, {
+    const response: any = await axiosInstance.get(`${process.env.REACT_APP_SERVER_URL}${ApiRoute.Guitars}`, {
       params: {
         [QueryParam.StringCount]: getState().filters.quantityOfStrings,
         [QueryParam.Type]: getState().filters.guitarType,
@@ -57,6 +58,18 @@ export const fetchGuitarById = createAsyncThunk<Promise<void>, string, {state: {
     });
 
     return response.data;
+  },
+);
+
+export const sendReviewToGuitar = createAsyncThunk<Promise<void>, ICommentPost, {dispatch: Dispatch<any>}>(
+  ActionType.SEND_REVIEW_TO_GUITAR,
+  async (comment: ICommentPost, {dispatch}) => {
+    try {
+      const res = await axiosInstance.post(`${process.env.REACT_APP_SERVER_URL}${ApiRoute.Comments}`, comment);
+      dispatch(fetchGuitarById(res.data.guitarId));
+    } catch(error) {
+      throw new Error();
+    }
   },
 );
 

@@ -40,6 +40,8 @@ export const useForm = <T extends Record<keyof T, unknown>>(
     }
 
     submitForm();
+    setValues({} as T);
+    setErrors({} as ErrorRecord<T>);
   };
 
   const handleFormChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

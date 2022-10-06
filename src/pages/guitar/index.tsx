@@ -76,7 +76,7 @@ export function Guitar() {
           loading === 'idle' && guitar.comments !== undefined &&
           guitar.comments
             .slice()
-            .sort((a: IComment, b: IComment) => new Date(a.createAt).getTime() - new Date(b.createAt).getTime())
+            .sort((a: IComment, b: IComment) => new Date(b.createAt).getTime() - new Date(a.createAt).getTime())
             .slice(0, reviewsToShow)
             .map((item) => (
               <Review
@@ -117,6 +117,7 @@ export function Guitar() {
           handleSuccessReviewModalOpen();
         }}
         guitarName={guitar.name}
+        guitarId={Number(guitar.id)}
       />
 
       <SuccessReviewModal

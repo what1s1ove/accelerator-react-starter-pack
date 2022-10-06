@@ -3,21 +3,25 @@ import { useOnClickOutside } from '../../hooks/use-outside-click';
 import { Modal } from '../modal';
 import { useForm } from '../../hooks/use-form';
 import { ICommentPost } from '../../types/IComment';
+import { useDispatch } from 'react-redux';
+import { sendReviewToGuitar } from '../../store/guitars/slice';
 
 export function AddReviewModal(props: {
   handleModalClose: () => void
   isModalShown: boolean
   guitarName: string
-  guitarId: number
   handleReviewFormSend: () => void
+  guitarId: number
 }) {
-  const {values, errors, setValues, handleFormSubmit, handleFormChange} = useForm<ICommentPost>(sendForm, {
+  const dispatch = useDispatch();
+  const {values, errors, handleFormSubmit, handleFormChange} = useForm<ICommentPost>(sendForm, {
     userName: {required: {value: true, message: 'Заполните поле'}},
     rating: {required: {value: true, message: 'Поставьте оценку'}},
   });
 
   function sendForm() {
-    setValues({...values, 'guitarId': props.guitarId});
+    dispatch(sendReviewToGuitar({...values, 'guitarId': props.guitarId}));
+    props.handleReviewFormSend();
     props.handleReviewFormSend();
   }
 
@@ -38,6 +42,7 @@ export function AddReviewModal(props: {
             <input
               className="form-review__input form-review__input--name"
               onChange={handleFormChange}
+              value={values.userName || ''}
               name="userName"
               id="user-name"
               type="text"
@@ -72,6 +77,7 @@ export function AddReviewModal(props: {
         <input
           className="form-review__input"
           onChange={handleFormChange}
+          value={values.advantage || ''}
           name="advantage"
           id="pros"
           type="text"
@@ -82,6 +88,7 @@ export function AddReviewModal(props: {
         <input
           className="form-review__input"
           onChange={handleFormChange}
+          value={values.disadvantage || ''}
           name="disadvantage"
           id="cons"
           type="text"
@@ -92,6 +99,7 @@ export function AddReviewModal(props: {
         <textarea
           className="form-review__input form-review__input--textarea"
           onChange={handleFormChange}
+          value={values.comment || ''}
           name="comment"
           id="comment"
           rows={10}
