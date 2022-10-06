@@ -1,17 +1,25 @@
-import { FormEvent, useRef } from 'react';
+import { useRef } from 'react';
 import { useOnClickOutside } from '../../hooks/use-outside-click';
 import { Modal } from '../modal';
+import { useForm } from '../../hooks/use-form';
+import { ICommentPost } from '../../types/IComment';
 
 export function AddReviewModal(props: {
   handleModalClose: () => void
   isModalShown: boolean
   guitarName: string
+  guitarId: number
   handleReviewFormSend: () => void
 }) {
-  const handleFormSubmit = (evt: FormEvent<HTMLFormElement>): void => {
-    evt.preventDefault();
+  const {values, errors, setValues, handleFormSubmit, handleFormChange} = useForm<ICommentPost>(sendForm, {
+    userName: {required: {value: true, message: 'Заполните поле'}},
+    rating: {required: {value: true, message: 'Поставьте оценку'}},
+  });
+
+  function sendForm() {
+    setValues({...values, 'guitarId': props.guitarId});
     props.handleReviewFormSend();
-  };
+  }
 
   const addReviewModalRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(addReviewModalRef, props.handleModalClose);
@@ -27,30 +35,67 @@ export function AddReviewModal(props: {
             <label className="form-review__label form-review__label--required" htmlFor="user-name">
               Ваше Имя
             </label>
-            <input className="form-review__input form-review__input--name" id="user-name" type="text" autoComplete="off"/>
-            <span className="form-review__warning">Заполните поле</span>
+            <input
+              className="form-review__input form-review__input--name"
+              onChange={handleFormChange}
+              name="userName"
+              id="user-name"
+              type="text"
+              autoComplete="off"
+            />
+
+            {errors.userName && <span className="form-review__warning">{errors.userName}</span>}
           </div>
-          <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
+          <div>
+            <span className="form-review__label form-review__label--required">
+              Ваша Оценка
+            </span>
             <div className="rate rate--reverse">
-              <input className="visually-hidden" type="radio" id="star-5" name="rate" value="5" />
-              <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
-              <input className="visually-hidden" type="radio" id="star-4" name="rate" value="4" />
-              <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
-              <input className="visually-hidden" type="radio" id="star-3" name="rate" value="3" />
-              <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
-              <input className="visually-hidden" type="radio" id="star-2" name="rate" value="2" />
-              <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
-              <input className="visually-hidden" type="radio" id="star-1" name="rate" value="1" />
-              <label className="rate__label" htmlFor="star-1" title="Ужасно"></label><span className="rate__count"></span><span className="rate__message">Поставьте оценку</span>
+              <input className="visually-hidden" onChange={handleFormChange} type="radio" id="star-5" name="rating" value="5" />
+              <label className="rate__label" htmlFor="star-5" title="Отлично" />
+              <input className="visually-hidden" onChange={handleFormChange} type="radio" id="star-4" name="rating" value="4" />
+              <label className="rate__label" htmlFor="star-4" title="Хорошо" />
+              <input className="visually-hidden" onChange={handleFormChange} type="radio" id="star-3" name="rating" value="3" />
+              <label className="rate__label" htmlFor="star-3" title="Нормально" />
+              <input className="visually-hidden" onChange={handleFormChange} type="radio" id="star-2" name="rating" value="2" />
+              <label className="rate__label" htmlFor="star-2" title="Плохо" />
+              <input className="visually-hidden" onChange={handleFormChange} type="radio" id="star-1" name="rating" value="1" />
+              <label className="rate__label" htmlFor="star-1" title="Ужасно" />
+              <span className="rate__count" />
+
+              {errors.rating && <span className="rate__message">{errors.rating}</span>}
             </div>
           </div>
         </div>
-        <label className="form-review__label" htmlFor="user-name">Достоинства</label>
-        <input className="form-review__input" id="pros" type="text" autoComplete="off" />
-        <label className="form-review__label" htmlFor="user-name">Недостатки</label>
-        <input className="form-review__input" id="user-name" type="text" autoComplete="off" />
-        <label className="form-review__label" htmlFor="user-name">Комментарий</label>
-        <textarea className="form-review__input form-review__input--textarea" id="user-name" rows={10}></textarea>
+
+        <label className="form-review__label" htmlFor="pros">Достоинства</label>
+        <input
+          className="form-review__input"
+          onChange={handleFormChange}
+          name="advantage"
+          id="pros"
+          type="text"
+          autoComplete="off"
+        />
+
+        <label className="form-review__label" htmlFor="cons">Недостатки</label>
+        <input
+          className="form-review__input"
+          onChange={handleFormChange}
+          name="disadvantage"
+          id="cons"
+          type="text"
+          autoComplete="off"
+        />
+
+        <label className="form-review__label" htmlFor="comment">Комментарий</label>
+        <textarea
+          className="form-review__input form-review__input--textarea"
+          onChange={handleFormChange}
+          name="comment"
+          id="comment"
+          rows={10}
+        />
 
         <button
           className="button button--medium-20 form-review__button"

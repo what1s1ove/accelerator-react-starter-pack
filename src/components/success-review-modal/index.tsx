@@ -3,7 +3,6 @@ import { Modal } from '../modal';
 import sprite from '../../assets/sprite.svg';
 import { useOnClickOutside } from '../../hooks/use-outside-click';
 import { useRef } from 'react';
-// import { forwardRef, ForwardedRef } from 'react';
 
 export function SuccessReviewModal(props: {
   handleModalClose: () => void
