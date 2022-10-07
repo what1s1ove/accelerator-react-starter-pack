@@ -41,18 +41,20 @@ export function ProductDetails(props: {
           {
             selectedTab === TabName.Characteristics &&
             <table className="tabs__table">
-              <tr className="tabs__table-row">
-                <td className="tabs__title">Артикул:</td>
-                <td className="tabs__value">{props.vendorCode}</td>
-              </tr>
-              <tr className="tabs__table-row">
-                <td className="tabs__title">Тип:</td>
-                <td className="tabs__value">{props.type}</td>
-              </tr>
-              <tr className="tabs__table-row">
-                <td className="tabs__title">Количество струн:</td>
-                <td className="tabs__value">{props.stringCount} струнная</td>
-              </tr>
+              <tbody>
+                <tr className="tabs__table-row">
+                  <td className="tabs__title">Артикул:</td>
+                  <td className="tabs__value">{props.vendorCode}</td>
+                </tr>
+                <tr className="tabs__table-row">
+                  <td className="tabs__title">Тип:</td>
+                  <td className="tabs__value">{props.type}</td>
+                </tr>
+                <tr className="tabs__table-row">
+                  <td className="tabs__title">Количество струн:</td>
+                  <td className="tabs__value">{props.stringCount} струнная</td>
+                </tr>
+              </tbody>
             </table>
           }
 

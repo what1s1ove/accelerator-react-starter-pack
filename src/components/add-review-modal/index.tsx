@@ -118,6 +118,7 @@ export function AddReviewModal(props: {
         onClick={props.handleModalClose}
         type="button"
         aria-label="Закрыть"
+        data-testid="close-review"
       >
         <span className="button-cross__icon" />
         <span className="modal__close-btn-interactive-area" />
