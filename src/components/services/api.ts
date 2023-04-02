@@ -1,7 +1,7 @@
 import axios, {AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError} from 'axios';
 
 const BACKEND_URL = 'https://accelerator-guitar-shop-api-v1.glitch.me';
-const REQUEST_TIMEOUT = 5000;
+const REQUEST_TIMEOUT = 5000000;
 
 export const createAPI = (): AxiosInstance => {
   const api = axios.create({

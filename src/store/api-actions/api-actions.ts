@@ -5,7 +5,7 @@ import { ThunkActionResult } from '../../types/actions';
 import { Comment, CommentPost, Coupon, Guitar, Order } from '../../types/shop-types';
 import { addDiscount, updateGuitars, uploadComments, uploadGuitars } from '../actions';
 
-const DATA_LOAD_FAIL_MESSAGE = 'Не удалось загрузить данные';
+const DATA_LOAD_FAIL_MESSAGE = `Couldn't upload the data. Try again`;
 
 const fetchGuitarsAction = (): ThunkActionResult =>
   async (dispatch, _getState, api): Promise<void> => {

@@ -6,8 +6,6 @@ import { lazy } from 'react';
 import { AppRoute } from '../consts/app';
 import NotFoundScreen from '../notfoundscreen/not-found-screen';
 import Cart from '../cart/cart';
-
-
 const MainPage = lazy(() => import('../main/main'));
 const ProductMain = lazy(() => import('../product/product'));
 const browserHistory = createBrowserHistory();
